@@ -1,3 +1,0 @@
-C:/Codebase/C/Tescore/cmake-build-debug/CMakeFiles/Tescore.dir
-C:/Codebase/C/Tescore/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Codebase/C/Tescore/cmake-build-debug/CMakeFiles/rebuild_cache.dir
