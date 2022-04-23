@@ -10,17 +10,21 @@ void yellow();
 void reset();
 
 int main() {
-    printf("init\n");
-    char navIndex = 1;
+    puts("--- Renderer Debug ---\n");
+
+    int navIndex = 1;
     while (navIndex != EOF){
         navIndex = _getch();
         switch (navIndex) {
             case '1':
                 printf("focused panel 1\n");
-                renderFrame();
+                refreshFrame();
                 break;
             case '2':
                 printf("focused panel 2\n");
+                break;
+            case 'e':
+                puts("Testing E char on int navigation");
                 break;
             default:
                 break;
