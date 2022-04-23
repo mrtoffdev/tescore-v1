@@ -2,6 +2,6 @@
 
 #include <stdio.h>
 
-void renderFrame(){
+void refreshFrame(){
     printf("Testing Render Frame");
 }
