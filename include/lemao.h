@@ -1,4 +1,0 @@
-#ifndef TESCORE_LEMAO_H
-#define TESCORE_LEMAO_H
-
-#endif //TESCORE_LEMAO_H
