@@ -2,7 +2,7 @@
 #define TESCORE_RENDER_H
 
 // rendering interfaces
-void renderFrame();
+void refreshFrame();
 void renderAuth();
 void renderSeparatorH();
 
