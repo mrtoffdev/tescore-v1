@@ -6,56 +6,55 @@
 // Top 10 student sorting algorithm.
 
 void bubbleSortDemo(char string_array[][LIMIT], int score_array[], int lines);
-void ranker(char* class[], int entry_count); // We return an array of pointers and take an array of pointers
-
-void rankSorter(char* class[], int entry_count)
-{
-
-}
+void rankSorter(char* class[][2], int entry_count); // We return an array of pointers and take an array of pointers
 
 int main(void)
 {
     // Opening file
-    FILE* input_file;
-    input_file = fopen("Students.txt", "r");
-    if (input_file == NULL)
+    char* string2Darray[][2] = 
     {
-        printf("Error loading file\n");
-        return 1;
+        {"Harvar D Three Four Five", "100"}, 
+        {"Ox Twelve", "200"}, 
+        {"Tree Force", "21"}, 
+        {"Four", "92"}, 
+        {"Place", "90"},
+        {"Reee Za", "92"},
+        {"Ra", "96"},
+        {"Eight", "90"},
+        {"Nine", "100"},
+        {"Ten", "88"},
+        {"Eleven", "88"},
+    };
+
+    int lines = 0;
+    // Placing entries to other containers
+    int score_array[SIZE] = {0};
+    for (int i = 0; i<11; i++) // need better placeholder for 11
+    {
+        score_array[i] = string2Darray[i][1];
+        printf("%d", score_array[i]);
+    }
+    char name_parray[SIZE][LIMIT];
+    for (int i = 0; i<11; i++)
+    {
+        strcpy(name_parray[i], string2Darray[i]);
+        printf("%s", name_parray[i]);
+        lines++;
     }
 
-    // Getting entries from the file
-    int lines = 0;
-    int score_array[SIZE] = {0};
-    char name_parray[SIZE][LIMIT];
-    char stringplaceholder[LIMIT];
-    for (int i = 0; i < SIZE; i++)
-    {
-        // Check if fscanf is successful, if it fails, then we finish the scanning. Ensures that first input must be a name
-        if (((fscanf(input_file, "%s", stringplaceholder)) == 1) && ((stringplaceholder[0] >= 65) && (stringplaceholder[0] <= 90)))
-        {
-            // Check if there are more strings/names
-            while((stringplaceholder[0] >= 65) && (stringplaceholder[0] <= 90))
-            {
-                strcat(name_parray[i], strcat(stringplaceholder, " "));
-                fscanf(input_file, "%s", stringplaceholder); // 
-            }
-            // Stringplaceholder is a number at this point.
-            score_array[i] = atoi(stringplaceholder);
-            // At this point, both entries are taken and placed at name_parray and score_array
-            lines++; // Used in the sorting function
-        }
-        else
-        {
-            printf("Error\n");
-        }
-    }
-    bubbleSortDemo(name_parray, score_array, lines);
+    
+    
+
+    
+    //bubbleSortDemo(name_parray, score_array, lines);
 
     // List is sorted at this point //
-
-    fclose(input_file);
     return 0;
+}
+
+void rankSorter(char* class[][2], int entry_count)
+{
+
 }
 
 // needs amount of lines
