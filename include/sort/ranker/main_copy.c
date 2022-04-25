@@ -6,56 +6,59 @@
 // Top 10 student sorting algorithm.
 
 void bubbleSortDemo(char string_array[][LIMIT], int score_array[], int lines);
+void rankSorter(char* class[SIZE][2], int size); // We return an array of pointers and take an array of pointers
 
 int main(void)
 {
-    FILE* input_file;
-    input_file = fopen("Students.txt", "r");
-    if (input_file == NULL)
+    // Placeholders for arguments
+    int size = 11;
+    char* class[SIZE][2] = 
     {
-        printf("Error loading file\n");
-        return 1;
-    }
+        {"Harvar D Three Four Five", "100"}, 
+        {"Ox Twelve", "100"}, 
+        {"Tree Force", "21"}, 
+        {"Four", "92"}, 
+        {"Place", "90"},
+        {"Reee Za", "92"},
+        {"Ra", "96"},
+        {"Eight", "90"},
+        {"Nine", "100"},
+        {"Ten", "88"},
+        {"Eleven", "88"},
+    };
 
-    int lines = 0;
+    // Placing entries to other containers
     int score_array[SIZE] = {0};
     char name_parray[SIZE][LIMIT];
-    char stringplaceholder[LIMIT];
-    for (int i = 0; i < SIZE; i++)
+    int lines = 0;
+    
+    for (int i = 0; i<size; i++) // need better placeholder for size
     {
-        // Check if fscanf is successful, if it fails, then we finish the scanning. Ensures that first input must be a name
-        if (((fscanf(input_file, "%s", stringplaceholder)) == 1) && ((stringplaceholder[0] >= 65) && (stringplaceholder[0] <= 90)))
-        {
-            // Check if there are more strings/names
-            while((stringplaceholder[0] >= 65) && (stringplaceholder[0] <= 90))
-            {
-                strcat(name_parray[i], strcat(stringplaceholder, " "));
-                fscanf(input_file, "%s", stringplaceholder); // 
-            }
-            // Stringplaceholder is a number at this point.
-            score_array[i] = atoi(stringplaceholder);
-            // print both name and int
-            printf("%s%d\n", name_parray[i], score_array[i]);
-            lines++;
-        }
-        else
-        {
-            break;
-        }
+        score_array[i] = atoi(class[i][1]);
+        strcpy(name_parray[i], *class[i]);
+        lines++;
     }
 
+    for (int i = 0; i<11; i++)
+    {
+        printf("%s %d\n", name_parray[i], score_array[i]);
+    }
     printf("\n");
+
     bubbleSortDemo(name_parray, score_array, lines);
 
+    // List is sorted at this point //
     for (int i = 0; i<10; i++)
     {
         printf("%-30s\t%d\n", name_parray[i], score_array[i]);
     }
     printf("\n");
-
-    fclose(input_file);
-
     return 0;
+}
+
+void rankSorter(char* class[][2], int entry_count)
+{
+
 }
 
 // needs amount of lines
@@ -87,3 +90,33 @@ void bubbleSortDemo(char string_array[][LIMIT], int score_array[], int lines)
         }
     }
 }
+
+/*
+void ranker(char* class[], int entry_count)
+{
+    // Variables
+    
+
+    // Getting inputs from 2D Array/Array of pointers class
+
+
+    // Sort the entries by grade
+
+
+    // Return sorted list
+}
+
+
+
+
+
+
+
+
+
+    for (int i = 0; i<10; i++)
+    {
+        printf("%-30s\t%d\n", name_parray[i], score_array[i]);
+    }
+    printf("\n");
+*/
