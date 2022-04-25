@@ -27,7 +27,7 @@ FILE* openFile(char* FileAddress){
         scanf("%s", &temp);
 
         if(temp == 'y'){
-            DIB = fopen("../demo.txt", "r");
+            DIB = fopen(DEFAULTFILEADDRESS, "r");
             puts("Loaded default input file.");
             system("pause");
             return DIB;
