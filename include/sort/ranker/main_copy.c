@@ -11,7 +11,7 @@ void rankSorter(char* class[][2], int entry_count); // We return an array of poi
 int main(void)
 {
     // Opening file
-    char* string2Darray[][2] = 
+    char* class[][2] = 
     {
         {"Harvar D Three Four Five", "100"}, 
         {"Ox Twelve", "200"}, 
@@ -31,14 +31,15 @@ int main(void)
     int score_array[SIZE] = {0};
     for (int i = 0; i<11; i++) // need better placeholder for 11
     {
-        score_array[i] = string2Darray[i][1];
-        printf("%d", score_array[i]);
+        score_array[i] = atoi(class[i][1]);
+        printf("%d\n", score_array[i]);
     }
+    printf("\n");
     char name_parray[SIZE][LIMIT];
     for (int i = 0; i<11; i++)
     {
-        strcpy(name_parray[i], string2Darray[i]);
-        printf("%s", name_parray[i]);
+        strcpy(name_parray[i], *class[i]);
+        printf("%s\n", name_parray[i]);
         lines++;
     }
 
