@@ -42,10 +42,6 @@ int main(void)
         lines++;
     }
 
-    
-    
-
-    
     //bubbleSortDemo(name_parray, score_array, lines);
 
     // List is sorted at this point //
