@@ -5,9 +5,16 @@
 #include "include/io/io.h"
 
 int main() {
-    printf("Debugging: IO\n");
-    testing();
+    puts("Debugging: IO");
 
+    char* FileAddress = malloc(MAXSTRLEN);
+    printf("Enter Datasheet Name: (Default: demo.txt) ");
+    if(scanf("%s", FileAddress) != EOF){
+        testing(FileAddress);
+        free(FileAddress);
+    }
+
+    puts("Program Exit");
     system("pause");
     return 0;
 }
