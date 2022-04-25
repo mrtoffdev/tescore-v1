@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "include/io/io.h"
+
 int main() {
     printf("Debugging: IO\n");
-
-    FILE* DIB = fopen("Students.txt", "r");
+    testing();
 
     system("pause");
     return 0;
