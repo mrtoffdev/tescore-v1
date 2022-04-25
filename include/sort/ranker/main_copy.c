@@ -6,15 +6,16 @@
 // Top 10 student sorting algorithm.
 
 void bubbleSortDemo(char string_array[][LIMIT], int score_array[], int lines);
-void rankSorter(char* class[][2], int entry_count); // We return an array of pointers and take an array of pointers
+void rankSorter(char* class[SIZE][2], int size); // We return an array of pointers and take an array of pointers
 
 int main(void)
 {
-    // Opening file
-    char* class[][2] = 
+    // Placeholders for arguments
+    int size = 11;
+    char* class[SIZE][2] = 
     {
         {"Harvar D Three Four Five", "100"}, 
-        {"Ox Twelve", "200"}, 
+        {"Ox Twelve", "100"}, 
         {"Tree Force", "21"}, 
         {"Four", "92"}, 
         {"Place", "90"},
@@ -26,26 +27,32 @@ int main(void)
         {"Eleven", "88"},
     };
 
-    int lines = 0;
     // Placing entries to other containers
     int score_array[SIZE] = {0};
-    for (int i = 0; i<11; i++) // need better placeholder for 11
+    char name_parray[SIZE][LIMIT];
+    int lines = 0;
+    
+    for (int i = 0; i<size; i++) // need better placeholder for size
     {
         score_array[i] = atoi(class[i][1]);
-        printf("%d\n", score_array[i]);
-    }
-    printf("\n");
-    char name_parray[SIZE][LIMIT];
-    for (int i = 0; i<11; i++)
-    {
         strcpy(name_parray[i], *class[i]);
-        printf("%s\n", name_parray[i]);
         lines++;
     }
 
-    //bubbleSortDemo(name_parray, score_array, lines);
+    for (int i = 0; i<11; i++)
+    {
+        printf("%s %d\n", name_parray[i], score_array[i]);
+    }
+    printf("\n");
+
+    bubbleSortDemo(name_parray, score_array, lines);
 
     // List is sorted at this point //
+    for (int i = 0; i<10; i++)
+    {
+        printf("%-30s\t%d\n", name_parray[i], score_array[i]);
+    }
+    printf("\n");
     return 0;
 }
 
