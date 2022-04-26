@@ -13,7 +13,7 @@ typedef struct index
 
 typedef struct subsheet
 {
-    index unsortedList[100];
+    index unsortedList[100]; // This is the only problem tbh
 } subsheet;
 
 void bubbleSort(char string_array[][LIMIT], int score_array[], int lines);
@@ -56,7 +56,7 @@ subsheet rankSorterMkII(subsheet subsheetvar)
     int lines, i, size;
     for (int i = 0; subsheetvar.unsortedList[i].studentName != NULL; i++)
     {
-        size++;
+        size++; // the sizeof solution did not work for some reason but yea
     }
 
     int score_array[SIZE] = {0};
@@ -69,7 +69,7 @@ subsheet rankSorterMkII(subsheet subsheetvar)
         lines++;
     }
 
-    bubbleSort(name_parray, score_array, size);
+    bubbleSort(name_parray, score_array, size); // this has something weird but yea
 
     for (int i = 0; i<size; i++)
     {
