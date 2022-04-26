@@ -5,53 +5,87 @@
 #define LIMIT 1000
 // Top 10 student sorting algorithm.
 
-void rankSorter(char* class[SIZE][2], int size);
+typedef struct index
+{
+    char* studentName;
+    short int studentScore;
+} index;
+
+typedef struct subsheet
+{
+    index unsortedList[100];
+} subsheet;
+
+void bubbleSort(char string_array[][LIMIT], int score_array[], int lines);
+subsheet rankSorterMkII(subsheet subsheetvar);
 
 int main(void)
 {
-    // Placeholders for arguments
-    int size = 11;
-    char* class[SIZE][2] = 
+    // Placeholder for arguments
+    subsheet sampleSubsheet = 
     {
-        {"Harvar D Three Four Five", "100"}, 
-        {"Ox Twelve", "100"}, 
-        {"Tree Force", "21"}, 
-        {"Four", "92"}, 
-        {"Place", "90"},
-        {"Reee Za", "92"},
-        {"Ra", "96"},
-        {"Eight", "90"},
-        {"Nine", "100"},
-        {"Ten", "88"},
-        {"Eleven", "88"},
+        {   // unsortedList
+            {"Harvar D Three Four Five", 100}, 
+            {"Ox Twelve", 100}, 
+            {"Tree Force", 21}, 
+            {"Four", 92}, 
+            {"Place", 90},
+            {"Reee Za", 92},
+            {"Ra", 96},
+            {"Eight", 90},
+            {"Nine", 100},
+            {"Ten", 88},
+            {"Eleven", 88},
+        }
     };
+    
+    subsheet sortedSubsheet = rankSorterMkII(sampleSubsheet);
 
-    rankSorter(class, size);
-
-    // List is sorted at this point //
+    // // List is sorted at this point //
     for (int i = 0; i<10; i++)
     {
-        printf("%-30s\t%s\n", *class[i], class[i][1]);
+        printf("%-30s\t%d\n", sortedSubsheet.unsortedList[i].studentName, sortedSubsheet.unsortedList[i].studentScore);
     }
     printf("\n");
     return 0;
 }
 
-void rankSorter(char* class[SIZE][2], int size)
+subsheet rankSorterMkII(subsheet subsheetvar)
 {
+    subsheet newSubsheet;
+    int lines, i, size;
+    for (int i = 0; subsheetvar.unsortedList[i].studentName != NULL; i++)
+    {
+        size++;
+    }
+
     int score_array[SIZE] = {0};
     char name_parray[SIZE][LIMIT];
-    int lines = 0;
-    
-    for (int i = 0; i<size; i++)
+
+    for (i = 0; i<size; i++)
     {
-        score_array[i] = atoi(class[i][1]);
-        strcpy(name_parray[i], *class[i]);
+        score_array[i] = subsheetvar.unsortedList[i].studentScore;
+        strcpy(name_parray[i], subsheetvar.unsortedList[i].studentName);
         lines++;
     }
 
-    int pass, i, intswap;
+    bubbleSort(name_parray, score_array, size);
+
+    for (int i = 0; i<size; i++)
+    {
+        newSubsheet.unsortedList[i].studentScore = score_array[i];
+        newSubsheet.unsortedList[i].studentName = name_parray[i];
+    }
+
+    return newSubsheet;
+}
+
+// // needs amount of lines
+void bubbleSort(char string_array[][LIMIT], int score_array[], int lines)
+{
+    int pass, size, i, intswap;
     char stringswap[LIMIT];
+
     for(pass = 1; pass < lines; pass++)
     {
         for(i = 0; i < lines-pass; i++)
@@ -62,74 +96,16 @@ void rankSorter(char* class[SIZE][2], int size)
                 score_array[i] = score_array[i+1];
                 score_array[i+1] = intswap;
 
-                strcpy(stringswap, name_parray[i]);
-                strcpy(name_parray[i], name_parray[i+1]);
-                strcpy(name_parray[i+1], stringswap);
+                strcpy(stringswap, string_array[i]);
+                strcpy(string_array[i], string_array[i+1]);
+                strcpy(string_array[i+1], stringswap);
             }
-            else if ((score_array[i] == score_array[i+1]) && (strcmp(name_parray[i], name_parray[i+1]) > 0))
+            else if ((score_array[i] == score_array[i+1]) && (strcmp(string_array[i], string_array[i+1]) > 0))
             {
-                strcpy(stringswap, name_parray[i]);
-                strcpy(name_parray[i], name_parray[i+1]);
-                strcpy(name_parray[i+1], stringswap);
+                strcpy(stringswap, string_array[i]);
+                strcpy(string_array[i], string_array[i+1]);
+                strcpy(string_array[i+1], stringswap);
             }
         }
     }
-
-    // Tries to place the values of name_parray and score_array to the class 2D pointer array//
-    // It fails likely because of the sizes of the strings of name_parray and score_array are incompatible(?)//
-
-    // for (int i = 0; i<size; i++)
-    // {
-    //     sprintf(class[i][1], "%d", score_array[i]);
-    //     strcpy(*class[i], name_parray[i]);
-    // }
 }
-
-// // needs amount of lines
-// void bubbleSort(char string_array[][LIMIT], int score_array[], int lines)
-// {
-//     int pass, size, i, intswap;
-//     char stringswap[LIMIT];
-
-//     for(pass = 1; pass < lines; pass++)
-//     {
-//         for(i = 0; i < lines-pass; i++)
-//         {
-//             if(score_array[i] < score_array[i+1])
-//             {
-//                 intswap = score_array[i];
-//                 score_array[i] = score_array[i+1];
-//                 score_array[i+1] = intswap;
-
-//                 strcpy(stringswap, string_array[i]);
-//                 strcpy(string_array[i], string_array[i+1]);
-//                 strcpy(string_array[i+1], stringswap);
-//             }
-//             else if ((score_array[i] == score_array[i+1]) && (strcmp(string_array[i], string_array[i+1]) > 0))
-//             {
-//                 strcpy(stringswap, string_array[i]);
-//                 strcpy(string_array[i], string_array[i+1]);
-//                 strcpy(string_array[i+1], stringswap);
-//             }
-//         }
-//     }
-// }
-// // Placing entries to other containers
-// int score_array[SIZE] = {0};
-// char name_parray[SIZE][LIMIT];
-// int lines = 0;
-    
-// for (int i = 0; i<size; i++) // need better placeholder for size
-// {
-//     score_array[i] = atoi(class[i][1]);
-//     strcpy(name_parray[i], *class[i]);
-//     lines++;
-// }
-
-// for (int i = 0; i<11; i++)
-// {
-//     printf("%s %d\n", name_parray[i], score_array[i]);
-// }
-// printf("\n");
-
-// bubbleSort(name_parray, score_array, lines);
