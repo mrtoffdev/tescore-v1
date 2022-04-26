@@ -8,6 +8,20 @@
 void bubbleSortDemo(char string_array[][LIMIT], int score_array[], int lines);
 void rankSorter(char* class[SIZE][2], int size); // We return an array of pointers and take an array of pointers
 
+typedef struct masterlist
+{
+    int data;
+} masterlist;
+
+typedef struct sortedlist
+{int data;}sortedlist;
+
+struct datasheet 
+{
+    masterlist master[SIZE];
+    sortedlist sort[SIZE];
+};
+
 int main(void)
 {
     // Placeholders for arguments
