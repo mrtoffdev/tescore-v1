@@ -14,5 +14,5 @@ add_executable(
         include/io/lib/aes.h
 
         include/model/index.h
-        include/model/datasheet.h
-        )
+        include/model/sheet.h
+        include/model/subsheet.h include/model/datamodel.h)
