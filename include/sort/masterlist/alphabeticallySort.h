@@ -1,3 +1,5 @@
+#include "strec.h"
+
 #define MAX 999
 
-void alphabeticallySort(char *studentList[MAX][MAX], int size);
+void alphabeticallySort(struct strec studentList[MAX], int size);
