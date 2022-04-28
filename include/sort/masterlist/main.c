@@ -39,7 +39,7 @@ int main() {
     strcpy(studentList[2].name, "Nylon Jeepney"); 
     studentList[2].score = 91;
     
-    alphaMergeSort(studentList, 0, 3);
+    alphaMergeSort(studentList, 0, 2);
     
     // test 4
     if (strcmp(studentList[0].name, "Apple Bus") == 0) printf("*");
