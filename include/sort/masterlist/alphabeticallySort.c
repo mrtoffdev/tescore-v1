@@ -4,9 +4,9 @@
 #include "alphabeticallySort.h"
 
 /** function: alphabetically sort list of students
- takes a 2D array of unsorted names and scores
+ takes an array of unsorted strecs (student records)
 **/
 
-void alphabeticallySort(char *studentList[MAX][MAX], int size) {
+void alphabeticallySort(struct strec studentList[MAX], int size) {
     return;
 }
