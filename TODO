@@ -1,0 +1,43 @@
+===========================
+        IO section
+===========================
+
+- Input File Structure: Decrypted:
+
+    /* =============== BEGIN FILE ===============
+    SheetName:<Str: SheetName>
+    SheetAuth:<Str: SheetAuth>
+
+    Sheet::RankedSheet==
+    John Cramer 100
+    Jacob Ludwig Van Holmes 99
+    Leibniz Justin Arnolds 97
+    Willy Wonka Jr 95
+    William Afton 94
+    Jake Gomez Jr 93
+    Kingley Cadez 93
+    Jon Kravis River 92
+    Leni Robredo 91
+    John Joseph Wykes 90
+    ::
+
+    Sheet::MasterSheet==
+    Jacob Ludwig Van Holmes 99
+    Jake Gomez Jr 93
+    John Cramer 100
+    John Joseph Wykes 90
+    Jon Kravis River 92
+    Kingley Cadez 93
+    Leibniz Justin Arnolds 97
+    Leni Robredo 91
+    William Afton 94
+    Willy Wonka Jr 95
+    ::
+    */ =============== END FILE ===============
+
+
+- Basic CRUD functions
+    - Opening & Initializing Input / Output File
+    - Reading Line by Line & Follow file format
+    - Appending Details to File / Overwrite details
+    -
