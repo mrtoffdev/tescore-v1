@@ -2,11 +2,14 @@
     MAIN EXECUTABLE
     Author: Christopher Abadillos Jr
   ========================================*/
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 
 #include "include/io/io.h"
 #include "include/render/render.h"
+#include "include/render/navigation/navigation.h"
 
 /*
 
@@ -26,8 +29,8 @@
         - Only [Navigation.c/h] & [Main.c] has access to [Render.c/h]
             - Only Main.c & Navigation.c/h will be rendering frames / causing frame re-renders
 
-        - Only [Main.c] has access to [IO.h]
-            - Only Main.c will be using FileOps
+        - Only [Navigation.c/h] & [Main.c] has access to [IO.h]
+            - Only Main.c & Navigation.c/h will be using FileOps
 
         - Only [Main.c] has access to [/sort] modules
 
@@ -37,25 +40,26 @@
 */
 
 // GLOBAL VARIABLES
-int testVal = 100,
-    panelID,
-    sessionStudentCount;
+int         testVal = 100,
+            sessionStudentCount;
+short       panelID;
+
+FILE        *SessionDIB;
+SUBSHEET    RankerSheet,
+            MasterListSheet;
 
 int main() {
-
     // =========== OPEN FILE ===========
     printf("Debugging: IO %d\n", testVal);
-    FILE *LocalDIB;
-
     printf("Enter Datasheet Name: (Default: demo.txt) ");
 
     char* FileAddress = malloc(MAXADDRLENGTH);
     if(scanf("%s", FileAddress) != EOF){
 
-        LocalDIB = openFile(FileAddress);
+        SessionDIB = openFile(FileAddress);
         char *temp = malloc(MAXADDRLENGTH);
 
-        fscanf(LocalDIB, "%s", temp);
+        fscanf(SessionDIB, "%s", temp);
         puts("\n\n---------- Read File Contents ----------\n");
         printf("%s\n", temp);
 
@@ -70,6 +74,13 @@ int main() {
     refreshFrame();
 
     // =========== NAVIGATION ===========
+    int NAVKEY = '1';
+
+    while (NAVKEY != EOF){
+        NAVKEY = _getch();
+        parseNavigationKey(NAVKEY, panelID);
+    }
+
     // =========== TERMINATE PROGRAM ===========
     puts("Program Exit");
     system("pause");
