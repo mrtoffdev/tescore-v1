@@ -12,7 +12,7 @@
 void testing(char* FileAddress){
     FILE *DIB = openFile(FileAddress);
 
-    char *temp = malloc(MAXSTRLEN);
+    char *temp = malloc(MAXADDRLENGTH);
     fscanf(DIB, "%s", temp);
     puts("\n\n---------- Read File Contents ----------\n");
     printf("%s\n", temp);
