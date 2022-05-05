@@ -5,11 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../../model/datamodel.h"
-
-#define SIZE 100
-#define LIMIT 509 // Standard limit for char ANSI Compatibility
-// Top 10 student sorting algorithm.
+#include "rankerModule.h"
 
 //#region Main
 typedef struct index
@@ -30,7 +26,7 @@ typedef struct index
 
 // Prototypes
 void bubbleSort(char string_array[][LIMIT], short score_array[], int lines);
-SUBSHEET ranker(SUBSHEET);
+SUBSHEET ranker(SUBSHEET unsortedSubsheet);
 
 // Module Test
 //int rankerModule(void)
