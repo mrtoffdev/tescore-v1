@@ -13,14 +13,6 @@
 */
 
 // PUBLIC FUNCTIONS
-
-// VOID
-void parseNavigationKey(int key, short panelID);
-
-void safeRemoveCell(int key, short panelID);
-void safeEditCell(int key, short panelID);
-
-// RETURN
+void parseNavigationKey(char key, short panelID);
 short fetchPanelID();
-
 #endif
