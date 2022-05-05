@@ -30,7 +30,6 @@
 #define MAX_PASS_CHAR 30
 
 // GLOBAL VARS
-short panelID = 1;
 
 void refreshFrame(){
 
