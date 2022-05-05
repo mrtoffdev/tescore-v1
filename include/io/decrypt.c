@@ -1,9 +1,13 @@
+
+/*========================================
+      FILE HANDLING
+      Author: Christopher Abadillos Jr.
+  ========================================*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "io.h"
-
-FILE* openFile(char*);
 
 void testing(char* FileAddress){
     FILE *DIB = openFile(FileAddress);
@@ -21,6 +25,7 @@ FILE* openFile(char* FileAddress){
     if ((DIB = fopen(FileAddress,"r")) == NULL){
 
         // default file prompt
+        printf("\x1b[2J\x1b[H");  //Clear Screen
         printf("Invalid Filename. Use default file? (y/n): ");
 
         char temp;

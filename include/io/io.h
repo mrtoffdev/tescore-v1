@@ -5,10 +5,12 @@
 #ifndef TESCORE_IO_H
 #define TESCORE_IO_H
 
+// Models
 #include "../model/datamodel.h"
 
+// Interface Parameters
 #define DEFAULTFILEADDRESS "../demo.txt"
-#define MAXSTRLEN 255
+#define MAXADDRLENGTH 509 // Standard string char limit for ANSI Compatibility
 
 /*========================================
                   Testing
@@ -20,6 +22,7 @@ void closeFile(FILE*);
 /*========================================
                     CRUD
   ========================================*/
+FILE* openFile(char*);
 void appendIndex(INDEX);
 void delIndex(INDEX);
 
