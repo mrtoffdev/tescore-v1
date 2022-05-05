@@ -1,5 +1,4 @@
 #include <string.h>
-#include <ctype.h>
 
 #include "alphabeticallySort.h"
 
