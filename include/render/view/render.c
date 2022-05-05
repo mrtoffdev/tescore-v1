@@ -1,4 +1,3 @@
-
 /*========================================
       FRAME RENDERING
       Author: Christopher Abadillos Jr.
