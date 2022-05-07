@@ -1,15 +1,7 @@
-#ifndef TESCORE_SHEET_H
-#define TESCORE_SHEET_H
-
-#include "subsheet.h"
-
-typedef struct  DATASHEET {
-    char*       name,
-                author;
-    SUBSHEET    rankedCollection,
-                masterlistCollection;
-} DATASHEET;
-#endif
+/*========================================
+      SHEET/DATASHEET (DIB) MODEL
+      Author: Christopher Abadillos Jr.
+  ========================================*/
 
 /*  Reference Model
     Datasheet
@@ -32,3 +24,17 @@ typedef struct  DATASHEET {
                    |--- Index 2 (Student 2)
                    |--- Etc...
 */
+
+#ifndef TESCORE_SHEET_H
+#define TESCORE_SHEET_H
+
+#include "subsheet.h"
+
+typedef struct  DATASHEET {
+    char*       name;
+    char*       author;
+    SUBSHEET    rankedCollection;
+    SUBSHEET    masterlistCollection;
+} DATASHEET;
+#endif
+
