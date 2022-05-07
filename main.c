@@ -81,12 +81,18 @@ int main() {
         SessionDIB = openFile(FileAddress);
         char *temp = malloc(MAXADDRLENGTH);
 
-        fscanf(SessionDIB, "%s", temp);
-        puts("\n\n---------- Read File Contents ----------\n");
-        printf("%s\n", temp);
-
-        free(FileAddress);
-        free(temp);
+            //#region FILE READ TEST
+//            char *temp = malloc(MAXADDRLENGTH);
+//
+//            fscanf(SessionSheetFile, "%s", temp);
+//
+//            puts("\n---------- Read File Contents ----------\n");
+//            printf("%s\n", temp);
+//
+//            free(FileAddress);
+//            free(temp);
+//#endregion
+        }
     }
 
     // =========== DISASSEMBLE ===========
