@@ -37,5 +37,4 @@ add_executable(
         # Rendering
         include/render/view/auth.c
         include/render/view/render.c
-        include/render/view/render.h
         include/render/view/typeface.c include/sort/ranker/rankerModule.h)
