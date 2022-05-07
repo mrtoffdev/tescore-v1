@@ -1,3 +1,7 @@
+/*========================================
+      CRUD OPERATIONS
+      Author: Christopher Abadillos Jr.
+  ========================================*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,8 +11,6 @@
 #define SIZE 10
 
 void append(){
-
-
 
 }
 
@@ -37,6 +39,29 @@ void fetchData(FILE* DIB, char* indexNameArr[], char* indexValueArr[], int lineC
             break;
         }
     }
+}
+
+
+// TEST FUNCTIONS
+
+DATASHEET initSheetDemo(){
+    DATASHEET localInitSheet;
+    localInitSheet.author="admin";
+    localInitSheet.name="masterlist";
+
+    // GENERATE CONTENTS
+    for (short i = 0; i < 10; ++i) {
+        INDEX insertIndex;
+        char indexNameAppend[100] = "Jacob ";
+//        sprintf(indexNameAppend, "%d", i);
+        insertIndex.indexName = indexNameAppend;
+        insertIndex.value = i * 12;
+
+        localInitSheet.rankedCollection.container[i] = insertIndex;
+        localInitSheet.masterlistCollection.container[i] = insertIndex;
+    }
+
+    return localInitSheet;
 }
 
 
