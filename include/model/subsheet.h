@@ -1,11 +1,19 @@
+/*========================================
+      SUBSHEET MODEL
+      Author: Christopher Abadillos Jr.
+  ========================================*/
 #ifndef TESCORE_SUBSHEET_H
 #define TESCORE_SUBSHEET_H
 
 #include "../model/index.h"
 
+// DATA MODEL PARAMETERS
+#define MAXSTUDENTCOUNT 10
+
 typedef struct  SUBSHEET {
+    int         size;
     int         id;
-    INDEX       container[];
+    INDEX       container[MAXSTUDENTCOUNT];
 } SUBSHEET;
 #endif
 
