@@ -1,14 +1,15 @@
 /*========================================
-    MAIN EXECUTABLE
-    Author: Christopher Abadillos Jr
+      MAIN EXECUTABLE
+      Author: Christopher Abadillos Jr.
   ========================================*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <windows.h>
 
 #include "include/io/io.h"
-#include "include/render/render.h"
+#include "include/render/view/render.h"
 #include "include/render/navigation/navigation.h"
 
 /*
@@ -39,12 +40,12 @@
 
 */
 
+#define WINDOWTITLE "- [ TESCORE ] - "
 // GLOBAL VARIABLES
-int         testVal = 100,
-            sessionStudentCount;
-short       panelID;
+int         sessionStudentCount = 34;
 
-FILE        *SessionDIB;
+FILE        *SessionSheetFile;
+DATASHEET   sessionSheet;
 SUBSHEET    RankerSheet,
             MasterListSheet;
 
@@ -78,8 +79,8 @@ int main() {
         char* FileAddress = malloc(MAXADDRLENGTH);
         if(scanf("%s", FileAddress) != EOF){
 
-        SessionDIB = openFile(FileAddress);
-        char *temp = malloc(MAXADDRLENGTH);
+            // OPEN FILE (decrypt.c)
+            SessionSheetFile = openFile(FileAddress);
 
             //#region FILE READ TEST
 //            char *temp = malloc(MAXADDRLENGTH);
@@ -95,19 +96,31 @@ int main() {
         }
     }
 
+    //#endregion
+
     // =========== DISASSEMBLE ===========
+
+    // GENERATE DEMO SHEET
+    sessionSheet = initSheetDemo();
+
     // =========== SEND SUBSHEETS ===========
     // =========== FETCH SHEETS ===========
     // =========== RENDER SHEETS ===========
-    refreshFrame();
 
-    // =========== NAVIGATION ===========
+    refreshFrame(sessionSheet);
+
+    //#region =========== NAVIGATION ===========
+
+    // Starts key input buffer & parses commands without \n (return) button
     int NAVKEY = '1';
 
+    indentCursor();
     while (NAVKEY != EOF){
         NAVKEY = _getch();
-        parseNavigationKey(NAVKEY, panelID);
+        navigationKeyHandler(NAVKEY, sessionStudentCount);
     }
+
+    //#endregion
 
     // =========== TERMINATE PROGRAM ===========
     puts("Program Exit");
