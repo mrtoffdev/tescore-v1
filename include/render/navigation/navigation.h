@@ -1,18 +1,22 @@
+/*========================================
+      NAVIGATION SYSTEM
+      Author: Christopher Abadillos Jr.
+  ========================================*/
 #ifndef TESCORE_NAVIGATION_H
 #define TESCORE_NAVIGATION_H
 
-/* RENDERING SYSTEM
-
+/*
     FUNCTION CALLS
         VOID
         - parseNavigationKey(key, panelID)      : Checks passed in key & performs corresponding action
 
         RETURN
-        - <short> fetchPanelID()                : Returns the panelID (short)
-
+        - <short> fetchPanelID()                : Returns the globalPanelID (short)
 */
 
-// PUBLIC FUNCTIONS
-void parseNavigationKey(char key, short panelID);
+// VOID
+void navigationKeyHandler(int key, int maxIndexes);
+
+// RETURN
 short fetchPanelID();
 #endif
