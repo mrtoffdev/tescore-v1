@@ -22,50 +22,62 @@
 */
 
 #include <stdio.h>
-#include <conio.h>
 
 #include "render.h"
 
-#define MAX_PASS_CHAR 30
-
 // GLOBAL VARS
 
-void refreshFrame(){
+// =========== MAIN PANELS ===========
+void refreshFrame(DATASHEET sessionSheet){
 
-    printf("\tTesting Render Frame\n");
+    /* ORDER OF UI ELEMENTS
+        - Separator
+        - Header (Number of Students)
+        - Separator
+        - Upper Rows
+            - x10 formatted lines
+        - Separator
+        - Sub Header
+        - Separator
+            - x10 formatted lines
+    */
 
-    int navIndex = 1;
-    int maxBackSpace = 0;
-    int passChar = 0;
+    int indexCount = sizeof (sessionSheet.masterlistCollection.container) / sizeof (sessionSheet.masterlistCollection.container[0]);
 
-    printf("----  Renderer Debug: ----\n");
-    printf("-----------------------------------\n"
-                  "|                                 |\n");
-    printf("-----------------------------------");
-    printf("\x1b[1A");
-    printf("\x1b[33D");
+    // TESTING RENDER MODULES
+        renderWhiteSpace(3);
 
-    while (navIndex != EOF){
-        navIndex = _getch();
+        // UPPER PANEL
+            renderSeparator();
+            renderHeader(indexCount);
+            renderSeparator();
 
-        maxBackSpace = maxBackSpace < 0 ? 0 : maxBackSpace;
+            int     studentScaling[10] = {
+                    5, 10, 15, 20, 25, 30, 35, 40, 45, 50},
+                    gradeScaling[11] = {
+                    0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100
+                    };
+            int     rowCount = 10,
+                    sheetMaxScore,
+                    sheetMaxStudents;
+            char    matrixGraph[10][11];
 
-        if (navIndex != 8 && passChar <= MAX_PASS_CHAR){
-            maxBackSpace++;
-            passChar++;
-            printf("%c",navIndex);
-        }
+            renderUpperRow(studentScaling, gradeScaling, matrixGraph, rowCount);
 
-        if (navIndex == 8 && maxBackSpace > 0){
-            maxBackSpace--;
-            printf("\x1b[1D");
-            printf(" ");
-            printf("\x1b[1D");
-        }
-    }
+            renderSeparator();
+            renderSubHeader(gradeScaling, "ShortLigmaBols");
+            renderSeparator();
+
+        // LOWER PANEL
+            renderMasterListHeader();
+            for(int i = 0; i < 10; i++){
+                renderMasterListRow();
+            }
+            renderSeparator();
 
 }
 
+// =========== PROMPTS ===========
 void terminatePrompt(){
 
 }
