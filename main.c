@@ -66,12 +66,17 @@ SUBSHEET    RankerSheet,
 //#endregion
 
 int main() {
-    // =========== OPEN FILE ===========
-    printf("Debugging: IO %d\n", testVal);
-    printf("Enter Datasheet Name: (Default: demo.txt) ");
+    // =========== CONSOLE SETUP: WIN32 ===========
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleTitle(WINDOWTITLE);
 
-    char* FileAddress = malloc(MAXADDRLENGTH);
-    if(scanf("%s", FileAddress) != EOF){
+    //#region =========== OPEN FILE ===========
+
+    // FILE CHECK
+    while (SessionSheetFile == NULL){
+        printf("Enter Datasheet Name: (Default: demo.txt) ");
+        char* FileAddress = malloc(MAXADDRLENGTH);
+        if(scanf("%s", FileAddress) != EOF){
 
         SessionDIB = openFile(FileAddress);
         char *temp = malloc(MAXADDRLENGTH);
