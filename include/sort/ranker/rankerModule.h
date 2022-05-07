@@ -1,3 +1,7 @@
+/*========================================
+      TOP 10 RANKING SORT MODULE
+      Author: Jovic Francis Rayco
+  ========================================*/
 #ifndef TESCORE_RANKERMODULE_H
 #define TESCORE_RANKERMODULE_H
 
