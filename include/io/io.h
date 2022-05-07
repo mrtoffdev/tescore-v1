@@ -1,7 +1,7 @@
 /*========================================
-                  FILE OPS
+      FILE OPERATIONS
+      Author: Christopher Abadillos Jr.
   ========================================*/
-
 #ifndef TESCORE_IO_H
 #define TESCORE_IO_H
 
@@ -11,6 +11,9 @@
 // Interface Parameters
 #define DEFAULTFILEADDRESS "../demo.txt"
 #define MAXADDRLENGTH 509 // Standard string char limit for ANSI Compatibility
+
+#define RANKERSHEETID 12247
+#define MASTERSHEETID 12248
 
 /*========================================
                   Testing
@@ -26,7 +29,7 @@ FILE* openFile(char*);
 void appendIndex(INDEX);
 void delIndex(INDEX);
 
-void initSheet();
+DATASHEET initSheetDemo();
 void accessDatasheet();
 
 /*========================================
