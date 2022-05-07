@@ -1,6 +1,6 @@
 /*========================================
-     Top 10 Rankings Module
-     Author: Jovic Francis Rayco
+      TOP 10 RANKING SORT MODULE
+      Author: Jovic Francis Rayco
   ========================================*/
 #include <stdio.h>
 #include <string.h>
@@ -24,11 +24,7 @@ typedef struct index
 
 //#endregion
 
-// Prototypes
-void bubbleSort(char string_array[][LIMIT], short score_array[], int lines);
-SUBSHEET ranker(SUBSHEET unsortedSubsheet);
-
-// Module Test
+//#region Module Test
 //int rankerModule(void)
 //{
 //// Sample subsheet
@@ -64,6 +60,11 @@ SUBSHEET ranker(SUBSHEET unsortedSubsheet);
 ////printf("\n");
 //return 0;
 //}
+//#endregion
+
+//#region LOCAL FUNCTION PROTOTYPES
+void bubbleSort(char string_array[][LIMIT], short score_array[], int lines);
+//#endregion
 
 // NOTE: The argument here is passed by value. Do inform me if you want this to pass by reference.
 SUBSHEET ranker(SUBSHEET unsortedSubsheet)
@@ -85,7 +86,6 @@ SUBSHEET ranker(SUBSHEET unsortedSubsheet)
         strcpy(name_parray[i], unsortedSubsheet.container[i].indexName);
     }
 
-
     bubbleSort(name_parray, score_array, size);
 
     // Placing the sorted values to the new subsheet
@@ -98,7 +98,6 @@ SUBSHEET ranker(SUBSHEET unsortedSubsheet)
     return sortedSubsheet;
 }
 
-//#region Bubble Sort
 void bubbleSort(char string_array[][LIMIT], short score_array[], int lines)
 {
     int pass, i;
@@ -130,4 +129,3 @@ void bubbleSort(char string_array[][LIMIT], short score_array[], int lines)
         }
     }
 }
-//#endregion
