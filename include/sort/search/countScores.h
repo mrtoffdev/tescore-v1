@@ -1,1 +1,2 @@
-int* countScores(int scores[MAX], struct strec studentList[MAX]);
+void countScores(int scores[MAX], int scoreArrSize, \
+    struct strec studentList[MAX], int studentListSize, int results[MAX][2]);
