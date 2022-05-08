@@ -26,10 +26,11 @@ int main() {
     else printf("x");
     
     //test 3
-    if (results[3][1] == 0) printf("*");
+    if (results[3][1] == 1) printf("*");
     else printf("x");
     
     // end of tests
+    printf("\n");
     
     return 0;
 }

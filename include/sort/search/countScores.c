@@ -7,7 +7,6 @@
 
 // function: counts the occurences of
 // specified scores in student records
-// returns pointer to result array
 void countScores(int scores[MAX], int scoreArrSize, \
     struct strec studentList[MAX], int studentListSize, int results[MAX][2]) {
     
@@ -18,12 +17,16 @@ void countScores(int scores[MAX], int scoreArrSize, \
     }
     
     // iterate over student scores
-    // compare to input scores
-    
-    
-    
-    // increment corresponding index
-    // in result array
+    for (i=0; i<studentListSize; i++) {
+        // compare to input scores
+        for (j=0; j<scoreArrSize; j++) {
+            if (studentList[i].score == scores[j]) {
+                // increment corresponding index
+                // in result array
+                results[j][1]++;
+            }
+        }
+    }
     
     return;
 }
