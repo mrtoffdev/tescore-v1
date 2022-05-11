@@ -92,11 +92,7 @@ int main() {
 
     //#region =========== OPEN FILE ===========
 
-    // FILE CHECK
-    while (SessionSheetFile == NULL){
-        printf("Enter Datasheet Name: (Default: demo.txt) ");
-        char* FileAddress = malloc(MAXADDRLENGTH);
-        if(scanf("%s", FileAddress) != EOF){
+    openSheet(SessionSheetFile);
 
             // OPEN FILE (decrypt.c)
             SessionSheetFile = openFile(FileAddress);
