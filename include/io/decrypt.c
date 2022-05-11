@@ -8,8 +8,12 @@
 
 #include "io.h"
 #include "../render/view/render.h"
+#include "lib/aes.h"
 
-void testing(char* FileAddress){
+#define AES128 1
+
+//#region TESTING OPS
+void testing(){
 //    FILE *DIB = openSheet(FileAddress);
 //
 //    char *temp = malloc(MAXADDRLENGTH);
@@ -17,8 +21,43 @@ void testing(char* FileAddress){
 //    puts("\n\n---------- Read File Contents ----------\n");
 //    printf("%s\n", temp);
 //    free(temp);
+    struct AES_ctx ctx;
+
+    uint8_t key[] = "aaaaaaaaaaaaaaaa";
+    uint8_t iv[]  = "bbbbbbbbbbbbbbbb";
+    uint8_t str[] = "This a sample text,\n Length eq 32";
+
+    printf("\n raw buffer \n");
+    for (int i = 0; i < 32; ++i) {
+        printf("%.2x", str[i]);
+    }
+
+    AES_init_ctx_iv(&ctx, key, iv);
+    AES_CBC_encrypt_buffer(&ctx, str, 32);
+
+    printf("\n Encrypted buffer\n");
+
+    for (int i = 0; i < 32; ++i) {
+        printf("%.2x", str[i]);
+    }
+
+    printf("\n Decrypted buffer\n");
+
+    AES_init_ctx_iv(&ctx, key, iv);
+    AES_CBC_decrypt_buffer(&ctx, str, 32);
+
+//    for (int i = 0; i < 32; ++i) {
+////        printf("%.2x", str[i]);
+//    }
+    printf((char *) &str);
+
+
+    printf("\n");
 }
 
+//#region =========== FILE OPS UTILS ===========
+
+// VOID
 void openSheet(FILE* dataSheetFile){
 
     // FILE INIT CHECK
@@ -27,14 +66,16 @@ void openSheet(FILE* dataSheetFile){
         clearScreen();
 
         char* FileAddress = malloc(MAXADDRLENGTH); // 509 bytes for 509 UTF-8 Characters following ANSI Compat
-
-        printf("Enter Datasheet Name: (Default: demo.txt) ");
+        indentCursor(5);
+        printf("Enter Datasheet Name: (Default: demo.txt) \n\n");
+        indentCursor(6);
         scanf("%s", FileAddress);
 
         if ((dataSheetFile = fopen(FileAddress,"r")) == NULL){
 
             // OPEN DEFAULT FILE PROMPT
             clearScreen();
+            indentCursor(5);
             printf("Invalid Filename. Use default file? (y/n): ");
 
             char temp;
@@ -45,12 +86,16 @@ void openSheet(FILE* dataSheetFile){
                 clearScreen();
 
                 dataSheetFile = fopen(DEFAULTFILEADDRESS, "r");
-                puts("Loaded default input file.");
+                indentCursor(6);
+                puts("Loaded default input file.\n\n");
+                indentCursor(6);
                 system("pause");
 
             } else {
                 clearScreen();
-                puts("Cannot load file. Please enter a valid filename.");
+                indentCursor(5);
+                puts("Cannot load file. Please enter a valid filename.\n\n");
+                indentCursor(5);
                 system("pause");
             }
         }
@@ -59,6 +104,9 @@ void openSheet(FILE* dataSheetFile){
     clearScreen();
 }
 
+
+
+// RETURN
 DATASHEET fetchSheetData(FILE* DIB, char* indexNameArr[], char* indexValueArr[], int lineCount){
 
     // SUBSHEET CONTAINERS
@@ -79,7 +127,7 @@ DATASHEET fetchSheetData(FILE* DIB, char* indexNameArr[], char* indexValueArr[],
     collectionSize = sizeof rankerSheet.container / sizeof rankerSheet.container[1];
 
 //    char *collection[][collectionSize] = {};
-    char *tempString;
+    char* tempString = malloc(MAXADDRLENGTH);
     for (int i = 0; i < collectionSize; i++){
         // Check if fscanf is successful, if it fails, then we finish the scanning. Ensures that first input must be a name
         if (((fscanf(DIB, "%s", tempString)) == 1) && ((tempString[0] >= 65) && (tempString[0] <= 90)))
@@ -103,3 +151,4 @@ DATASHEET fetchSheetData(FILE* DIB, char* indexNameArr[], char* indexValueArr[],
     }
 
 }
+//#endregion
