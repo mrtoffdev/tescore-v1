@@ -49,6 +49,7 @@ FILE*       SessionSheetFile;
 DATASHEET   sessionSheet;
 SUBSHEET    RankerSheet,
             MasterListSheet;
+//#endregion
 
 //#region CONSOLE SETUP: WINDOW RESIZE FUNCTION
 //HANDLE      wHnd;    // Handle to write to the console.
@@ -83,7 +84,8 @@ HWND WINAPI GetConsoleWindowNT(void)
 //#endregion
 
 int main() {
-    // =========== CONSOLE SETUP: WIN32 ===========
+
+    //#region =========== CONSOLE SETUP: WIN32 ===========
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleTitle(WINDOWTITLE);
     HWND hWnd=GetConsoleWindowNT();
@@ -94,29 +96,36 @@ int main() {
 
     openSheet(SessionSheetFile);
 
-            // OPEN FILE (decrypt.c)
-            SessionSheetFile = openFile(FileAddress);
-
-            //#region FILE READ TEST
-//            char *temp = malloc(MAXADDRLENGTH);
+    //#region FILE CHECK LEGACY CODE
+//    // FILE CHECK
+//    while (SessionSheetFile == NULL){
+//        printf("Enter Datasheet Name: (Default: demo.txt) ");
+//        char* FileAddress = malloc(MAXADDRLENGTH);
+//        if(scanf("%s", FileAddress) != EOF){
 //
-//            fscanf(SessionSheetFile, "%s", temp);
+//            // OPEN FILE (decrypt.c)
+//            openSheet(SessionSheetFile, FileAddress);
 //
-//            puts("\n---------- Read File Contents ----------\n");
-//            printf("%s\n", temp);
-//
-//            free(FileAddress);
-//            free(temp);
-//#endregion
-        }
-    }
+//            //#region FILE READ TEST
+////            char *temp = malloc(MAXADDRLENGTH);
+////
+////            fscanf(SessionSheetFile, "%s", temp);
+////
+////            puts("\n---------- Read File Contents ----------\n");
+////            printf("%s\n", temp);
+////
+////            free(FileAddress);
+////            free(temp);
+////#endregion
 
     //#endregion
 
-    // =========== DISASSEMBLE ===========
+    //#region =========== DISASSEMBLE ===========
 
     // GENERATE DEMO SHEET
     sessionSheet = initSheetDemo();
+
+    //#endregion
 
     // =========== SEND SUBSHEETS ===========
     // =========== FETCH SHEETS ===========
@@ -126,19 +135,24 @@ int main() {
 
     //#region =========== NAVIGATION ===========
 
-    // Starts key input buffer & parses commands without \n (return) button
     int NAVKEY = '1';
 
     indentCursor();
+
+    // Starts key input buffer & parses commands without \n (return) button
     while (NAVKEY != EOF){
         NAVKEY = _getch();
-        navigationKeyHandler(NAVKEY, sessionStudentCount);
+        navigationKeyHandler(sessionSheet, NAVKEY, sessionStudentCount, commandLog);
+        indentCursor();
+
     }
 
     //#endregion
 
-    // =========== TERMINATE PROGRAM ===========
+    //#region =========== TERMINATE PROGRAM ===========
     puts("Program Exit");
     system("pause");
     return 0;
+    //#endregion
+
 }
