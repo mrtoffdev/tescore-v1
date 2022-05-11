@@ -140,7 +140,9 @@ void terminatePrompt(){
 
 // =========== UI ELEMENTS ===========
 void clearScreen(){
-    printf("\x1b[2J\x1b[H");
+//    printf("\e[1;1H\e[2J");
+    system("cls");
+//    printf("\x1b[2J\x1b[H");
 }
 
 void renderWhiteSpace(int spaceSize){
