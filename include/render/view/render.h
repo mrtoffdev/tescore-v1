@@ -29,7 +29,7 @@
 #define MAX_PASS_CHAR 30
 
 // FRAMES
-void refreshFrame(DATASHEET);
+void refreshFrame(DATASHEET, char*);
 void authFrame();
 
 // PROMPTS
