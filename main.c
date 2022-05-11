@@ -67,6 +67,21 @@ SUBSHEET    RankerSheet,
 //    SetConsoleScreenBufferSize(wHnd, bufferSize);
 //#endregion
 
+//#region CONSOLE WINDOW RESIZE FUNCTION
+HWND WINAPI GetConsoleWindowNT(void)
+{
+    typedef HWND WINAPI(*GetConsoleWindowT)(void);
+    GetConsoleWindowT GetConsoleWindow;
+    HMODULE hk32Lib = GetModuleHandle(TEXT("KERNEL32.DLL"));
+    GetConsoleWindow = (GetConsoleWindowT)GetProcAddress(hk32Lib
+            ,TEXT("GetConsoleWindow"));
+    if(GetConsoleWindow == NULL){
+        return NULL;
+    }
+    return GetConsoleWindow();
+}
+//#endregion
+
 int main() {
     // =========== CONSOLE SETUP: WIN32 ===========
     SetConsoleOutputCP(CP_UTF8);
