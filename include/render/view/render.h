@@ -1,5 +1,5 @@
 /*========================================
-      FRAME RENDERING
+      FRAME RENDERING SYSTEM HEADER
       Author: Christopher Abadillos Jr.
   ========================================*/
 
