@@ -26,10 +26,7 @@
 #include <time.h>
 
 #include "render.h"
-
-//#region PRIVATE PROTS
-void generateGraph();
-//#endregion
+#include "typeface.h"
 
 //#region GLOBAL VARS
 DATASHEET   RAWDEMOSHEET;
@@ -40,12 +37,14 @@ SUBSHEET    RAWUNSORTEDSHEET,
 int         gradeScaling[11] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100},
             studentScaling[10] = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
 
-char*       sheetName;
+char*       sheetName = "SHORTNAME";
 char*       matrixGraph[10][11];
 //#endregion
 
-// =========== MAIN PANELS ===========
-void refreshFrame(DATASHEET sessionSheet, char* commandLog){
+
+
+//#region =========== UI UTILS ===========
+void refreshFrame(DATASHEET sessionSheet, char* commandLog[10], short panelID){
 
     /* REFRESH FRAME SEQUENCE
         + Start Benchmark Clock
@@ -72,85 +71,78 @@ void refreshFrame(DATASHEET sessionSheet, char* commandLog){
     // UNIT TEST CLOCKS
     clock_t refreshFrameExecTimeBegin = clock();
 
-    // CLEAR SCREEN BEFORE SHOWING NEW FRAME
+    // PREP CONSOLE WINDOW FOR NEW FRAME
     clearScreen();
+    renderWhiteSpace(3);
 
     // FETCH TOTAL INDEX COUNT : DIV TOTAL BYTE SIZE OF COLLECTION BY ELEMENT BYTE SIZE
     int indexCount = sizeof (sessionSheet.masterlistCollection.container) / sizeof (sessionSheet.masterlistCollection.container[0]);
 
-    renderWhiteSpace(3);
-
     //#region UPPER PANEL
 
-        // HEADER
-        renderSeparator();
-        renderHeader(indexCount);
-        renderSeparator();
+    // HEADER
+    renderSeparator(2);
+    renderHeader(indexCount, panelID, commandLog);
+    renderSeparator(3);
 
-        // PANELS : BAR GRAPH MATRIX & TOP RANKERS
+    // PANELS : BAR GRAPH MATRIX & TOP RANKERS
 
-        generateGraph();
-        renderMatrixRankerRow(matrixGraph);
+    generateGraph();
+    renderMatrixRankerRow(matrixGraph);
 
-        renderSeparator();
+    renderSeparator(3);
 
-        // BAR GRAPH MATRIX : INDEX VALUE REFERENCE
-        renderSubHeader(gradeScaling, "DefaultDemoSheet");
+    // BAR GRAPH MATRIX : INDEX VALUE REFERENCE
+    renderSubHeader(gradeScaling, "DefaultDemoSheet");
 
-        renderSeparator();
+    renderSeparator(3);
 
 
     //#endregion
 
     //#region LOWER PANEL
 
-        renderMasterListHeader();
-        for(int i = 0; i < 10; i++){
-            renderMasterListRow();
-        }
-        renderSeparator();
+    renderMasterListHeader(panelID);
+    renderSeparator(3);
+
+    for(int i = 0; i < 10; i++){
+        renderMasterListRow();
+    }
+
+    renderSeparator(4);
 
     //#endregion
 
     clock_t refreshFrameExecTimeEnd = clock();
 
-    // COMMAND LOG
+    //#region COMMAND LOG
+
     printf("\t[ Command Log ] : ");
     if(commandLog == NULL){
         printf("refreshFrame() Execution Time: %f seconds\n", (((double)refreshFrameExecTimeEnd - refreshFrameExecTimeBegin) / CLOCKS_PER_SEC));
     } else {
-        printf("%s", commandLog);
+//        for (int i = 0; i < 10; ++i) {
+//            printf(commandLog[i]);
+//        }
+        printf(commandLog[0]);
     }
-
-
-}
-
-//#region =========== PROMPTS ===========
-void terminatePrompt(){
+    //#endregion
 
 }
-//#endregion
 
-//#region =========== UI ELEMENTS ===========
 void clearScreen(){
-//    printf("\e[1;1H\e[2J");
+
+    // ALTS
+    //    printf("\e[1;1H\e[2J");
+    //    printf("\x1b[2J\x1b[H");
+
     system("cls");
-//    printf("\x1b[2J\x1b[H");
 }
 
-void renderWhiteSpace(int spaceSize){
-    for (int i = 0; i < spaceSize; ++i) {
-        printf("\n");
+void indentCursor(short spaces){
+    for (int i = 0; i < spaces; ++i) {
+        printf("\t");
     }
-}
-
-void renderSeparator(){
-    puts("\t-------------------------------------------------------------------------------------------------------------");
-
-}
-
-void indentCursor(){
-    printf("\t");
 }
 
 void generateGraph(){
@@ -162,7 +154,7 @@ void generateGraph(){
             {99, 2},
             {98, 4},
             {100, 10},
-            {23, 3},
+            {47, 26},
             {80, 5},
             {72, 7},
             {94, 10},
@@ -185,9 +177,9 @@ void generateGraph(){
         for (int x = 0; x < 11; ++x) {
             if(
                 // GRADE ATTAINED IS LESS/EQUAL TO GRADE TABLE
-                (unsortedGradeRounds[x][0] >= studentCountReference[y][0]) &&
-                // GRADE IS LESS THAN LOWER GRADE TABLE
-                (unsortedGradeRounds[x][0] < studentCountReference[y+1][0])){
+                    (unsortedGradeRounds[x][0] >= studentCountReference[y][0]) &&
+                    // GRADE IS LESS THAN LOWER GRADE TABLE
+                    (unsortedGradeRounds[x][0] < studentCountReference[y+1][0])){
 
                 studentCountReference[y][1] += unsortedGradeRounds[x][1];
             }
@@ -223,11 +215,11 @@ void generateGraph(){
         for (int x = 0; x < 11; ++x) {
 
             if( (
-                // CHECK IF LATCHED ON CORRECT GRADE COLUMN
+                    // CHECK IF LATCHED ON CORRECT GRADE COLUMN
 
-                // NUMBER OF INDEXES ARE LESS/EQUAL THAN SCALE BUT HIGHER THAN PREV. SCALE
-                (studentCountReference[x][1] <= studentScaling[y]) &&
-                (studentCountReference[x][1] > studentScaling[y-1]))){
+                    // NUMBER OF INDEXES ARE LESS/EQUAL THAN SCALE BUT HIGHER THAN PREV. SCALE
+                    (studentCountReference[x][1] <= studentScaling[y]) &&
+                    (studentCountReference[x][1] > studentScaling[y-1]))){
 
                 matrixGraph[y][x] = barSymbol;
 
@@ -245,25 +237,82 @@ void generateGraph(){
     }
     //#endregion
 }
+
+//#endregion
+
+//#region =========== PROMPTS ===========
+void terminatePrompt(){
+    exit(0);
+}
+//#endregion
+
+//#region =========== UI ELEMENTS ===========
+
+void renderWhiteSpace(int spaceSize){
+    for (int i = 0; i < spaceSize; ++i) {
+        printf("\n");
+    }
+}
+
+void renderSeparator(short id){
+    if(id == 1){
+        puts("\t─────────────────────────────────────────────────────────────────────────────────────────────────────────────");
+    } else
+    if (id == 2){
+        puts("\t┌───────────────────────────────────────────────────────────────────────────────────────────────────────────┐");
+    } else
+    if (id == 3){
+        puts("\t├───────────────────────────────────────────────────────────────────────────────────────────────────────────┤");
+    } else
+    if (id == 4){
+        puts("\t┕───────────────────────────────────────────────────────────────────────────────────────────────────────────┘");
+    }
+//    puts("\t-------------------------------------------------------------------------------------------------------------");
+
+}
 //#endregion
 
 //#region =========== UI PANELS ===========
-void renderHeader(int sessionStudentCount){
-    printf("\t|\t\t\t- Data Sheet -\t\t\t    |\t - Top 10 Students / %4d - \t|   Score   |\n",
-           sessionStudentCount);
+void renderHeader(int sessionStudentCount, short panelID, char* commandLog[]){
+
+    if(panelID == 1){
+        printf("\t|");
+        printf("\x1B[38;5;16m\x1B[48;5;7m");
+        printf("                       - Data Sheet -                      ");
+        printf("\x1B[38;5;15m\x1B[48;5;0m");
+        printf("|");
+    } else {
+        printf("\t│\t\t\t- Data Sheet -\t\t\t    │");
+    }
+
+    if(panelID == 2){
+        printf("\x1B[38;5;16m\x1B[48;5;7m");
+        printf("     - Top 10 Students / %4d -    ", sessionStudentCount);
+        printf("\x1B[38;5;15m\x1B[48;5;0m");
+
+        printf("|");
+        printf("\x1B[38;5;16m\x1B[48;5;7m");
+        printf("   Score   ");
+        printf("\x1B[38;5;15m\x1B[48;5;0m");
+        printf("|\n");
+    } else {
+        printf("     - Top 10 Students / %4d -    ", sessionStudentCount);
+        printf("|   Score   |\n");
+    }
+
 }
 
 void renderSubHeader(){
     int bottom[11] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 
     // INDENT
-    printf("\t|    ");
+    printf("\t│    ");
 
     for (int i = 0; i < 11; i++) {
         printf("|%4d", gradeScaling[i]);
     }
 
-    printf("| Sheet Name: %-18s \t|\t    |\n", sheetName);
+    printf("│ Sheet Name: %-30s    │\n", sheetName);
 
     //#region Legacy Code
     //    printf("\t|    |%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d| Sheet Name: %-18s \t|\t    |\n",
@@ -287,7 +336,7 @@ void renderMatrixRankerRow(){
     for (int y = 9; y >= 0; y--) {
         int inverseY = 0;
         printf("\t");
-        printf("|%4d|", studentScaling[y]);
+        printf("│%4d│", studentScaling[y]);
 
         for (int x = 0; x < 11; ++x) {
 
@@ -298,7 +347,7 @@ void renderMatrixRankerRow(){
             }
         }
 
-        printf("|  • Barack Obama \t\t\t|    100    |\n");
+        printf("│  • Barack Obama \t\t\t│    100    │\n");
         inverseY++;
     }
 
@@ -322,13 +371,26 @@ void renderMatrixRankerRow(){
 
 }
 
+void renderMasterListHeader(short panelID){
+    if(panelID == 3){
+        printf("\t│");
+        printf("\x1B[38;5;16m\x1B[48;5;7m");
+        printf("                               - Student Submission List -                                     ");
+        printf("\x1B[38;5;15m\x1B[48;5;0m");
 
-void renderMasterListHeader(){
-    printf("\t|\t\t\t\t- Student Submission List -\t\t\t\t\t|           |\n");
+        printf("│");
+        printf("\x1B[38;5;16m\x1B[48;5;7m");
+        printf("           ");
+        printf("\x1B[38;5;15m\x1B[48;5;0m");
+        printf("│\n");
+
+    } else {
+        printf("\t│\t\t\t\t- Student Submission List -\t\t\t\t\t│           │\n");
+    }
 }
 
 void renderMasterListRow(){
-    printf("\t| • %-90s  |    %4d   |\n", "Michael Reeves", 23);
+    printf("\t│ • %-90s  │   %4d    │\n", "Michael Reeves", 23);
 }
 //#endregion
 
@@ -344,8 +406,10 @@ void renderMasterListRow(){
 
 */
 
-/*  ANSI REFERENCES
-    BLOCK CHARACTER : █
+/*
+    ANSI REFERENCES
 
- */
+        BLOCK CHARACTER     : █
+        VERTICAL SEPARATOR  : │
+*/
 //#endregion
