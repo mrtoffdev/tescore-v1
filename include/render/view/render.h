@@ -28,27 +28,28 @@
 
 #define MAX_PASS_CHAR 30
 
-// FRAMES
-void refreshFrame(DATASHEET, char*);
+// =========== UI UTILS ===========
+void refreshFrame(DATASHEET, char*[], short panelID);
+void clearScreen();
+void indentCursor(short spaces);
+void generateGraph();
+
+// =========== PROMPTS ===========
+void terminatePrompt();
 void authFrame();
 
-// PROMPTS
-void terminatePrompt();
-
-// UI ELEMENTS
-void clearScreen();
-void indentCursor();
+// =========== UI ELEMENTS ===========
 void renderWhiteSpace(int);
-void renderSeparator();
+void renderSeparator(short id);
 
-// UI FORMS
-void renderHeader(int sessionStudentCount);
+// =========== UI PANELS ===========
+void renderHeader(int sessionStudentCount, short panelID, char* commandLog[]);
 void renderSubHeader();
 void renderMatrixRankerRow();
-void renderMasterListHeader();
+void renderMasterListHeader(short panelID);
 void renderMasterListRow();
 
-// typeface modifications
+// =========== TYPEFACE MODIFICATIONS ===========
 char* typefaceBold(int, char*);
 char* typefaceItalic(int, char*);
 char* typefaceUnderline(int, char*);
