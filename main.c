@@ -5,8 +5,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
 #include <windows.h>
+#include <stdint.h>
 
 #include "include/io/io.h"
 #include "include/render/view/render.h"
@@ -41,14 +41,23 @@
 */
 
 #define WINDOWTITLE "TESCORE: Grading Sheet Inspector"
+#define COMMANDLOGMAXENTRY 10
+
+// DEVOPS
+#define SANDBOX 1
 
 //#region GLOBAL VARIABLES
+
+// COMMAND LOG SYSTEM
+char*       commandLog[COMMANDLOGMAXENTRY];
+
+// SESSION CONTAINERS
 int         sessionStudentCount = 10;
-char*       commandLog;
 FILE*       SessionSheetFile;
 DATASHEET   sessionSheet;
 SUBSHEET    RankerSheet,
             MasterListSheet;
+
 //#endregion
 
 //#region CONSOLE SETUP: WINDOW RESIZE FUNCTION
@@ -89,7 +98,8 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleTitle(WINDOWTITLE);
     HWND hWnd=GetConsoleWindowNT();
-    MoveWindow(hWnd,0,0,1040,600,TRUE);
+    MoveWindow(hWnd,450,200,1020,650,TRUE);
+    commandLog[0] = "Initialized Window";
     //#endregion
 
     //#region =========== OPEN FILE ===========
@@ -128,24 +138,33 @@ int main() {
     //#endregion
 
     // =========== SEND SUBSHEETS ===========
-    // =========== FETCH SHEETS ===========
-    // =========== RENDER SHEETS ===========
 
-    refreshFrame(sessionSheet, commandLog);
+    // =========== FETCH SHEETS ===========
+
+    //#region =========== RENDER ===========
+
+    switch (SANDBOX) {
+        case 1:
+            testing();
+            break;
+
+        case 0:
+            refreshFrame(sessionSheet, commandLog, 1);
+            break;
+
+        default:
+            testing();
+            break;
+    }
+
+    //#endregion
 
     //#region =========== NAVIGATION ===========
 
-    int NAVKEY = '1';
-
-    indentCursor();
+    indentCursor(1);
 
     // Starts key input buffer & parses commands without \n (return) button
-    while (NAVKEY != EOF){
-        NAVKEY = _getch();
-        navigationKeyHandler(sessionSheet, NAVKEY, sessionStudentCount, commandLog);
-        indentCursor();
-
-    }
+    navigationKeyHandler(sessionSheet, sessionStudentCount, commandLog);
 
     //#endregion
 
