@@ -122,7 +122,7 @@ int main() {
     // =========== FETCH SHEETS ===========
     // =========== RENDER SHEETS ===========
 
-    refreshFrame(sessionSheet);
+    refreshFrame(sessionSheet, commandLog);
 
     //#region =========== NAVIGATION ===========
 
