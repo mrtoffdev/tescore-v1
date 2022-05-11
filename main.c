@@ -40,9 +40,7 @@
 
 */
 
-#define WINDOWTITLE "- [ TESCORE ] - "
-// GLOBAL VARIABLES
-int         sessionStudentCount = 34;
+#define WINDOWTITLE "TESCORE: Grading Sheet Inspector"
 
 //#region GLOBAL VARIABLES
 int         sessionStudentCount = 10;
