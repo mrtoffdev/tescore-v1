@@ -102,6 +102,28 @@ void indentCursor(){
     printf("\t");
 }
 
+void generateGraph(){
+
+    //#region INIT LOCAL VARIABLES
+
+    // RAW GRADE SHEET COLLECTION
+    int     unsortedGradeRounds[10][2] = {
+            {99, 2},
+            {98, 4},
+            {100, 10},
+            {23, 3},
+            {80, 5},
+            {72, 7},
+            {94, 10},
+            {87, 2},
+            {69, 3},
+            {91, 9}
+    };
+    //#endregion
+
+    //#region COUNT REFERENCE TABLE : For Rounding up IndexCount per IndexValue
+
+    int     studentCountReference[11][2] = {0};
 
 void renderHeader(int sessionStudentCount){
     printf("\t|\t\t\t- Data Sheet -\t\t\t    |\t - Top 10 Students / %4d - \t|   Score   |\n",
