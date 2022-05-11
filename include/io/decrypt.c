@@ -10,47 +10,56 @@
 #include "../render/view/render.h"
 
 void testing(char* FileAddress){
-    FILE *DIB = openFile(FileAddress);
-
-    char *temp = malloc(MAXADDRLENGTH);
-    fscanf(DIB, "%s", temp);
-    puts("\n\n---------- Read File Contents ----------\n");
-    printf("%s\n", temp);
-    free(temp);
+//    FILE *DIB = openSheet(FileAddress);
+//
+//    char *temp = malloc(MAXADDRLENGTH);
+//    fscanf(DIB, "%s", temp);
+//    puts("\n\n---------- Read File Contents ----------\n");
+//    printf("%s\n", temp);
+//    free(temp);
 }
 
-FILE* openFile(char* FileAddress){
-    FILE *returnDIB;
+void openSheet(FILE* dataSheetFile){
 
-    if ((returnDIB = fopen(FileAddress,"r")) == NULL){
-
-        // default file prompt
-        clearScreen();
-        printf("Invalid Filename. Use default file? (y/n): ");
-
-        char temp;
-        scanf("%s", &temp);
+    // FILE INIT CHECK
+    while(dataSheetFile == NULL){
 
         clearScreen();
-        if((temp == 'Y') || (temp == 'y')){
-            clearScreen();
 
-            returnDIB = fopen(DEFAULTFILEADDRESS, "r");
-            puts("Loaded default input file.");
-            system("pause");
-            return returnDIB;
-        } else {
+        char* FileAddress = malloc(MAXADDRLENGTH); // 509 bytes for 509 UTF-8 Characters following ANSI Compat
+
+        printf("Enter Datasheet Name: (Default: demo.txt) ");
+        scanf("%s", FileAddress);
+
+        if ((dataSheetFile = fopen(FileAddress,"r")) == NULL){
+
+            // OPEN DEFAULT FILE PROMPT
             clearScreen();
-            puts("Cannot load file. Please enter a valid filename.");
-            system("pause");
+            printf("Invalid Filename. Use default file? (y/n): ");
+
+            char temp;
+            scanf("%s", &temp);
+            clearScreen(); // CLEAR SCREEN AFTER GETTING PROMPT RESPONSE
+
+            if((temp == 'Y') || (temp == 'y')){
+                clearScreen();
+
+                dataSheetFile = fopen(DEFAULTFILEADDRESS, "r");
+                puts("Loaded default input file.");
+                system("pause");
+
+            } else {
+                clearScreen();
+                puts("Cannot load file. Please enter a valid filename.");
+                system("pause");
+            }
         }
     }
 
     clearScreen();
-    return returnDIB;
 }
 
-DATASHEET fetchDataSheet(FILE* DIB, char* indexNameArr[], char* indexValueArr[], int lineCount){
+DATASHEET fetchSheetData(FILE* DIB, char* indexNameArr[], char* indexValueArr[], int lineCount){
 
     // SUBSHEET CONTAINERS
     SUBSHEET masterSheet;
