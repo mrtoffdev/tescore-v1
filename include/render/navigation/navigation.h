@@ -17,7 +17,7 @@
 */
 
 // VOID
-void navigationKeyHandler(DATASHEET sessionSheet, int key, int maxIndexes, char* commandLog);
+void navigationKeyHandler(DATASHEET sessionSheet, int maxIndexes, char* commandLog[]);
 
 // RETURN
 short fetchPanelID();
