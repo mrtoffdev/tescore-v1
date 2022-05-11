@@ -78,10 +78,12 @@ void refreshFrame(DATASHEET sessionSheet, char* commandLog){
 
     renderWhiteSpace(3);
 
-        // UPPER PANEL
-            renderSeparator();
-            renderHeader(indexCount);
-            renderSeparator();
+    //#region UPPER PANEL
+
+        // HEADER
+        renderSeparator();
+        renderHeader(indexCount);
+        renderSeparator();
 
             int     studentScaling[10] = {
                     5, 10, 15, 20, 25, 30, 35, 40, 45, 50},
@@ -96,16 +98,23 @@ void refreshFrame(DATASHEET sessionSheet, char* commandLog){
         generateGraph();
         renderMatrixRankerRow(matrixGraph);
 
-            renderSeparator();
-            renderSubHeader(gradeScaling, "ShortLigmaBols");
-            renderSeparator();
+        renderSeparator();
 
-        // LOWER PANEL
-            renderMasterListHeader();
-            for(int i = 0; i < 10; i++){
-                renderMasterListRow();
-            }
-            renderSeparator();
+        // BAR GRAPH MATRIX : INDEX VALUE REFERENCE
+        renderSubHeader(gradeScaling, "DefaultDemoSheet");
+
+        renderSeparator();
+
+
+    //#endregion
+
+    //#region LOWER PANEL
+
+        renderMasterListHeader();
+        for(int i = 0; i < 10; i++){
+            renderMasterListRow();
+        }
+        renderSeparator();
 
     //#endregion
 
@@ -247,22 +256,33 @@ void renderHeader(int sessionStudentCount){
            sessionStudentCount);
 }
 
-void renderSubHeader(int gradeScaling[11], char *sheetName){
+void renderSubHeader(){
     int bottom[11] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 
-    printf("\t|    |%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d| Sheet Name: %-18s \t|\t    |\n",
-           gradeScaling[0],
-           gradeScaling[1],
-           gradeScaling[2],
-           gradeScaling[3],
-           gradeScaling[4],
-           gradeScaling[5],
-           gradeScaling[6],
-           gradeScaling[7],
-           gradeScaling[8],
-           gradeScaling[9],
-           gradeScaling[10],
-           sheetName);
+    // INDENT
+    printf("\t|    ");
+
+    for (int i = 0; i < 11; i++) {
+        printf("|%4d", gradeScaling[i]);
+    }
+
+    printf("| Sheet Name: %-18s \t|\t    |\n", sheetName);
+
+    //#region Legacy Code
+    //    printf("\t|    |%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d| Sheet Name: %-18s \t|\t    |\n",
+    //           gradeScaling[0],
+    //           gradeScaling[1],
+    //           gradeScaling[2],
+    //           gradeScaling[3],
+    //           gradeScaling[4],
+    //           gradeScaling[5],
+    //           gradeScaling[6],
+    //           gradeScaling[7],
+    //           gradeScaling[8],
+    //           gradeScaling[9],
+    //           gradeScaling[10],
+    //           sheetName);
+    //#endregion
 }
 
 void renderUpperRow(int studentScaling[], int gradeScaling[], char matrixGraph[][11], int rowScale){
