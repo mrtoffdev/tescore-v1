@@ -86,6 +86,9 @@ int main() {
     // =========== CONSOLE SETUP: WIN32 ===========
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleTitle(WINDOWTITLE);
+    HWND hWnd=GetConsoleWindowNT();
+    MoveWindow(hWnd,0,0,1040,600,TRUE);
+    //#endregion
 
     //#region =========== OPEN FILE ===========
 
