@@ -25,21 +25,46 @@
 
 #include "render.h"
 
-// GLOBAL VARS
+//#region PRIVATE PROTS
+void generateGraph();
+//#endregion
+
+//#region GLOBAL VARS
+DATASHEET   RAWDEMOSHEET;
+SUBSHEET    RAWUNSORTEDSHEET,
+            RAWSORTEDSHEET,
+            RAWMASTERLISTSHEET;
+
+int         gradeScaling[11] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100},
+            studentScaling[10] = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
+
+char*       sheetName;
+char*       matrixGraph[10][11];
+//#endregion
 
 // =========== MAIN PANELS ===========
-void refreshFrame(DATASHEET sessionSheet){
+void refreshFrame(DATASHEET sessionSheet, char* commandLog){
 
-    /* ORDER OF UI ELEMENTS
-        - Separator
-        - Header (Number of Students)
-        - Separator
-        - Upper Rows
-            - x10 formatted lines
-        - Separator
-        - Sub Header
-        - Separator
-            - x10 formatted lines
+    /* REFRESH FRAME SEQUENCE
+        + Start Benchmark Clock
+        + Clear Screen Buffer
+        + Render UI Elements
+            - Separator
+            - Header (Number of Students)
+            - Separator
+            - Upper Rows
+                - x10 formatted lines
+            - Separator
+            - Sub Header
+            - Separator
+                - x10 formatted lines
+        + Display Command Log
+            - Format: <TimeLog><Message
+
+        NOTE:
+            INDEX COUNT INCREMENTS FROM B TO T > SIDE OF GRAPH
+                ARR[] INCREMENTS FROM END TO START
+            INDEX VALUE INCREMENTS FROM R TO L > BOTTOM OF GRAPH
     */
 
     int indexCount = sizeof (sessionSheet.masterlistCollection.container) / sizeof (sessionSheet.masterlistCollection.container[0]);
@@ -62,7 +87,8 @@ void refreshFrame(DATASHEET sessionSheet){
                     sheetMaxStudents;
             char    matrixGraph[10][11];
 
-            renderUpperRow(studentScaling, gradeScaling, matrixGraph, rowCount);
+        generateGraph();
+        renderMatrixRankerRow(matrixGraph);
 
             renderSeparator();
             renderSubHeader(gradeScaling, "ShortLigmaBols");
