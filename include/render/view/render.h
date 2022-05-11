@@ -41,9 +41,10 @@ void indentCursor();
 void renderWhiteSpace(int);
 void renderSeparator();
 
+// UI FORMS
 void renderHeader(int sessionStudentCount);
 void renderSubHeader();
-void renderUpperRow();
+void renderMatrixRankerRow();
 void renderMasterListHeader();
 void renderMasterListRow();
 
