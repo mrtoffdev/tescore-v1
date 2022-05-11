@@ -170,6 +170,78 @@ void generateGraph(){
 
     int     studentCountReference[11][2] = {0};
 
+    for (int y = 0; y < 11; ++y) {
+        // MATCH MATRIX[N][0] WITH GRADE SCALING
+        studentCountReference[y][0] = gradeScaling[y];
+    }
+
+    for (int y = 0; y < 11; ++y) {
+        for (int x = 0; x < 11; ++x) {
+            if(
+                // GRADE ATTAINED IS LESS/EQUAL TO GRADE TABLE
+                (unsortedGradeRounds[x][0] >= studentCountReference[y][0]) &&
+                // GRADE IS LESS THAN LOWER GRADE TABLE
+                (unsortedGradeRounds[x][0] < studentCountReference[y+1][0])){
+
+                studentCountReference[y][1] += unsortedGradeRounds[x][1];
+            }
+        }
+    }
+
+//    for (int i = 0; i < 11; ++i) {
+//        printf("%d - %d\n", studentCountReference[i][0], studentCountReference[i][1]);
+//    }
+
+    //#endregion
+
+    //#region TEST SNIPPETS
+//    for (int i = 0; i < 11; ++i) {
+//        printf("%d - %d\n", studentCountReference[i][0], studentCountReference[i][1]);
+//    }
+    //#endregion
+
+    //#region MATRIX GENERATOR
+
+    /*  RENDER METHOD
+        Renders characters from top to bottom, left to right
+        Y coord decrements from indexCount to 0
+        X coord increments from indexValue[0] to indexValue[MAX]
+        Cell value compares to 2 arrs studentScaling[] > y & gradeScaling[] > x
+    */
+
+    for (int y = 9; y >= 0; y--) {
+
+        int inverseY = 0; // INVERSE Y FOR GRADE SCALING
+        char* barSymbol = "█";
+
+        for (int x = 0; x < 11; ++x) {
+
+            if( (
+                // CHECK IF LATCHED ON CORRECT GRADE COLUMN
+
+                // NUMBER OF INDEXES ARE LESS/EQUAL THAN SCALE BUT HIGHER THAN PREV. SCALE
+                (studentCountReference[x][1] <= studentScaling[y]) &&
+                (studentCountReference[x][1] > studentScaling[y-1]))){
+
+                matrixGraph[y][x] = barSymbol;
+
+            } else {
+                matrixGraph[y][x] = " ";
+            }
+
+            // FILL IN GAPS BASED ON HIGHEST POINT
+            if (matrixGraph[y+1][x] == barSymbol){
+                matrixGraph[y][x] = barSymbol;
+            }
+        }
+
+        inverseY++;
+    }
+    //#endregion
+}
+//#endregion
+
+//#region =========== UI PANELS ===========
 void renderHeader(int sessionStudentCount){
     printf("\t|\t\t\t- Data Sheet -\t\t\t    |\t - Top 10 Students / %4d - \t|   Score   |\n",
            sessionStudentCount);
