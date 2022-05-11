@@ -18,7 +18,7 @@
 /*========================================
                   Testing
   ========================================*/
-void testing(char*);
+void testing();
 void fetchData(FILE*, char*, char*, int);
 void closeFile(FILE*);
 
