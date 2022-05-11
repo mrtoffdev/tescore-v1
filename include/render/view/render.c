@@ -67,10 +67,16 @@ void refreshFrame(DATASHEET sessionSheet, char* commandLog){
             INDEX VALUE INCREMENTS FROM R TO L > BOTTOM OF GRAPH
     */
 
+    // UNIT TEST CLOCKS
+    clock_t refreshFrameExecTimeBegin = clock();
+
+    // CLEAR SCREEN BEFORE SHOWING NEW FRAME
+    clearScreen();
+
+    // FETCH TOTAL INDEX COUNT : DIV TOTAL BYTE SIZE OF COLLECTION BY ELEMENT BYTE SIZE
     int indexCount = sizeof (sessionSheet.masterlistCollection.container) / sizeof (sessionSheet.masterlistCollection.container[0]);
 
-    // TESTING RENDER MODULES
-        renderWhiteSpace(3);
+    renderWhiteSpace(3);
 
         // UPPER PANEL
             renderSeparator();
@@ -100,6 +106,19 @@ void refreshFrame(DATASHEET sessionSheet, char* commandLog){
                 renderMasterListRow();
             }
             renderSeparator();
+
+    //#endregion
+
+    clock_t refreshFrameExecTimeEnd = clock();
+
+    // COMMAND LOG
+    printf("\t[ Command Log ] : ");
+    if(commandLog == NULL){
+        printf("refreshFrame() Execution Time: %f seconds\n", (((double)refreshFrameExecTimeEnd - refreshFrameExecTimeBegin) / CLOCKS_PER_SEC));
+    } else {
+        printf("%s", commandLog);
+    }
+
 
 }
 
