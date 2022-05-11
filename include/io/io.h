@@ -1,5 +1,5 @@
 /*========================================
-      FILE OPERATIONS
+      FILE OPERATIONS HEADER
       Author: Christopher Abadillos Jr.
   ========================================*/
 #ifndef TESCORE_IO_H
@@ -25,17 +25,15 @@ void closeFile(FILE*);
 /*========================================
                     CRUD
   ========================================*/
-FILE* openFile(char*);
+void openSheet(FILE*);
 void appendIndex(INDEX);
 void delIndex(INDEX);
-
-DATASHEET initSheetDemo();
 void accessDatasheet();
 
+DATASHEET initSheetDemo();
 /*========================================
                     SORT
   ========================================*/
-
 SUBSHEET rankerModule();
 SUBSHEET masterlistModule();
 #endif
