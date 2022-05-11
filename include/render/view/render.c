@@ -87,15 +87,7 @@ void refreshFrame(DATASHEET sessionSheet, char* commandLog){
         renderHeader(indexCount);
         renderSeparator();
 
-            int     studentScaling[10] = {
-                    5, 10, 15, 20, 25, 30, 35, 40, 45, 50},
-                    gradeScaling[11] = {
-                    0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100
-                    };
-            int     rowCount = 10,
-                    sheetMaxScore,
-                    sheetMaxStudents;
-            char    matrixGraph[10][11];
+        // PANELS : BAR GRAPH MATRIX & TOP RANKERS
 
         generateGraph();
         renderMatrixRankerRow(matrixGraph);
@@ -133,12 +125,13 @@ void refreshFrame(DATASHEET sessionSheet, char* commandLog){
 
 }
 
-// =========== PROMPTS ===========
+//#region =========== PROMPTS ===========
 void terminatePrompt(){
 
 }
+//#endregion
 
-// =========== UI ELEMENTS ===========
+//#region =========== UI ELEMENTS ===========
 void clearScreen(){
 //    printf("\e[1;1H\e[2J");
     system("cls");
@@ -309,6 +302,24 @@ void renderMatrixRankerRow(){
         inverseY++;
     }
 
+    //#region test code
+//    for (int i = 0; i < rowScale; ++i) {
+//        printf("\t|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|  • Barack Obama \t\t\t|    100    |\n",
+//               studentScaling[i],
+//               bottom[0],
+//               bottom[1],
+//               bottom[2],
+//               bottom[3],
+//               bottom[4],
+//               bottom[5],
+//               bottom[6],
+//               bottom[7],
+//               bottom[8],
+//               bottom[9],
+//               bottom[10]);
+//    }
+//#endregion
+
 }
 
 
@@ -319,9 +330,13 @@ void renderMasterListHeader(){
 void renderMasterListRow(){
     printf("\t| • %-90s  |    %4d   |\n", "Michael Reeves", 23);
 }
+//#endregion
 
-// =========== TESTS ===========
+//#region =========== TESTS ===========
 
+//#endregion
+
+//#region =========== REFERENCES ===========
 /* ENABLING UTF8 SUPPORT FOR MICROSOFT WINDOWS CONSOLES
 
     #include <windows.h>
@@ -329,7 +344,8 @@ void renderMasterListRow(){
 
 */
 
-/* ANSI REFERENCES
-
+/*  ANSI REFERENCES
+    BLOCK CHARACTER : █
 
  */
+//#endregion
