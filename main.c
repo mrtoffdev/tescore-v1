@@ -44,7 +44,10 @@
 // GLOBAL VARIABLES
 int         sessionStudentCount = 34;
 
-FILE        *SessionSheetFile;
+//#region GLOBAL VARIABLES
+int         sessionStudentCount = 10;
+char*       commandLog;
+FILE*       SessionSheetFile;
 DATASHEET   sessionSheet;
 SUBSHEET    RankerSheet,
             MasterListSheet;
