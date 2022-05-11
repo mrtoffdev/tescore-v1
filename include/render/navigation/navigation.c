@@ -3,7 +3,6 @@
       Author: Christopher Abadillos Jr.
   ========================================*/
 #include <stdio.h>
-#include <malloc.h>
 
 #include "navigation.h"
 #include "../view/render.h"
@@ -42,25 +41,23 @@
 
 */
 
-// PRIVATE
-void safeRemoveCell();
-void safeEditCell();
-void switchNavPanel(short);
+//#region PRIVATE FUNC PROTS
+void safeRemoveCell(char*);
+void safeEditCell(char, char*);
+void switchNavPanel(short, char*);
+//#endregion
 
-// GLOBAL VARIABLES
+//#region GLOBAL VARIABLES
 short   cellIndex,
         globalPanelID,
-        operationMode = 1;
+        operationMode = 1,
+        debugMode = 0;
 char    cellSelection = 'X';
-
-// PANELS
-void switchNavPanel(short id){
-    printf("Rendering Panel No: %d\n", id);
-}
+//#endregion
 
 // OPERATIONS
-void navigationKeyHandler(int key, int maxIndexes){
-    // store current panelID
+void navigationKeyHandler(DATASHEET sessionSheet,int key, int maxIndexes, char* commandLog){
+    // SAVE CURRENT PANELID
     short prevPanelID = globalPanelID;
 
     switch (key) {
@@ -77,7 +74,7 @@ void navigationKeyHandler(int key, int maxIndexes){
             */
             if((cellSelection != 'X') && (operationMode == 2)){
                 // reset global navigation values
-                puts("Resetted all global nav values");
+                commandLog = "Resetted all global nav values\n";
                 cellSelection = 'X';
                 operationMode = 1;
                 break;
@@ -102,22 +99,22 @@ void navigationKeyHandler(int key, int maxIndexes){
                         - The highlighted element can now be changed
             */
             if((operationMode == 1) && (cellSelection == 'X')){
-                puts("Operation Mode: 2");
+                commandLog = "Operation Mode: 2";
                 operationMode = 2;
                 cellSelection = 'L';
                 break;
             } else
             if((operationMode == 2) && (cellSelection != 'X')){
-                puts("Operation Mode: 3");
+                commandLog = "Operation Mode: 3";
                 operationMode = 3;
-                safeEditCell(cellSelection);
+                safeEditCell(cellSelection, commandLog);
                 break;
             } else break;
 
         case 'R':
         case 'r':
             if((operationMode == 1) && (cellSelection == 'X')){
-                safeRemoveCell();
+                safeRemoveCell(commandLog);
                 break;
             } else break;
             //#endregion
@@ -125,23 +122,31 @@ void navigationKeyHandler(int key, int maxIndexes){
         //#region NAVIGATION KEYS
         case 'W':
         case 'w':
-            if(cellIndex > 0) cellIndex--;
-            // Testing
-            printf("Decremented cellIndex: %d\n", cellIndex);
+            if(cellIndex > 0) {
+                cellIndex--;
+
+                // Testing
+                commandLog = "Decremented cellIndex:";
+
+            }
             break;
 
         case 'S':
         case 's':
-            if(cellIndex < maxIndexes) cellIndex++;
-            // Testing
-            printf("Incremented cellIndex: %d\n", cellIndex);
+            if(cellIndex < maxIndexes) {
+                cellIndex++;
+
+                // Testing
+                commandLog = "Incremented cellIndex:";
+                printf("Incremented cellIndex: %d ", cellIndex);
+            }
             break;
 
         case 'A':
         case 'a':
             if(operationMode == 2) {
                 cellSelection = 'L';
-                printf("Cell Selection: %c", cellSelection);
+                printf("\tCell Selection: %c ", cellSelection);
                 break;
             } else break;
 
@@ -149,7 +154,7 @@ void navigationKeyHandler(int key, int maxIndexes){
         case 'd':
             if(operationMode == 2) {
                 cellSelection = 'R';
-                printf("Cell Selection: %c", cellSelection);
+                printf("\tCell Selection: %c ", cellSelection);
                 break;
             } else break;
         //#endregion
@@ -173,32 +178,34 @@ void navigationKeyHandler(int key, int maxIndexes){
 
     }
 
+    printf("Cell Selection: %c ", cellSelection);
+    printf("Operation Mode: %d \n", operationMode);
+
     // check if panelID values have changed and render frame ID
     // prevents re-rendering the frame if panelID hasn't changed
-    printf("Cell Selection: %c ", cellSelection);
-    printf("Operation Mode: %d ", operationMode);
-
     if (globalPanelID != prevPanelID){
-        switchNavPanel(globalPanelID);
+
+        switchNavPanel(globalPanelID, commandLog);
     }
 
+    refreshFrame(sessionSheet, commandLog);
 }
 
-void safeEditCell(){
+void safeEditCell(char selection, char* commandLog){
     char prevCellSelection = cellSelection;
     puts("Editing Cell:");
 
     switch (cellSelection) {
         case 'L':
-            puts("Editing Left of Cell:");
+            commandLog = "Editing Left of Cell";
             break;
 
         case 'R':
-            puts("Editing Right of Cell:");
+            commandLog = "Editing Right of Cell";
             break;
 
         default:
-            puts("Not Editing a Cell Right Now:");
+            commandLog = "Not Editing a Cell Right Now";
             break;
     }
 
@@ -206,8 +213,13 @@ void safeEditCell(){
     operationMode = 2;
 }
 
-void safeRemoveCell(){
-    puts("Removing Cell");
+void safeRemoveCell(char* commandLog){
+    commandLog = "Removing Cell";
+}
+
+void switchNavPanel(short id, char* commandLog){
+    commandLog = "Rendering Panel No: ";
+    printf("%d", id);
 }
 
 // RETURNS

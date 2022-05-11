@@ -1,9 +1,11 @@
 /*========================================
-      NAVIGATION SYSTEM
+      NAVIGATION SYSTEM HEADER
       Author: Christopher Abadillos Jr.
   ========================================*/
 #ifndef TESCORE_NAVIGATION_H
 #define TESCORE_NAVIGATION_H
+
+#include "../../model/datamodel.h"
 
 /*
     FUNCTION CALLS
@@ -15,7 +17,7 @@
 */
 
 // VOID
-void navigationKeyHandler(int key, int maxIndexes);
+void navigationKeyHandler(DATASHEET sessionSheet, int key, int maxIndexes, char* commandLog);
 
 // RETURN
 short fetchPanelID();
