@@ -149,7 +149,7 @@ int main() {
             break;
 
         case 0:
-            refreshFrame(sessionSheet, commandLog, 1);
+            //refreshFrame(sessionSheet, commandLog, 1);
             break;
 
         default:
