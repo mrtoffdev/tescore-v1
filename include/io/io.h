@@ -7,6 +7,7 @@
 
 // Models
 #include "../model/datamodel.h"
+#include "../model/renderctx.h"
 
 // Interface Parameters
 #define DEFAULTFILEADDRESS "../demo.txt"
@@ -19,13 +20,19 @@
                   Testing
   ========================================*/
 void testing();
-void fetchData(FILE*, char*, char*, int);
+void fetchData(FILE*, char* [], char* [], int);
 void closeFile(FILE*);
 
 /*========================================
                     CRUD
   ========================================*/
-void openSheet(FILE*);
+Renderctx render_init_ctx(DATASHEET sessionSheet);
+void datasheet_init_demo();
+
+void fetch_gradeTable(DATASHEET Datactx, int distributionTable[11][2]);
+void fetch_studentDistTable(DATASHEET Datactx);
+
+void sheet_fetch_ctx(FILE*);
 void appendIndex(INDEX);
 void delIndex(INDEX);
 void accessDatasheet();
