@@ -35,9 +35,47 @@
     ::
     */ =============== END FILE ===============
 
-
 - Basic CRUD functions
     - Opening & Initializing Input / Output File
     - Reading Line by Line & Follow file format
     - Appending Details to File / Overwrite details
     -
+
+- FileOps System
+    - Create Local Variables
+    - Initialize Datasheet Variable
+        - Datasheet Name
+        - Datasheet Author
+        - Masterlist Subsheet <Index>
+        - Rankerlist Subsheet <Index>
+
+    - For loop checking file
+        - Format:   <[1]String> <[2]String>
+                    <[3]String> + <[?]String> <[1]Value>
+
+        -
+
+*/ =============== TO DO LIST ===============
+    FINISHED:
+    + Double Confirm for Removing Cell
+
+    UNFINISHED:
+    - Edit Sheet Name Button (Key: T)
+    - Dynamic Graph Limits (Index Count & Index Value) to fit in 10x11 graph
+    - Write System (safeEditCell()) changing container values
+    - Data writing to external file
+    - Data reading from external file
+    - Decrypting written data / isolate filebuffer to internal string container / Encrypting string container
+
+    OPTIMIZATION: (LOW PRIORITY)
+    - Set framebuffer limitations to keys w/out keybindings
+        Panel 1: Disable all bindings except Panel Nav Keys, Terminate Key, and Sheet Rename Key
+            <1> <2> <3> <Q> <T>
+
+        Panel 2: Disable all bindings except Panel Nav Keys, Entry Nav Keys, Terminate Key,
+        Operation Keys, and Sheet Rename Key
+            <1> <2> <3> <W> <A> <S> <D> <Q> <E> <R> <T>
+
+        Panel 3: Disable all bindings except Panel Nav Keys, Entry Nav Keys, Terminate Key,
+        Operation Keys, Maximize Key, and Sheet Rename Key
+            <1> <2> <3> <W> <A> <S> <D> <Q> <E> <R> <M> <T>
