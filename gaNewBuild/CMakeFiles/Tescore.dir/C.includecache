@@ -85,8 +85,6 @@ navigation.h
 /home/jerome03/tescore/include/render/view/auth.c
 stdio.h
 -
-conio.h
--
 render.h
 /home/jerome03/tescore/include/render/view/render.h
 
