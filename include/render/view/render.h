@@ -25,11 +25,12 @@
 #define TESCORE_RENDER_H
 
 #include "../../model/datamodel.h"
+#include "../../model/renderctx.h"
 
 #define MAX_PASS_CHAR 30
 
 // =========== UI UTILS ===========
-void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char selectionX, char* commandLog[]);
+void refreshFrame(Renderctx ctx, char* commandLog[]);
 void clearScreen();
 void indentCursor(short spaces);
 void generateGraph();

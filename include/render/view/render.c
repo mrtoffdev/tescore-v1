@@ -44,9 +44,7 @@
 #include <time.h>
 #include <stdint.h>
 
-
 #include "render.h"
-
 
 //#region GLOBAL VARS
 DATASHEET   RAWDEMOSHEET;
@@ -62,7 +60,7 @@ char*       matrixGraph[10][11];
 
 //#region =========== UI UTILS ===========
 
-void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char selectionX, char* commandLog[10]){
+void refreshFrame(Renderctx ctx, char* commandLog[10]){
 
     /* REFRESH FRAME SEQUENCE
         + Start Benchmark Clock
@@ -94,13 +92,13 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
     renderWhiteSpace(3);
 
     // FETCH TOTAL INDEX COUNT : DIV TOTAL BYTE SIZE OF COLLECTION BY ELEMENT BYTE SIZE
-    int indexCount = sizeof (sessionSheet.masterlistCollection.container) / sizeof (sessionSheet.masterlistCollection.container[0]);
+    int indexCount = sizeof (ctx.SessionSheet.masterlistCollection.container) / sizeof (ctx.SessionSheet.masterlistCollection.container[0]);
 
     //#region UPPER PANEL
 
     // HEADER
     renderSeparator(2);
-    renderHeader(indexCount, panelID, commandLog);
+    renderHeader(indexCount, ctx.sessionPanelID, commandLog);
     renderSeparator(3);
 
     // PANELS : BAR GRAPH MATRIX & TOP RANKERS
@@ -136,9 +134,9 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
     renderMatrixRankerRow(
             renderableIndexNames,
             renderableIndexValues,
-            selectionID,
-            selectionX,
-            panelID);
+            ctx.renderCellIndex,
+            ctx.renderCellX,
+            ctx.sessionPanelID);
 
     renderSeparator(3);
 
@@ -149,11 +147,11 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
     //#endregion
 
     //#region LOWER PANEL
-    renderMasterListHeader(panelID);
+    renderMasterListHeader(ctx.sessionPanelID);
     renderSeparator(3);
 
 
-    renderMasterListRow("Keanu Reeves", 98, selectionID, selectionX, panelID);
+    renderMasterListRow("Keanu Reeves", 98, ctx.renderCellIndex, ctx.renderCellX, ctx.sessionPanelID);
 
     renderSeparator(4);
 
