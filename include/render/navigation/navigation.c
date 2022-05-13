@@ -72,7 +72,7 @@ void navigationKeyHandler(DATASHEET sessionSheet, int maxIndexes, char* commandL
     localSessionSheet = sessionSheet;
 
     while (NAVKEY != EOF || pauseHandler != 1){
-        NAVKEY = _getch();
+        //NAVKEY = _getch();
 
         switch (NAVKEY) {
 
