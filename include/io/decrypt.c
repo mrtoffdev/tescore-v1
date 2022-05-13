@@ -14,18 +14,14 @@
 
 //#region TESTING OPS
 void testing(){
-//    FILE *DIB = openSheet(FileAddress);
-//
-//    char *temp = malloc(MAXADDRLENGTH);
-//    fscanf(DIB, "%s", temp);
-//    puts("\n\n---------- Read File Contents ----------\n");
-//    printf("%s\n", temp);
-//    free(temp);
+
     struct AES_ctx ctx;
 
     uint8_t key[] = "aaaaaaaaaaaaaaaa";
-    uint8_t iv[]  = "bbbbbbbbbbbbbbbb";
-    uint8_t str[] = "This a sample text,\n Length eq 32";
+    uint8_t iv[]  = "tescoreinternals";
+    uint8_t str[] = "This a sample text,\n Length eq 32what ifits more";
+
+    printf("Size of buffer: %d", sizeof str);
 
     printf("\n raw buffer \n");
     for (int i = 0; i < 32; ++i) {
@@ -58,7 +54,7 @@ void testing(){
 //#region =========== FILE OPS UTILS ===========
 
 // VOID
-void openSheet(FILE* dataSheetFile){
+void sheet_fetch_ctx(FILE* dataSheetFile){
 
     // FILE INIT CHECK
     while(dataSheetFile == NULL){
@@ -104,15 +100,13 @@ void openSheet(FILE* dataSheetFile){
     clearScreen();
 }
 
-
-
 // RETURN
 DATASHEET fetchSheetData(FILE* DIB, char* indexNameArr[], char* indexValueArr[], int lineCount){
 
     // SUBSHEET CONTAINERS
-    SUBSHEET masterSheet;
-    if(masterSheet.id != MASTERSHEETID)
-        masterSheet.id = MASTERSHEETID;
+    SUBSHEET returnSheet;
+    if(returnSheet.id != MASTERSHEETID)
+        returnSheet.id = MASTERSHEETID;
 
     SUBSHEET rankerSheet;
     if(rankerSheet.id != RANKERSHEETID)
@@ -120,7 +114,7 @@ DATASHEET fetchSheetData(FILE* DIB, char* indexNameArr[], char* indexValueArr[],
 
     // DATASHEET CONTAINER
     DATASHEET outDataSheet;
-    outDataSheet.masterlistCollection = masterSheet;
+    outDataSheet.masterlistCollection = returnSheet;
     outDataSheet.rankedCollection = rankerSheet;
 
     int collectionSize = 10;
