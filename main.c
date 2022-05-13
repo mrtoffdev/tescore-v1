@@ -78,7 +78,7 @@ SUBSHEET    RankerSheet,
 //#endregion
 
 //#region CONSOLE WINDOW RESIZE FUNCTION
-HWND WINAPI GetConsoleWindowNT(void)
+/** HWND WINAPI GetConsoleWindowNT(void)
 {
     typedef HWND WINAPI(*GetConsoleWindowT)(void);
     GetConsoleWindowT GetConsoleWindow;
@@ -89,7 +89,7 @@ HWND WINAPI GetConsoleWindowNT(void)
         return NULL;
     }
     return GetConsoleWindow();
-}
+} **/
 //#endregion
 
 int main() {

@@ -167,8 +167,6 @@ stdio.h
 -
 stdlib.h
 -
-windows.h
--
 stdint.h
 -
 include/io/io.h
