@@ -3,6 +3,8 @@
       Author: Christopher Abadillos Jr.
   ========================================*/
 
+//#region =========== DOCS ===========
+
 /* RENDERING SYSTEM
 
     FUNCTION CALLS
@@ -21,12 +23,30 @@
 
 */
 
+/* ENABLING UTF8 SUPPORT FOR MICROSOFT WINDOWS CONSOLES
+
+    #include <windows.h>
+    SetConsoleOutputCP(CP_UTF8);
+
+*/
+
+/*
+    ANSI REFERENCES
+
+        BLOCK CHARACTER     : █
+        VERTICAL SEPARATOR  : │
+*/
+
+//#endregion
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdint.h>
+
 
 #include "render.h"
-#include "typeface.h"
+
 
 //#region GLOBAL VARS
 DATASHEET   RAWDEMOSHEET;
@@ -36,15 +56,13 @@ SUBSHEET    RAWUNSORTEDSHEET,
 
 int         gradeScaling[11] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100},
             studentScaling[10] = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
-
 char*       sheetName = "SHORTNAME";
 char*       matrixGraph[10][11];
 //#endregion
 
-
-
 //#region =========== UI UTILS ===========
-void refreshFrame(DATASHEET sessionSheet, char* commandLog[10], short panelID){
+
+void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char selectionX, char* commandLog[10]){
 
     /* REFRESH FRAME SEQUENCE
         + Start Benchmark Clock
@@ -86,46 +104,73 @@ void refreshFrame(DATASHEET sessionSheet, char* commandLog[10], short panelID){
     renderSeparator(3);
 
     // PANELS : BAR GRAPH MATRIX & TOP RANKERS
-
     generateGraph();
-    renderMatrixRankerRow(matrixGraph);
+
+    // PLACEHOLDER
+    char* renderableIndexNames[10] = {
+            "Leni Robredo",
+            "Leni Robredo",
+            "Leni Robredo",
+            "Leni Robredo",
+            "Leni Robredo",
+            "Leni Robredo",
+            "Leni Robredo",
+            "Leni Robredo",
+            "Leni Robredo",
+            "Leni Robredo",
+    };
+
+    int renderableIndexValues[10] = {
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+    };
+
+    renderMatrixRankerRow(
+            renderableIndexNames,
+            renderableIndexValues,
+            selectionID,
+            selectionX,
+            panelID);
 
     renderSeparator(3);
 
     // BAR GRAPH MATRIX : INDEX VALUE REFERENCE
     renderSubHeader(gradeScaling, "DefaultDemoSheet");
-
     renderSeparator(3);
-
 
     //#endregion
 
     //#region LOWER PANEL
-
     renderMasterListHeader(panelID);
     renderSeparator(3);
 
-    for(int i = 0; i < 10; i++){
-        renderMasterListRow();
-    }
+
+    renderMasterListRow("Keanu Reeves", 98, selectionID, selectionX, panelID);
 
     renderSeparator(4);
 
     //#endregion
 
-    clock_t refreshFrameExecTimeEnd = clock();
-
     //#region COMMAND LOG
 
+    clock_t refreshFrameExecTimeEnd = clock();
+
     printf("\t[ Command Log ] : ");
-    if(commandLog == NULL){
-        printf("refreshFrame() Execution Time: %f seconds\n", (((double)refreshFrameExecTimeEnd - refreshFrameExecTimeBegin) / CLOCKS_PER_SEC));
+    if(commandLog[0] == NULL){
+        float xTime = (float)(refreshFrameExecTimeEnd - refreshFrameExecTimeBegin) / CLOCKS_PER_SEC;;
+        printf("refreshFrame() Execution Time: %f seconds\n", xTime);
     } else {
-//        for (int i = 0; i < 10; ++i) {
-//            printf(commandLog[i]);
-//        }
-        printf(commandLog[0]);
+        printf("%s", commandLog[0]);
     }
+
     //#endregion
 
 }
@@ -238,12 +283,18 @@ void generateGraph(){
     //#endregion
 }
 
+void generateMasterlistEntries(){
+
+}
+
 //#endregion
 
 //#region =========== PROMPTS ===========
+
 void terminatePrompt(){
     exit(0);
 }
+
 //#endregion
 
 //#region =========== UI ELEMENTS ===========
@@ -270,9 +321,11 @@ void renderSeparator(short id){
 //    puts("\t-------------------------------------------------------------------------------------------------------------");
 
 }
+
 //#endregion
 
 //#region =========== UI PANELS ===========
+
 void renderHeader(int sessionStudentCount, short panelID, char* commandLog[]){
 
     if(panelID == 1){
@@ -331,13 +384,15 @@ void renderSubHeader(){
     //#endregion
 }
 
-void renderMatrixRankerRow(){
+void renderMatrixRankerRow(char* indexNameContainer[10], int* indexValContainer, short selectionID, char selectionX, short panelID ){
+    uint8_t inverseY = 0;
 
+    // Y AXIS
     for (int y = 9; y >= 0; y--) {
-        int inverseY = 0;
         printf("\t");
         printf("│%4d│", studentScaling[y]);
 
+        // X AXIS
         for (int x = 0; x < 11; ++x) {
 
             printf(" %s%s ", matrixGraph[y][x], matrixGraph[y][x]);
@@ -347,11 +402,49 @@ void renderMatrixRankerRow(){
             }
         }
 
-        printf("│  • Barack Obama \t\t\t│    100    │\n");
+        if((panelID == 2) && (selectionID == inverseY)){
+
+            switch (selectionX) {
+                case 'X':
+                    printf("│");
+                    printf("\x1B[38;5;16m\x1B[48;5;7m");
+                    printf("  • %-27s    ", indexNameContainer[inverseY]);
+                    printf("\x1B[38;5;15m\x1B[48;5;0m");
+                    printf("│");
+                    printf("\x1B[38;5;16m\x1B[48;5;7m");
+                    printf("   %4d    ", indexValContainer[inverseY]);
+                    printf("\x1B[38;5;15m\x1B[48;5;0m");
+                    printf("│\n");
+                    break;
+
+                case 'L':
+                    printf("│");
+                    printf("\x1B[38;5;16m\x1B[48;5;7m");
+                    printf("  • %-27s    ", indexNameContainer[inverseY]);
+                    printf("\x1B[38;5;15m\x1B[48;5;0m");
+                    printf("│   %4d    │\n", indexValContainer[inverseY]);
+                    break;
+
+                case 'R':
+                    printf("│  • %-27s    │", indexNameContainer[inverseY]);
+                    printf("\x1B[38;5;16m\x1B[48;5;7m");
+                    printf("   %4d    ", indexValContainer[inverseY]);
+                    printf("\x1B[38;5;15m\x1B[48;5;0m");
+                    printf("│\n");
+                    break;
+
+                default:
+                    printf("│  • %-27s    │   %4d    │\n", indexNameContainer[inverseY], indexValContainer[inverseY]);
+                    break;
+            }
+        } else {
+            printf("│  • %-27s    │   %4d    │\n", indexNameContainer[inverseY], indexValContainer[inverseY]);
+        }
+
         inverseY++;
     }
 
-    //#region test code
+    //#region LEGACY CODE
 //    for (int i = 0; i < rowScale; ++i) {
 //        printf("\t|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|  • Barack Obama \t\t\t|    100    |\n",
 //               studentScaling[i],
@@ -389,27 +482,56 @@ void renderMasterListHeader(short panelID){
     }
 }
 
-void renderMasterListRow(){
-    printf("\t│ • %-90s  │   %4d    │\n", "Michael Reeves", 23);
+void renderMasterListRow(char* indexName, int indexVal, short selectionID, char selectionX, short panelID){
+    for (int i = 0; i < 10; ++i) {
+        if (panelID == 3 && selectionID == i){
+            switch (selectionX) {
+                case 'X':
+                    printf("\t|");
+                    printf("\x1B[38;5;16m\x1B[48;5;7m");
+                    printf(" • %-90s  ", indexName);
+                    printf("\x1B[38;5;15m\x1B[48;5;0m");
+                    printf("|");
+                    printf("\x1B[38;5;16m\x1B[48;5;7m");
+                    printf("   %4d    ", indexVal);
+                    printf("\x1B[38;5;15m\x1B[48;5;0m");
+                    printf("│\n");
+                    break;
+
+                case 'L':
+                    printf("\t|");
+                    printf("\x1B[38;5;16m\x1B[48;5;7m");
+                    printf(" • %-90s  ", indexName);
+                    printf("\x1B[38;5;15m\x1B[48;5;0m");
+                    printf("|   %4d    │\n", indexVal);
+                    break;
+
+                case 'R':
+                    printf("\t| • %-90s  |",indexName);
+                    printf("\x1B[38;5;16m\x1B[48;5;7m");
+                    printf("   %4d    ", indexVal);
+                    printf("\x1B[38;5;15m\x1B[48;5;0m");
+                    printf("│\n");
+                    break;
+
+                default:
+                    defaultMasterListRow(indexName, indexVal);
+                    break;
+            }
+        } else defaultMasterListRow(indexName, indexVal);
+
+    }
+
+
+
 }
+
+void defaultMasterListRow(char* indexName, int indexVal){
+    printf("\t| • %-90s  |   %4d    │\n", indexName, indexVal);
+}
+
 //#endregion
 
 //#region =========== TESTS ===========
 
-//#endregion
-
-//#region =========== REFERENCES ===========
-/* ENABLING UTF8 SUPPORT FOR MICROSOFT WINDOWS CONSOLES
-
-    #include <windows.h>
-    SetConsoleOutputCP(CP_UTF8);
-
-*/
-
-/*
-    ANSI REFERENCES
-
-        BLOCK CHARACTER     : █
-        VERTICAL SEPARATOR  : │
-*/
 //#endregion

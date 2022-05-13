@@ -29,10 +29,11 @@
 #define MAX_PASS_CHAR 30
 
 // =========== UI UTILS ===========
-void refreshFrame(DATASHEET, char*[], short panelID);
+void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char selectionX, char* commandLog[]);
 void clearScreen();
 void indentCursor(short spaces);
 void generateGraph();
+void defaultMasterListRow(char* indexName, int indexVal);
 
 // =========== PROMPTS ===========
 void terminatePrompt();
@@ -45,9 +46,9 @@ void renderSeparator(short id);
 // =========== UI PANELS ===========
 void renderHeader(int sessionStudentCount, short panelID, char* commandLog[]);
 void renderSubHeader();
-void renderMatrixRankerRow();
+void renderMatrixRankerRow(char* indexNameContainer[10], int* indexValContainer, short selectionID, char selectionX, short panelID);
 void renderMasterListHeader(short panelID);
-void renderMasterListRow();
+void renderMasterListRow(char* indexName, int indexVal, short selectionID, char selectionX, short panelID);
 
 // =========== TYPEFACE MODIFICATIONS ===========
 char* typefaceBold(int, char*);

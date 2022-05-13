@@ -2,14 +2,17 @@
       NAVIGATION SYSTEM
       Author: Christopher Abadillos Jr.
   ========================================*/
+
 #include <stdio.h>
-#include <stdlib.h>
 #include <conio.h>
+#include <malloc.h>
+#include <string.h>
 
 #include "navigation.h"
 #include "../view/render.h"
 
-/* NAVIGATION SYSTEM
+//#region =========== DOCS ===========
+/*  NAVIGATION SYSTEM
 
     GLOBAL VARIABLES
     - renderCellIndex         position of navigation cursor in table, from top to bottom
@@ -42,19 +45,21 @@
     - R                 editing index value
 
 */
+//#endregion
 
 //#region PRIVATE FUNC PROTS
 void safeRemoveCell(char* []);
-void safeEditCell(char, char* []);
+void safeEditCell(char* []);
 void switchNavPanel(short, char* []);
+void clearStdinCache();
 //#endregion
 
 //#region GLOBAL VARIABLES
+DATASHEET localSessionSheet;
 short   renderCellIndex,
-        globalCellIndex,
         globalPanelID,
         operationMode = 1,
-        debugMode = 0;
+        pauseHandler = 0;
 int     NAVKEY = '1';
 char    cellSelection = 'X';
 char**  localCommandLog;
@@ -64,8 +69,9 @@ char**  localCommandLog;
 void navigationKeyHandler(DATASHEET sessionSheet, int maxIndexes, char* commandLog[]){
     // SAVE CURRENT PANELID
     short prevPanelID = globalPanelID;
+    localSessionSheet = sessionSheet;
 
-    while (NAVKEY != EOF){
+    while (NAVKEY != EOF || pauseHandler != 1){
         NAVKEY = _getch();
 
         switch (NAVKEY) {
@@ -80,8 +86,7 @@ void navigationKeyHandler(DATASHEET sessionSheet, int maxIndexes, char* commandL
                             - If not true (everything is on default i.e. at home screen
                                 - Show terminate program prompt
                 */
-                if((cellSelection != 'X') && (operationMode == 2)){
-                    // reset global navigation values
+                if((cellSelection != 'X') && (operationMode != 1)){
                     commandLog[0] = "Resetted all global nav values\n";
                     cellSelection = 'X';
                     operationMode = 1;
@@ -100,22 +105,26 @@ void navigationKeyHandler(DATASHEET sessionSheet, int maxIndexes, char* commandL
                             - If false, starts write mode for the selected cell position
 
                     MODES
-                        - Edit Mode
+                        - View Mode: 1
+                            - Only highlights the tab
+                        - Edit Mode: 2
                             - Highlights either the index name or the index value
 
-                        - Write Mode
+                        - Write Mode: 3
                             - The highlighted element can now be changed
                 */
+                // If on View Mode & No Selection
                 if((operationMode == 1) && (cellSelection == 'X')){
                     commandLog[0] = "Operation Mode: 2";
                     operationMode = 2;
                     cellSelection = 'L';
                     break;
                 } else
+                // If on Edit Mode & Selection
                 if((operationMode == 2) && (cellSelection != 'X')){
                     commandLog[0] = "Operation Mode: 3";
                     operationMode = 3;
-                    safeEditCell(cellSelection, commandLog);
+                    safeEditCell(commandLog);
                     break;
                 } else break;
 
@@ -141,7 +150,7 @@ void navigationKeyHandler(DATASHEET sessionSheet, int maxIndexes, char* commandL
 
         case 'S':
         case 's':
-            if(renderCellIndex < maxIndexes) {
+            if(renderCellIndex < maxIndexes-1) {
                 renderCellIndex++;
 
                 // Testing
@@ -168,19 +177,29 @@ void navigationKeyHandler(DATASHEET sessionSheet, int maxIndexes, char* commandL
             //#endregion
 
             //#region PANEL KEYS
+
         case '1':
+            cellSelection = 'X';
+            renderCellIndex = 0;
+            operationMode = 1;
             globalPanelID = 1;
-            commandLog[0] = "Rendering Panel No: 1";
+            commandLog[0] = "Resetted all global nav values. Rendering Panel No: 1";
             break;
 
         case '2':
+            cellSelection = 'X';
+            renderCellIndex = 0;
+            operationMode = 1;
             globalPanelID = 2;
-            commandLog[0] = "Rendering Panel No: 2";
+            commandLog[0] = "Resetted all global nav values. Rendering Panel No: 2";
             break;
 
         case '3':
+            cellSelection = 'X';
+            renderCellIndex = 0;
+            operationMode = 1;
             globalPanelID = 3;
-            commandLog[0] = "Rendering Panel No: 3";
+            commandLog[0] = "Resetted all global nav values. Rendering Panel No: 3";
             break;
 
         default:
@@ -191,10 +210,6 @@ void navigationKeyHandler(DATASHEET sessionSheet, int maxIndexes, char* commandL
 
         indentCursor(1);
 
-        if(renderCellIndex){
-
-        }
-
         printf("Cell Selection: %c ", cellSelection);
         printf("Operation Mode: %d \n", operationMode);
 
@@ -203,32 +218,57 @@ void navigationKeyHandler(DATASHEET sessionSheet, int maxIndexes, char* commandL
         if (globalPanelID != prevPanelID){
 
             switchNavPanel(globalPanelID, commandLog);
+
         }
 
-        refreshFrame(sessionSheet, commandLog, globalPanelID);
+        refreshFrame(localSessionSheet, globalPanelID, renderCellIndex, cellSelection, commandLog);
+
     }
 }
 
-void safeEditCell(char selection, char* commandLog[]){
-    char prevCellSelection = cellSelection;
-    puts("Editing Cell:");
+void safeEditCell(char* commandLog[]){
+
+    clearStdinCache();
+    char* entry = calloc(1,(sizeof commandLog[0]));
+    char* value = malloc(40);
 
     switch (cellSelection) {
         case 'L':
-            commandLog[0] = "Editing Left of Cell";
+            commandLog[0] = "Editing Left of Cell. Please Enter Value: ";
+            refreshFrame(localSessionSheet, globalPanelID, renderCellIndex, cellSelection,commandLog);
+
+            // commit note: softbug fixed through stdin fflush();
+
+            fgets(value, 40, stdin);
+            strncat(entry, "Entered Value: ", 16);
+            strncat(entry, value, strlen(value));
+            commandLog[0] = entry;
+            operationMode = 2;
+            pauseHandler = 0;
+
             break;
 
         case 'R':
-            commandLog[0] = "Editing Right of Cell";
+            commandLog[0] = "Editing Right of Cell. Please Enter Value: ";
+            refreshFrame(localSessionSheet, globalPanelID, renderCellIndex, cellSelection, commandLog);
+
+            fgets(value, 30, stdin);
+            strncat(entry, "Entered Value: ", 16);
+            strncat(entry, value, strlen(value));
+            commandLog[0] = entry;
+            operationMode = 2;
+            pauseHandler = 0;
+
             break;
 
         default:
             commandLog[0] = "Not Editing a Cell Right Now";
-            break;
-    }
+            operationMode = 2;
+            pauseHandler = 0;
 
-    // END
-    operationMode = 2;
+            break;
+
+    }
 }
 
 void safeRemoveCell(char* commandLog[]){
@@ -239,8 +279,8 @@ void switchNavPanel(short id, char* commandLog[]){
     printf("%d", id);
 }
 
-void appendCommandLogEntry(commandLog){
-
+void clearStdinCache(){
+    fflush(stdin);
 }
 
 // RETURNS
