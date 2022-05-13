@@ -6,19 +6,16 @@
 #define TESCORE_NAVIGATION_H
 
 #include "../../model/datamodel.h"
+#include "../../model/renderctx.h"
 
 /*
     FUNCTION CALLS
         VOID
         - parseNavigationKey(key, panelID)      : Checks passed in key & performs corresponding action
 
-        RETURN
-        - <short> fetchPanelID()                : Returns the globalPanelID (short)
 */
 
 // VOID
-void navigationKeyHandler(DATASHEET sessionSheet, int maxIndexes, char* commandLog[]);
+void navigationKeyHandler(Renderctx ctx, char* commandLog[]);
 
-// RETURN
-short fetchPanelID();
 #endif
