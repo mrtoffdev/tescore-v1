@@ -69,8 +69,6 @@ subsheet.h
 /home/jerome03/tescore/include/render/navigation/navigation.c
 stdio.h
 -
-conio.h
--
 malloc.h
 -
 string.h

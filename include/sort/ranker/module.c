@@ -8,15 +8,15 @@
 #include "rankerModule.h"
 
 //#region Main
-typedef struct index
+typedef struct record
 {
     char* studentName;
     short int studentScore;
-} index;
+} record;
 
 //typedef struct SUBSHEET
 //{
-//    index unsortedList[100];
+//    record unsortedList[100];
 //    /* NOTE: This is the only problem tbh if we really want dynamic sizes.
 //    *  I also cannot use macro definitions here for some reason.
 //    */
@@ -73,7 +73,7 @@ SUBSHEET ranker(SUBSHEET unsortedSubsheet)
     int lines,
         size = 0;
     
-    for (int i = 0; unsortedSubsheet.container[i].indexName != NULL; i++)
+    for (int i = 0; unsortedSubsheet.container[i].recordName != NULL; i++)
     {
         size++;
     }
@@ -83,7 +83,7 @@ SUBSHEET ranker(SUBSHEET unsortedSubsheet)
     for (int i = 0; i<size; i++)
     {
         score_array[i] = unsortedSubsheet.container[i].value;
-        strcpy(name_parray[i], unsortedSubsheet.container[i].indexName);
+        strcpy(name_parray[i], unsortedSubsheet.container[i].recordName);
     }
 
     bubbleSort(name_parray, score_array, size);
@@ -91,7 +91,7 @@ SUBSHEET ranker(SUBSHEET unsortedSubsheet)
     // Placing the sorted values to the new subsheet
     for (int i = 0; i<size; i++)
     {
-        sortedSubsheet.container[i].indexName = name_parray[i];
+        sortedSubsheet.container[i].recordName = name_parray[i];
         sortedSubsheet.container[i].value = score_array[i];
     }
 
