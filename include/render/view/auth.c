@@ -3,7 +3,7 @@
     Author: Christopher Abadillos Jr
   ========================================*/
 #include <stdio.h>
-#include <conio.h>
+//#include <conio.h>
 
 #include "render.h"
 
