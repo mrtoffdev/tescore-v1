@@ -10,6 +10,7 @@
 
 #include "include/io/io.h"
 #include "include/render/view/render.h"
+#include "include/model/renderctx.h"
 #include "include/render/navigation/navigation.h"
 
 /*
@@ -44,38 +45,7 @@
 #define COMMANDLOGMAXENTRY 10
 
 // DEVOPS
-#define SANDBOX 1
-
-//#region GLOBAL VARIABLES
-
-// COMMAND LOG SYSTEM
-char*       commandLog[COMMANDLOGMAXENTRY];
-
-// SESSION CONTAINERS
-int         sessionStudentCount = 10;
-FILE*       SessionSheetFile;
-DATASHEET   sessionSheet;
-SUBSHEET    RankerSheet,
-            MasterListSheet;
-
-//#endregion
-
-//#region CONSOLE SETUP: WINDOW RESIZE FUNCTION
-//HANDLE      wHnd;    // Handle to write to the console.
-//HANDLE      rHnd;    // Handle to read from the console.
-
-//    // Set up the handles for reading/writing:
-//    wHnd = GetStdHandle(STD_OUTPUT_HANDLE);
-//    rHnd = GetStdHandle(STD_INPUT_HANDLE);
-//    // Change the window title:
-//    // Set up the required window size:
-//    SMALL_RECT windowSize = {1000, 0, 2000, 100};
-//    SetConsoleWindowInfo(wHnd, 1, &windowSize);
-//    // Change the console window size:
-//    // Create a COORD to hold the buffer size:
-//    COORD bufferSize = {10, 10};
-//    SetConsoleScreenBufferSize(wHnd, bufferSize);
-//#endregion
+#define SANDBOX 0
 
 //#region CONSOLE WINDOW RESIZE FUNCTION
 HWND WINAPI GetConsoleWindowNT(void)
@@ -99,57 +69,25 @@ int main() {
     SetConsoleTitle(WINDOWTITLE);
     HWND hWnd=GetConsoleWindowNT();
     MoveWindow(hWnd,450,200,1020,650,TRUE);
-    commandLog[0] = "Initialized Window";
     //#endregion
 
-    //#region =========== OPEN FILE ===========
+    //#region =========== MAIN PROCESS ===========
+    char*       commandLog[COMMANDLOGMAXENTRY];
+    FILE*       SessionSheetFile;
+    DATASHEET   sessionSheet;
+    Renderctx   tescore_render_ctx;
 
-    openSheet(SessionSheetFile);
+    sheet_fetch_ctx(SessionSheetFile);
+    tescore_render_ctx = render_init_ctx(sessionSheet);
 
-    //#region FILE CHECK LEGACY CODE
-//    // FILE CHECK
-//    while (SessionSheetFile == NULL){
-//        printf("Enter Datasheet Name: (Default: demo.txt) ");
-//        char* FileAddress = malloc(MAXADDRLENGTH);
-//        if(scanf("%s", FileAddress) != EOF){
-//
-//            // OPEN FILE (decrypt.c)
-//            openSheet(SessionSheetFile, FileAddress);
-//
-//            //#region FILE READ TEST
-////            char *temp = malloc(MAXADDRLENGTH);
-////
-////            fscanf(SessionSheetFile, "%s", temp);
-////
-////            puts("\n---------- Read File Contents ----------\n");
-////            printf("%s\n", temp);
-////
-////            free(FileAddress);
-////            free(temp);
-////#endregion
-
-    //#endregion
-
-    //#region =========== DISASSEMBLE ===========
-
-    // GENERATE DEMO SHEET
-    sessionSheet = initSheetDemo();
-
-    //#endregion
-
-    // =========== SEND SUBSHEETS ===========
-
-    // =========== FETCH SHEETS ===========
-
-    //#region =========== RENDER ===========
-
+    // CHECKS RENDER SYSTEM MODE (TESTING / RELEASE)
     switch (SANDBOX) {
         case 1:
-            testing();
+//            testing();
             break;
 
         case 0:
-            refreshFrame(sessionSheet, commandLog, 1);
+            refreshFrame(tescore_render_ctx, commandLog);
             break;
 
         default:
@@ -157,21 +95,13 @@ int main() {
             break;
     }
 
-    //#endregion
-
-    //#region =========== NAVIGATION ===========
-
     indentCursor(1);
 
-    // Starts key input buffer & parses commands without \n (return) button
-    navigationKeyHandler(sessionSheet, sessionStudentCount, commandLog);
+    // START NAVIGATION HANDLER AFTER INIT RENDER
+    navigationKeyHandler(tescore_render_ctx, commandLog);
 
-    //#endregion
-
-    //#region =========== TERMINATE PROGRAM ===========
-    puts("Program Exit");
+    puts("PROGRAM INTERRUPTED");
     system("pause");
     return 0;
     //#endregion
-
 }
