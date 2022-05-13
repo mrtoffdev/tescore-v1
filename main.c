@@ -95,10 +95,10 @@ SUBSHEET    RankerSheet,
 int main() {
 
     //#region =========== CONSOLE SETUP: WIN32 ===========
-    SetConsoleOutputCP(CP_UTF8);
-    SetConsoleTitle(WINDOWTITLE);
-    HWND hWnd=GetConsoleWindowNT();
-    MoveWindow(hWnd,450,200,1020,650,TRUE);
+    //SetConsoleOutputCP(CP_UTF8);
+    //SetConsoleTitle(WINDOWTITLE);
+    //HWND hWnd=GetConsoleWindowNT();
+    //MoveWindow(hWnd,450,200,1020,650,TRUE);
     commandLog[0] = "Initialized Window";
     //#endregion
 
