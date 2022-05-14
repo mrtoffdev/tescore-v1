@@ -8,6 +8,9 @@
 #include <malloc.h>
 #include <string.h>
 
+// temporary
+#include<unistd.h>
+
 #include "navigation.h"
 #include "../view/render.h"
 
@@ -73,6 +76,7 @@ void navigationKeyHandler(DATASHEET sessionSheet, int maxIndexes, char* commandL
 
     while (NAVKEY != EOF || pauseHandler != 1){
         //NAVKEY = _getch();
+        sleep(5); //temporary
 
         switch (NAVKEY) {
 
