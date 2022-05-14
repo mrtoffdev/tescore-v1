@@ -145,7 +145,7 @@ int main() {
 
     switch (SANDBOX) {
         case 1:
-            //testing();
+            testing();
             break;
 
         case 0:
