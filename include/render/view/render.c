@@ -181,7 +181,7 @@ void clearScreen(){
     //    printf("\e[1;1H\e[2J");
     //    printf("\x1b[2J\x1b[H");
 
-    system("cls");
+    system("clear");
 }
 
 void indentCursor(short spaces){
