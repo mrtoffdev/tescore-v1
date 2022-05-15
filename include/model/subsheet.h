@@ -8,7 +8,7 @@
 #include "../model/index.h"
 
 // DATA MODEL PARAMETERS
-#define MAXSTUDENTCOUNT 10
+#define MAXSTUDENTCOUNT 100
 
 typedef struct  SUBSHEET {
     int         size;

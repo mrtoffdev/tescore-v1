@@ -7,71 +7,91 @@
 
 #include "rankerModule.h"
 
-//#region Main
-typedef struct index
-{
-    char* studentName;
-    short int studentScore;
-} index;
-
-//typedef struct SUBSHEET
-//{
-//    index unsortedList[100];
-//    /* NOTE: This is the only problem tbh if we really want dynamic sizes.
-//    *  I also cannot use macro definitions here for some reason.
-//    */
-//} subsheet;
-
+//#region LOCAL FUNCTION PROTOTYPES
+SUBSHEET ranker(SUBSHEET unsortedSubsheet);
+void bubbleSort(char string_array[][LIMIT], short score_array[], int lines);
 //#endregion
 
 //#region Module Test
-//int rankerModule(void)
-//{
-//// Sample subsheet
-///* NOTE:The initialization had two (or three) sets of curly braces since this is the least
-//*  confusing/error prone way for me to say 'samplesubsheet.unsortedlist = {items}'. Using the latter
-//*  leads to errors for some reason
-//*/
-////    SUBSHEET sampleSubsheet =
-////    {
-////        {   // unsortedList
-////            {"Harvar D Three Four Five", 100},
-////            {"Ox Twelve", 100},
-////            {"Tree Force", 21},
-////            {"Four", 92},
-////            {"Place", 90},
-////            {"Reee Za", 92},
-////            {"Ra", 96},
-////            {"Eight", 90},
-////            {"Nine", 100},
-////            {"Ten", 88},
-////            {"Eleven", 88},
-////        }
-////    };
-////
-//// Passing the subsheet as an argument to the function and returning as a sorted subsheet
-////SUBSHEET sortedSubsheet = ranker(sampleSubsheet);
-////
-////// List is sorted at this point. Just printing the sorted subsheet //
-////for (int i = 0; i<10; i++)
-////{
-////    printf("%-30s\t%d\n", sortedSubsheet.unsortedList[i].studentName, sortedSubsheet.unsortedList[i].studentScore);
-////}
-////printf("\n");
-//return 0;
-//}
-//#endregion
+// int main(void)
+// {
+// // Sample subsheet
+// /* NOTE:The initialization had two (or three) sets of curly braces since this is the least
+// *  confusing/error prone way for me to say 'samplesubsheet.unsortedlist = {items}'. Using the latter
+// *  leads to errors for some reason
+// */
+//    SUBSHEET sampleSubsheet =
+//    {
+//        1,
+//        2,
+//        {   
+//             {"Fridge Grills", 85},
+//             {"Window Tab Post", 92},
+//             {"Roof Leaf", 96},
+//             {"Coconut Rock", 79},
+//             {"Shirt Switch Root", 86},
+//             {"Screen Fruit", 88},
+//             {"White Fan", 94},
+//             {"Light Wall", 82},
+//             {"Cloud Plane", 77},
+//             {"Escaped Post", 97}
+//        }
+//    };
 
-//#region LOCAL FUNCTION PROTOTYPES
-void bubbleSort(char string_array[][LIMIT], short score_array[], int lines);
+//    SUBSHEET sample2Subsheet =
+//    {
+//        1,
+//        2,
+//        {   
+//             {"Fridge Grills", 85},
+//             {"Window Tab Post", 92},
+//             {"Roof Leaf", 96},
+//             {"Coconut Rock", 79},
+//             {"Shirt Switch Root", 86},
+//             {"Screen Fruit", 88},
+//             {"White Fan", 94},
+//             {"Light Wall", 82},
+//             {"Cloud Plane", 77},
+//             {"Escaped Post", 97}
+//        }
+//    };
+
+//     DATASHEET sampleSheet = 
+//     {
+//         "name",
+//         "author",
+//         sampleSubsheet,
+//         sample2Subsheet,
+//     };
+
+//     /*
+//     typedef struct  DATASHEET {
+//     char*       name,
+//                 author;
+//     SUBSHEET    rankedCollection;
+//     SUBSHEET    masterlistCollection;
+//     } DATASHEET;
+//     */
+
+// // Passing the subsheet as an argument to the function and returning as a sorted subsheet
+// SUBSHEET returnedSubsheet = ranker(sampleSheet.rankedCollection);
+
+// // List is sorted at this point. Just printing the sorted subsheet //
+// for (int i = 0; i<10; i++)
+// {
+//    printf("%-30s\t%d\n", returnedSubsheet.container[i].indexName, returnedSubsheet.container[i].value);
+// }
+// printf("\n");
+// return 0;
+// }
 //#endregion
 
 // NOTE: The argument here is passed by value. Do inform me if you want this to pass by reference.
 SUBSHEET ranker(SUBSHEET unsortedSubsheet)
 {
     SUBSHEET sortedSubsheet;
-    int lines,
-        size = 0;
+    int lines;
+    size_t size = 0;
     
     for (int i = 0; unsortedSubsheet.container[i].indexName != NULL; i++)
     {
@@ -95,7 +115,14 @@ SUBSHEET ranker(SUBSHEET unsortedSubsheet)
         sortedSubsheet.container[i].value = score_array[i];
     }
 
-    return sortedSubsheet;
+    SUBSHEET returnedSubsheet;
+    for (int i = 0; i<10; i++)
+    {
+        returnedSubsheet.container[i].indexName = sortedSubsheet.container[i].indexName;
+        returnedSubsheet.container[i].value = sortedSubsheet.container[i].value;
+    }
+
+    return returnedSubsheet;
 }
 
 void bubbleSort(char string_array[][LIMIT], short score_array[], int lines)
