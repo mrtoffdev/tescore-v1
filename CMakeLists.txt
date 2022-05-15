@@ -13,9 +13,8 @@ add_executable(
 
         # IO
         include/io/io.h
-        include/io/encrypt.c
         include/io/crud.c
-        include/io/decrypt.c
+        include/io/fileops.c
         include/io/lib/aes.c
         include/io/lib/aes.h
 
@@ -37,4 +36,4 @@ add_executable(
         # Rendering
         include/render/view/auth.c
         include/render/view/render.c
-        include/render/view/typeface.c include/sort/ranker/rankerModule.h include/render/view/typeface.h include/utils/cmdlog.c include/utils/cmdlog.h include/model/renderctx.h)
+        include/render/view/typeface.c include/sort/ranker/rankerModule.h include/render/view/typeface.h include/utils/cmdlog.c include/utils/cmdlog.h include/model/renderctx.h include/model/safeguard.h)
