@@ -145,7 +145,7 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
 	
 	// sort subsheet using ranker module
 	// (temporary, render not supposed to have access)
-	RAWSORTEDSHEET = ranker(RAWUNSORTEDSHEET, 10);
+	RAWSORTEDSHEET = ranker(RAWUNSORTEDSHEET);//, 10);
     
     // retrieve values from subsheet struct
     for (int i=0; i<10; i++) {

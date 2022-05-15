@@ -67,16 +67,16 @@ void bubbleSort(char string_array[][LIMIT], short score_array[], int lines);
 //#endregion
 
 // NOTE: The argument here is passed by value. Do inform me if you want this to pass by reference.
-SUBSHEET ranker(SUBSHEET unsortedSubsheet, int size)
+SUBSHEET ranker(SUBSHEET unsortedSubsheet)//, int size)
 {
     SUBSHEET sortedSubsheet;
-    int lines;//,
-        //size = 0;
+    int lines,
+        size = 0;
     
-    /**for (int i = 0; unsortedSubsheet.container[i].indexName != NULL; i++)
+    for (int i = 0; unsortedSubsheet.container[i].indexName != NULL; i++)
     {
         size++;
-    }**/
+    }
 
     short score_array[SIZE] = {0};
     char name_parray[SIZE][LIMIT];

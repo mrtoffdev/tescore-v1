@@ -8,6 +8,10 @@
 
 // this will rearrange the struct array,
 // make a backup if needed
+
+//TODO: change that ^ and make that v return
+// and accept a SUBSHEET
+
 void alphabeticallySort(struct strec studentList[MAX], int size) {
     // modified insertion sort,
     // might switch to merge sort if needed
