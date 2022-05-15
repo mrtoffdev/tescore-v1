@@ -41,6 +41,8 @@ CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/model/sheet.h
 CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/model/subsheet.h
 CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/render/view/render.c
 CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/render/view/render.h
+CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/sort/masterlist/alphaMergeSort.h
+CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/sort/masterlist/strec.h
 CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/sort/ranker/rankerModule.h
 
 CMakeFiles/Tescore.dir/include/render/view/typeface.c.o: ../include/model/datamodel.h
@@ -51,6 +53,10 @@ CMakeFiles/Tescore.dir/include/render/view/typeface.c.o: ../include/render/view/
 CMakeFiles/Tescore.dir/include/render/view/typeface.c.o: ../include/render/view/typeface.c
 CMakeFiles/Tescore.dir/include/render/view/typeface.c.o: ../include/render/view/typeface.h
 
+CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o: ../include/model/datamodel.h
+CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o: ../include/model/index.h
+CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o: ../include/model/sheet.h
+CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o: ../include/model/subsheet.h
 CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o: ../include/sort/masterlist/alphaMergeSort.c
 CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o: ../include/sort/masterlist/alphaMergeSort.h
 CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o: ../include/sort/masterlist/strec.h

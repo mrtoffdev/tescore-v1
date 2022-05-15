@@ -107,6 +107,8 @@ render.h
 /home/jerome03/tescore/include/render/view/render.h
 ../../sort/ranker/rankerModule.h
 /home/jerome03/tescore/include/sort/ranker/rankerModule.h
+../../sort/masterlist/alphaMergeSort.h
+/home/jerome03/tescore/include/sort/masterlist/alphaMergeSort.h
 
 /home/jerome03/tescore/include/render/view/render.h
 ../../model/datamodel.h
@@ -127,12 +129,16 @@ typeface.h
 /home/jerome03/tescore/include/sort/masterlist/alphaMergeSort.c
 string.h
 -
+stdio.h
+-
 alphaMergeSort.h
 /home/jerome03/tescore/include/sort/masterlist/alphaMergeSort.h
 
 /home/jerome03/tescore/include/sort/masterlist/alphaMergeSort.h
 strec.h
 /home/jerome03/tescore/include/sort/masterlist/strec.h
+../../model/datamodel.h
+/home/jerome03/tescore/include/model/datamodel.h
 
 /home/jerome03/tescore/include/sort/masterlist/alphabeticallySort.c
 string.h

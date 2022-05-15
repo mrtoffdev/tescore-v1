@@ -49,6 +49,7 @@
 
 // temporary access
 #include "../../sort/ranker/rankerModule.h"
+#include "../../sort/masterlist/alphaMergeSort.h"
 
 //#region GLOBAL VARS
 DATASHEET   RAWDEMOSHEET;
@@ -171,9 +172,18 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
     //#region LOWER PANEL
     renderMasterListHeader(panelID);
     renderSeparator(3);
+	
+	//sort masterlist
+	alphaMergeSort(&RAWUNSORTEDSHEET, 0, 9);
+	RAWMASTERLISTSHEET = RAWUNSORTEDSHEET;
+	
+	for (int i=0; i<10; i++) {
+		//printf("%s\n", RAWMASTERLISTSHEET.container[i].indexName); 
 
-
-    renderMasterListRow("Keanu Reeves", 98, selectionID, selectionX, panelID);
+		renderMasterListRow(RAWMASTERLISTSHEET.container[i].indexName, \
+			RAWMASTERLISTSHEET.container[i].value, \
+			selectionID, selectionX, panelID, i);
+	}
 
     renderSeparator(4);
 
@@ -502,8 +512,8 @@ void renderMasterListHeader(short panelID){
     }
 }
 
-void renderMasterListRow(char* indexName, int indexVal, short selectionID, char selectionX, short panelID){
-    for (int i = 0; i < 10; ++i) {
+void renderMasterListRow(char* indexName, int indexVal, short selectionID, char selectionX, short panelID, int i){
+    //for (int i = 0; i < 10; ++i) {
         if (panelID == 3 && selectionID == i){
             switch (selectionX) {
                 case 'X':
@@ -540,7 +550,7 @@ void renderMasterListRow(char* indexName, int indexVal, short selectionID, char 
             }
         } else defaultMasterListRow(indexName, indexVal);
 
-    }
+    //}
 
 
 

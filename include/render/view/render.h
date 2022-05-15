@@ -48,7 +48,7 @@ void renderHeader(int sessionStudentCount, short panelID, char* commandLog[]);
 void renderSubHeader();
 void renderMatrixRankerRow(char* indexNameContainer[10], int* indexValContainer, short selectionID, char selectionX, short panelID);
 void renderMasterListHeader(short panelID);
-void renderMasterListRow(char* indexName, int indexVal, short selectionID, char selectionX, short panelID);
+void renderMasterListRow(char* indexName, int indexVal, short selectionID, char selectionX, short panelID, int i);
 
 // =========== TYPEFACE MODIFICATIONS ===========
 char* typefaceBold(int, char*);
