@@ -74,7 +74,11 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleTitle(WINDOWTITLE);
     HWND hWnd=GetConsoleWindowNT();
-    MoveWindow(hWnd,450,200,1020,650,TRUE);
+    if (SANDBOX == 1){
+        MoveWindow(hWnd,500,0,1020,1200,TRUE);
+    } else {
+        MoveWindow(hWnd,450,200,1020,650,TRUE);
+    }
     //#endregion
 
     //#region =========== MAIN PROCESS ===========
@@ -83,6 +87,7 @@ int main() {
     char            commandLog[COMMANDLOGMAXENTRY][509];
     DATASHEET       sessionSheet;
     Renderctx       tescore_render_ctx;
+
 
     sheet_fetch_ctx(SessionSheetFile);
     tescore_render_ctx = render_init_ctx(sessionSheet);

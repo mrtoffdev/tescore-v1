@@ -60,12 +60,21 @@
     + Double Confirm for Removing Cell
 
     UNFINISHED:
-    - Edit Sheet Name Button (Key: T)
-    - Dynamic Graph Limits (Index Count & Index Value) to fit in 10x11 graph
-    - Write System (safeEditCell()) changing container values
+    - Edit Sheet Name Button (Key: T) X
+    - Dynamic Graph Limits (Index Count & Index Value) to fit in 10x11 graph X
+    - Write System (safeEditCell()) changing container values +
+
     - Data writing to external file
     - Data reading from external file
     - Decrypting written data / isolate filebuffer to internal string container / Encrypting string container
+    - Function that disassemble file-read bufferdata to Datasheet Struct
+    - Implement Datasheet Defaults init & file-read bufferdata to globally available Datasheet
+    -
+
+    JOVIC THINGIESY:
+    - Create a placehold Datasheet structure (MANUALLY) //since we don't have a databuffer disassembler yet
+    - Test module using Datasheet structure ONLY, fetch all required variables through Datasheet ONLY (e.g contSize)
+
 
     OPTIMIZATION: (LOW PRIORITY)
     - Set framebuffer limitations to keys w/out keybindings
@@ -79,3 +88,37 @@
         Panel 3: Disable all bindings except Panel Nav Keys, Entry Nav Keys, Terminate Key,
         Operation Keys, Maximize Key, and Sheet Rename Key
             <1> <2> <3> <W> <A> <S> <D> <Q> <E> <R> <M> <T>
+
+             MEMORY SECTION:
+                - Create a string container that has the final details about the sheet
+                - Add padding to the string in case total length is not a multiple of 16 (For TinyAES compat)
+                - Encode the final string w/ padding to uint8_t container (For TinyAES compat)
+                - Start encryption & print out raw buffers
+                - Test decryption and verify integrity
+
+    AES ENCRYPTION:
+    - Fetch String & Divide into blocks [N][16]
+    - Assign string to char array (mandatory) to preserve escape symbols in AES block
+            FUNCTIONS TO CREATE:
+                    - Function that disassembles char* into char [N][16]
+                    - Function that assembles char [N][16] into char*
+
+                    - Function that disassembles uint8_t[BLOCK*16] into uint8_t [N][16]
+                    - Function that assembles uint8_t [N][16] into uint8_t[BLOCK*16]
+
+                    - Function that takes in char [N][16] and transfers it to uint8_t [N][16]
+
+            CONTAINERS TO CREATE:
+                    - Container of disassembled raw buffer uint8_t [BLOCK][16]
+                    - Container of disassembled string buffer char [BLOCK][16]
+
+                    - Container of complete raw buffer w/ padding uint8_t [BLOCK*16]
+                    - Container of complete string w/ padding char [BLOCK*16]
+
+    HOW TO ENCRYPT:
+            - Create Key uint8_t (char encoded src)
+            - Create IV uint8_t (char encoded src)
+            - Create Block Container uint8_t (char encoded src)
+            - Init AES context with Key & IV
+            - Encrypt with AES_CBC_encrypt (&ctx, Block Container, Block Length)
+            - Profit

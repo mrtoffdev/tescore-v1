@@ -223,7 +223,6 @@ void refreshFrame(Renderctx ctx, char commandLog[10][509]){
     //#endregion
 
 }
-
 void clearScreen(){
 
     // ALTS
@@ -232,13 +231,11 @@ void clearScreen(){
 
     system("cls");
 }
-
 void indentCursor(short spaces){
     for (int i = 0; i < spaces; ++i) {
         printf("\t");
     }
 }
-
 void generateGraph(){
 
     //#region INIT LOCAL VARIABLES
@@ -364,7 +361,6 @@ void renderHeader(Renderctx ctx){
     }
 
 }
-
 void renderSubHeader(){
     int bottom[11] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 
@@ -393,7 +389,6 @@ void renderSubHeader(){
     //           sheetName);
     //#endregion
 }
-
 void renderMatrixRankerRow(char* indexNameContainer[10], int* indexValContainer, short selectionID, char selectionX, short panelID ){
     uint8_t inverseY = 0;
 
@@ -473,7 +468,6 @@ void renderMatrixRankerRow(char* indexNameContainer[10], int* indexValContainer,
 //#endregion
 
 }
-
 void renderMasterListHeader(short panelID){
     if(panelID == 3){
         printf("\t│");
@@ -491,7 +485,6 @@ void renderMasterListHeader(short panelID){
         printf("\t│\t\t\t\t- Student Submission List -\t\t\t\t\t│           │\n");
     }
 }
-
 void renderMasterListRow(char* indexName, int indexVal, short selectionID, char selectionX, short panelID){
     for (int i = 0; i < 10; ++i) {
         if (panelID == 3 && selectionID == i){
@@ -535,7 +528,6 @@ void renderMasterListRow(char* indexName, int indexVal, short selectionID, char 
 
 
 }
-
 void defaultMasterListRow(char* indexName, int indexVal){
     printf("\t| • %-90s  |   %4d    │\n", indexName, indexVal);
 }
