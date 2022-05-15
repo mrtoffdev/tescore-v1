@@ -10,6 +10,23 @@
 
 #define SIZE 10
 
+// RENDER SYSTEM OPERATIONS
+Renderctx render_init_ctx(DATASHEET sessionSheet){
+    Renderctx ctx;
+    // Initialize Default Values
+    ctx.SessionSheet = sessionSheet;          // Fetch Sheet
+    ctx.sheetName = "SheetName.dib";          // Default Sheet Name
+    ctx.NAVKEY = '1';                         // Points to Default Panel Selection (Graph)
+    ctx.handlerMode = 0;                      // 0 : Active Handler | 1 : Inactive Handler
+    ctx.operationMode = 1;                  // 1 : View | 2 : Select | 3 : Edit
+    ctx.sessionPanelID = 1;                 // ID of panel to render
+    ctx.renderCellIndex = 1;                // Index of cursor in lists | Default: 1
+    ctx.renderCellX = 'X';
+
+    return ctx;
+}
+
+// DATASHEET OPERATIONS
 void fetchData(FILE* DIB, char* indexNameArr[], char* indexValueArr[], int lineCount){
 
     char *collection[][5] = {};
@@ -36,50 +53,6 @@ void fetchData(FILE* DIB, char* indexNameArr[], char* indexValueArr[], int lineC
         }
     }
 
-}
-
-
-// DEV TEST FUNCTION
-
-DATASHEET initSheetDemo(){
-
-    DATASHEET localInitSheet;
-    localInitSheet.author="admin";
-    localInitSheet.name="masterlist";
-
-    // GENERATE CONTENTS
-    for (short i = 0; i < 10; ++i) {
-
-        INDEX insertIndex;
-        char indexNameAppend[100] = "Jacob ";
-
-        insertIndex.indexName = indexNameAppend;
-        insertIndex.value = i * 12;
-
-        localInitSheet.rankedCollection.container[i] = insertIndex;
-        localInitSheet.masterlistCollection.container[i] = insertIndex;
-    }
-
-    return localInitSheet;
-}
-
-Renderctx render_init_ctx(DATASHEET sessionSheet){
-    Renderctx ctx;
-    // Initialize Default Values
-    ctx.SessionSheet = sessionSheet;          // Fetch Sheet
-    ctx.sheetName = "SheetName.dib";          // Default Sheet Name
-    ctx.NAVKEY = '1';                         // Points to Default Panel Selection (Graph)
-    ctx.handlerMode = 0;                      // 0 : Active Handler | 1 : Inactive Handler
-    ctx.operationMode = 1;                  // 1 : View | 2 : Select | 3 : Edit
-    ctx.sessionPanelID = 1;                 // ID of panel to render
-    ctx.renderCellIndex = 1;                // Index of cursor in lists | Default: 1
-    ctx.renderCellX = 'X';
-
-    printf("From CRUD: %s\n", ctx.sheetName);
-//    Renderctx.distributionTable[0][1] = 2023;
-//    fetch_gradeTable(Renderctx.SessionSheet, Renderctx.distributionTable);
-
-    return ctx;
 }
 
 void fetch_gradeTable(DATASHEET Datactx, int distributionTable[11][2]){
@@ -119,6 +92,32 @@ void fetch_gradeTable(DATASHEET Datactx, int distributionTable[11][2]){
 //        }
 //    }
 }
+
+
+// DEV TEST FUNCTION
+
+DATASHEET initSheetDemo(){
+
+    DATASHEET return_dataSheet;
+    return_dataSheet.author="admin";
+    return_dataSheet.name="masterlist";
+
+    // GENERATE CONTENTS
+    for (short i = 0; i < 10; ++i) {
+
+        INDEX insertIndex;
+        char indexNameAppend[100] = "Jacob ";
+
+        insertIndex.indexName = indexNameAppend;
+        insertIndex.value = i * 12;
+
+        return_dataSheet.rankedCollection.container[i] = insertIndex;
+        return_dataSheet.masterlistCollection.container[i] = insertIndex;
+    }
+
+    return return_dataSheet;
+}
+
 
 void fetch_studentDistTable(DATASHEET Datactx){
 
