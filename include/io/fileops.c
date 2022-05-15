@@ -13,6 +13,7 @@
 #include "lib/aes.h"
 
 #define AES128 1
+#define DEBUGMODE 1
 
 //#region =========== PRIVATE FUNCTIONS ===========
 
@@ -44,6 +45,9 @@ void        enc_generateHexBufferFromStr(const char* plain_srcStrBuffer, uint8_t
 void        enc_generateStrBufferFromHex(const uint8_t* ctx_hexBufferContainer, char* ctx_DecodeStrBuffer, size_t ctx_hexBufferSize);
 void        enc_translateStrHexBuffertoHex(const char* ctx_srcHexStrBuffer, uint8_t* ctx_hexBufferContainer, size_t ctx_strBufferSize);
 
+void        enc_AES_encryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferEncryptableBlocks[][16], uint8_t ctx_BufferEncryptedBlocks[][16], size_t ctx_inBufferBlocks);
+void        enc_AES_decryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferDecryptableBlocks[][16], uint8_t ctx_BufferDecryptedBlocks[][16], size_t ctx_inBufferBlocks);
+
 void        enc_dsmblStrBuffer(const char* plain_srcStrBuffer, char ctx_dsmblStrBuffer[][16], size_t ctx_blocks);
 void        enc_generateHexBufferEncryptable(char ctx_dsmblStrBuffer[][16], uint8_t ctx_dsmblHexBuffer[][16], size_t ctx_blocks);
 
@@ -61,14 +65,21 @@ void testing(const char* plain_strSrcBuffer){
     FILE* localFile;
     struct AES_ctx ctx;
 
-    char* inputbuffer = "as;dfkldjsf;skladfjasd;f00000000";
-    uint8_t key[] = "hellotherethisis";
-    uint8_t iv[]  = "tescoreinternals";
+    uint8_t key[] = "tescoreinternals";
+    uint8_t iv[]  = "XXXCCCVVVIIIOOOE";
+
     size_t inStrSize = 1024;
     uint8_t str[inStrSize];
 
-//    uint8_t container[] = {0x49,0x6E,0x74, 0x65, 0x67, 0x72, 0x69, 0x74, 0x79};
-    char decoded[] = "Paradox has been of interest to humankind since ancient times. More than a decade ago Rosemarie Rizzo Parse specified paradoxical patterns of human relating in her nursing theory man-living-health. Since that time there has been increasing recognition by nurse researchers that paradox is an inherent aspect of human experience and an important dimension of health. The purpose of this article is to describe the phenomenon of living paradox as an inherent aspect of human experience and health. The author explores the historical development of paradox";
+    char decoded[] = "Paradox has been of interest to humankind since ancient times. M"
+                     "ore than a decade ago Rosemarie Rizzo Parse specified paradoxica"
+                     "l patterns of human relating in her nursing theory man-living-he"
+                     "alth. Since that time there has been increasing recognition by n"
+                     "urse researchers that paradox is an inherent aspect of human exp"
+                     "erience and an important dimension of health. The purpose of thi"
+                     "s article is to describe the phenomenon of living paradox as an "
+                     "inherent aspect of human experience and health. The author explo"
+                     "res the historical development of paradox";
 
     size_t ctx_inBufferBlocks = enc_fetchBlockCount(decoded);
     uint64_t ctx_inBufferAlloc = fetch_maxBufferAlloc(decoded);
@@ -76,93 +87,101 @@ void testing(const char* plain_strSrcBuffer){
     // Encryption Requirements
     char        ctx_dsmblStrBuffer[ctx_inBufferBlocks][16];
     uint8_t     ctx_dsmblHexBuffer[ctx_inBufferBlocks][16];
-    char*       lineone = calloc(2, 16);
 
     // Create disassembled char*
     enc_dsmblStrBuffer(decoded, ctx_dsmblStrBuffer, ctx_inBufferBlocks);
     enc_generateHexBufferEncryptable(ctx_dsmblStrBuffer, ctx_dsmblHexBuffer, ctx_inBufferBlocks);
-
-//    char a = 'A';
-//    uint8_t b[1][2];
-//    b[0][0] = a;
-//    printf("%.2x", b[0][0]);
 
     printf("String Generated: \n\n");
     for (int i = 0; i < ctx_inBufferBlocks; ++i) {
         printf("%s", ctx_dsmblStrBuffer[i]);
     }
 
-    // Raw buffer
+    // RAW BUFFER =====================================================================================
 
-    printf("\n\nUnencrypted Buffer: \n\n");
-    for (int i = 0; i < ctx_inBufferBlocks; ++i) {
-        printf("Buffer Block: ");
-        for (int j = 0; j < 16; ++j) {
-            printf("%.2x", ctx_dsmblHexBuffer[i][j]);
+    if (DEBUGMODE == 1){
+        printf("\n\nUnencrypted Buffer: \n\n");
+        for (int i = 0; i < ctx_inBufferBlocks; ++i) {
+            printf("Buffer Block: ");
+            for (int j = 0; j < 16; ++j) {
+                printf("%.2x", ctx_dsmblHexBuffer[i][j]);
+            }
+            printf("\n");
         }
-        printf("\n");
+        printf("\n\nBuffer Size: %d\n", ctx_inBufferAlloc);
+        printf("Blocks Used: %d\n\n", ctx_inBufferBlocks);
     }
-    printf("\n\nBuffer Size: %d\n", ctx_inBufferAlloc);
-    printf("Blocks Used: %d\n\n", ctx_inBufferBlocks);
 
-    //#region Encryption Time woo
+    // ENCRYPTION | DECRYPTION ========================================================================
+
+    // ENCRYPTION PROCESS =============================================================================
+
+    uint8_t ctx_BufferEncryptableBlocks[ctx_inBufferBlocks][16];
+    uint8_t ctx_BufferEncryptedBlocks[ctx_inBufferBlocks][16];
 
     AES_init_ctx_iv(&ctx, key, iv);
+    enc_AES_encryptBufferBlocks(ctx, ctx_dsmblHexBuffer, ctx_BufferEncryptedBlocks, ctx_inBufferBlocks);
+//    DEBUGMODE == 1 ? printf("Encryption:\n\n") : 0;
+//    for (int i = 0; i < ctx_inBufferBlocks; ++i) {
+//        uint8_t ctx_BufferBlockEncryptable[16];
+//        // Create a encryptable buffer block
+//        for (int j = 0; j < 16; ++j) {
+//            ctx_BufferBlockEncryptable[j] = ctx_dsmblHexBuffer[i][j];
+//        }
+//
+//        // Emcryption Function in AES128.h
+//        AES_CBC_encrypt_buffer(&ctx, ctx_BufferBlockEncryptable, 16);
+//
+//        // Insert encrypted buffer into container
+//        DEBUGMODE == 1 ? printf("Buffer Block: ") : 0;
+//        for (int k = 0; k < 16; ++k) {
+//            ctx_BufferEncryptedBlocks[i][k] = ctx_BufferBlockEncryptable[k];
+//            DEBUGMODE == 1 ? printf("%.2x", ctx_BufferBlockEncryptable[k]) : 0;
+//        }
+//        DEBUGMODE == 1 ? printf("\n") : 0;
+//    }
 
-    uint8_t ctx_BufferBlockContainerArr[ctx_inBufferBlocks][16];
-    uint8_t ctx_BufferBlockContainer[16];
-    uint8_t ctx_BufferBlockDecryptable[16];
+    // DECRYPTION PROCESS =============================================================================
 
-    for (int i = 0; i < ctx_inBufferBlocks; ++i) {
-        for (int j = 0; j < 16; ++j) {
-            ctx_BufferBlockContainer[j] = ctx_dsmblHexBuffer[i][j];
-        }
-
-        AES_CBC_encrypt_buffer(&ctx, ctx_BufferBlockContainer, 16);
-
-        printf("Buffer Block: ");
-        for (int k = 0; k < 16; ++k) {
-            ctx_BufferBlockContainerArr[i][k] = ctx_BufferBlockContainer[k];
-            printf("%.2x", ctx_BufferBlockContainer[k]);
-        }
-        printf("\n");
-    }
+    uint8_t ctx_BufferDecryptableBlocks[ctx_inBufferBlocks][16];
+    uint8_t ctx_BufferDecryptedBlocks[ctx_inBufferBlocks][16];
 
     AES_init_ctx_iv(&ctx, key, iv);
+    enc_AES_decryptBufferBlocks(ctx, ctx_BufferEncryptedBlocks, ctx_BufferDecryptedBlocks, ctx_inBufferBlocks);
+//    DEBUGMODE == 1 ? printf("\n\nDecryption:\n\n") : 0 ;
+//    for (int i = 0; i < ctx_inBufferBlocks; ++i) {
+//        // Create a temporary holder of the decryptable block
+//        uint8_t ctx_BufferBlockDecryptable[16];
+//
+//        // Create a decryptable buffer block
+//        for (int j = 0; j < 16; ++j) {
+//            ctx_BufferBlockDecryptable[j] = ctx_BufferEncryptedBlocks[i][j];
+//        }
+//
+//        AES_CBC_decrypt_buffer(&ctx, ctx_BufferBlockDecryptable, 16);
+//
+//        // Insert decrypted buffer into container
+//        DEBUGMODE == 1 ? printf("Buffer Block: ") : 0;
+//        for (int j = 0; j < 16; ++j) {
+//            ctx_BufferDecryptedBlocks[i][j] = ctx_BufferBlockDecryptable[j];
+//            DEBUGMODE == 1 ? printf("%.2x", ctx_BufferBlockDecryptable[j]) : 0;
+//        }
+//        DEBUGMODE == 1 ? printf("\n") : 0;
+//    }
 
-    printf("\n\nDecryption:\n\n");
-    for (int i = 0; i < ctx_inBufferBlocks; ++i) {
-        for (int j = 0; j < 16; ++j) {
-            ctx_BufferBlockDecryptable[j] = ctx_BufferBlockContainerArr[i][j];
-        }
-
-        // Doodad thingy
-        AES_CBC_decrypt_buffer(&ctx, ctx_BufferBlockDecryptable, 16);
-
-        // Print out Decoded Buffer
-        printf("Buffer Block: ");
-        for (int j = 0; j < 16; ++j) {
-            printf("%.2x", ctx_BufferBlockDecryptable[j]);
-        }
-        printf("\n");
-    }
-
+    // ================================================================================================
 
     char* finalString = malloc(1000);
     char placeholderstr[16];
-    enc_generateStrBufferFromHex(ctx_BufferBlockDecryptable, finalString, ctx_inBufferAlloc);
+    enc_generateStrBufferFromHex(ctx_BufferDecryptableBlocks, finalString, ctx_inBufferAlloc);
 
     for (int i = 0; i < ctx_inBufferBlocks; ++i) {
-        strncat(finalString, ctx_BufferBlockDecryptable, 16);
+        strncat(finalString, (char*) ctx_BufferDecryptableBlocks, 16);
     }
 
     //#endregion
 
-    //#region Decryption Time woo // TODO HIGH PRIORITY =======================
-
-
-
-    //#endregion
+    //#region LEGACY CODE
 
 //    strncat(lineone, ctx_dsmblStrBuffer[0], 16);
 //    strncat(lineone, ctx_dsmblStrBuffer[1], 16);
@@ -373,8 +392,7 @@ void testing(const char* plain_strSrcBuffer){
 ////        printf("Integrity Check Verified: Lost Data = %d", lostData);
 ////    }
 ////#endregion
-////#endregion
-//
+
 ////    fileops_decryptBuffer(ctx, ctx_rawBufferContainer, key, iv, ctx_targetBufferSize, plain_strSrcBuffer);
 
 }
@@ -442,6 +460,54 @@ void enc_translateStrHexBuffertoHex(const char* ctx_srcHexStrBuffer, uint8_t* ct
 
         ctx_hexBufferContainer[counter] = (int)strtol(temp_hexDigitContainer, NULL, 16);
         counter++;
+    }
+}
+
+//TODO ALWAYS INITIALiZE AES CTX BEFORE RUNNING MAIN ENCRYPTION FUNCITONS
+
+void enc_AES_encryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferEncryptableBlocks[][16], uint8_t ctx_BufferEncryptedBlocks[][16], size_t ctx_inBufferBlocks){
+    DEBUGMODE == 1 ? printf("Encryption:\n\n") : 0;
+    for (int i = 0; i < ctx_inBufferBlocks; ++i) {
+        uint8_t ctx_BufferBlockEncryptable[16];
+        // Create a encryptable buffer block
+        for (int j = 0; j < 16; ++j) {
+            ctx_BufferBlockEncryptable[j] = ctx_BufferEncryptableBlocks[i][j];
+        }
+
+        // Emcryption Function in AES128.h
+        AES_CBC_encrypt_buffer(&ctx, ctx_BufferBlockEncryptable, 16);
+
+        // Insert encrypted buffer into container
+        DEBUGMODE == 1 ? printf("Buffer Block: ") : 0;
+        for (int k = 0; k < 16; ++k) {
+            ctx_BufferEncryptedBlocks[i][k] = ctx_BufferBlockEncryptable[k];
+            DEBUGMODE == 1 ? printf("%.2x", ctx_BufferBlockEncryptable[k]) : 0;
+        }
+        DEBUGMODE == 1 ? printf("\n") : 0;
+    }
+}
+
+void enc_AES_decryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferDecryptableBlocks[][16], uint8_t ctx_BufferDecryptedBlocks[][16], size_t ctx_inBufferBlocks){
+
+    DEBUGMODE == 1 ? printf("\n\nDecryption:\n\n") : 0 ;
+    for (int i = 0; i < ctx_inBufferBlocks; ++i) {
+        // Create a temporary holder of the decryptable block
+        uint8_t ctx_BufferBlockDecryptable[16];
+
+        // Create a decryptable buffer block
+        for (int j = 0; j < 16; ++j) {
+            ctx_BufferBlockDecryptable[j] = ctx_BufferDecryptableBlocks[i][j];
+        }
+
+        AES_CBC_decrypt_buffer(&ctx, ctx_BufferBlockDecryptable, 16);
+
+        // Insert decrypted buffer into container
+        DEBUGMODE == 1 ? printf("Buffer Block: ") : 0;
+        for (int j = 0; j < 16; ++j) {
+            ctx_BufferDecryptedBlocks[i][j] = ctx_BufferBlockDecryptable[j];
+            DEBUGMODE == 1 ? printf("%.2x", ctx_BufferBlockDecryptable[j]) : 0;
+        }
+        DEBUGMODE == 1 ? printf("\n") : 0;
     }
 }
 
