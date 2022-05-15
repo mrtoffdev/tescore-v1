@@ -12,7 +12,7 @@
 #include "../render/view/render.h"
 #include "lib/aes.h"
 
-#define AES256 1
+#define AES128 1
 
 //#region =========== PRIVATE FUNCTIONS ===========
 
@@ -105,39 +105,63 @@ void testing(const char* plain_strSrcBuffer){
     printf("\n\nBuffer Size: %d\n", ctx_inBufferAlloc);
     printf("Blocks Used: %d\n\n", ctx_inBufferBlocks);
 
-
     //#region Encryption Time woo
+
     AES_init_ctx_iv(&ctx, key, iv);
+
+    uint8_t ctx_BufferBlockContainerArr[ctx_inBufferBlocks][16];
     uint8_t ctx_BufferBlockContainer[16];
+    uint8_t ctx_BufferBlockDecryptable[16];
 
     for (int i = 0; i < ctx_inBufferBlocks; ++i) {
         for (int j = 0; j < 16; ++j) {
             ctx_BufferBlockContainer[j] = ctx_dsmblHexBuffer[i][j];
         }
+
         AES_CBC_encrypt_buffer(&ctx, ctx_BufferBlockContainer, 16);
+
         printf("Buffer Block: ");
         for (int k = 0; k < 16; ++k) {
+            ctx_BufferBlockContainerArr[i][k] = ctx_BufferBlockContainer[k];
             printf("%.2x", ctx_BufferBlockContainer[k]);
         }
         printf("\n");
     }
-    //#endregion
 
-    //#region Decryption Time woo
-    printf("\n\nDecryption:\n\n");
     AES_init_ctx_iv(&ctx, key, iv);
-    uint8_t ctx_CleanBufferBlockContainer[16];
+
+    printf("\n\nDecryption:\n\n");
     for (int i = 0; i < ctx_inBufferBlocks; ++i) {
         for (int j = 0; j < 16; ++j) {
-            ctx_CleanBufferBlockContainer[j] = ctx_BufferBlockContainer[j];
+            ctx_BufferBlockDecryptable[j] = ctx_BufferBlockContainerArr[i][j];
         }
-        AES_CBC_decrypt_buffer(&ctx, ctx_BufferBlockContainer, 16);
+
+        // Doodad thingy
+        AES_CBC_decrypt_buffer(&ctx, ctx_BufferBlockDecryptable, 16);
+
+        // Print out Decoded Buffer
         printf("Buffer Block: ");
-        for (int k = 0; k < 16; ++k) {
-            printf("%.2x", ctx_CleanBufferBlockContainer[k]);
+        for (int j = 0; j < 16; ++j) {
+            printf("%.2x", ctx_BufferBlockDecryptable[j]);
         }
         printf("\n");
     }
+
+
+    char* finalString = malloc(1000);
+    char placeholderstr[16];
+    enc_generateStrBufferFromHex(ctx_BufferBlockDecryptable, finalString, ctx_inBufferAlloc);
+
+    for (int i = 0; i < ctx_inBufferBlocks; ++i) {
+        strncat(finalString, ctx_BufferBlockDecryptable, 16);
+    }
+
+    //#endregion
+
+    //#region Decryption Time woo // TODO HIGH PRIORITY =======================
+
+
+
     //#endregion
 
 //    strncat(lineone, ctx_dsmblStrBuffer[0], 16);
@@ -420,6 +444,8 @@ void enc_translateStrHexBuffertoHex(const char* ctx_srcHexStrBuffer, uint8_t* ct
         counter++;
     }
 }
+
+void util_printHexBuffertoStr();
 
 void enc_dsmblStrBuffer(const char* plain_srcStrBuffer, char ctx_dsmblStrBuffer[][16], size_t ctx_blocks){
     const short debugMode = 0;
