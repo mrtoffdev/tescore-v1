@@ -1,3 +1,5 @@
+#define MAX 999
+
 #include "../../model/datamodel.h"
 
 void countScores(int scores[MAX], int scoreArrSize, \

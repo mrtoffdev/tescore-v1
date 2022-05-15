@@ -3,9 +3,13 @@
 
 CMakeFiles/Tescore.dir/include/io/crud.c.o
  /home/jerome03/tescore/include/io/crud.c
+ /home/jerome03/tescore/include/model/datamodel.h
  /home/jerome03/tescore/include/model/index.h
  /home/jerome03/tescore/include/model/sheet.h
  /home/jerome03/tescore/include/model/subsheet.h
+ /home/jerome03/tescore/include/sort/masterlist/alphaMergeSort.h
+ /home/jerome03/tescore/include/sort/masterlist/strec.h
+ /home/jerome03/tescore/include/sort/ranker/rankerModule.h
 CMakeFiles/Tescore.dir/include/io/decrypt.c.o
  /home/jerome03/tescore/include/io/decrypt.c
  /home/jerome03/tescore/include/io/io.h
@@ -36,15 +40,13 @@ CMakeFiles/Tescore.dir/include/render/view/auth.c.o
  /home/jerome03/tescore/include/render/view/auth.c
  /home/jerome03/tescore/include/render/view/render.h
 CMakeFiles/Tescore.dir/include/render/view/render.c.o
+ /home/jerome03/tescore/include/io/io.h
  /home/jerome03/tescore/include/model/datamodel.h
  /home/jerome03/tescore/include/model/index.h
  /home/jerome03/tescore/include/model/sheet.h
  /home/jerome03/tescore/include/model/subsheet.h
  /home/jerome03/tescore/include/render/view/render.c
  /home/jerome03/tescore/include/render/view/render.h
- /home/jerome03/tescore/include/sort/masterlist/alphaMergeSort.h
- /home/jerome03/tescore/include/sort/masterlist/strec.h
- /home/jerome03/tescore/include/sort/ranker/rankerModule.h
  /home/jerome03/tescore/include/sort/search/countScores.h
 CMakeFiles/Tescore.dir/include/render/view/typeface.c.o
  /home/jerome03/tescore/include/model/datamodel.h

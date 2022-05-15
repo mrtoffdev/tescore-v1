@@ -15,6 +15,10 @@ string.h
 -
 ../model/sheet.h
 /home/jerome03/tescore/include/model/sheet.h
+../sort/ranker/rankerModule.h
+/home/jerome03/tescore/include/sort/ranker/rankerModule.h
+../sort/masterlist/alphaMergeSort.h
+/home/jerome03/tescore/include/sort/masterlist/alphaMergeSort.h
 
 /home/jerome03/tescore/include/io/decrypt.c
 stdio.h
@@ -105,10 +109,8 @@ stdint.h
 -
 render.h
 /home/jerome03/tescore/include/render/view/render.h
-../../sort/ranker/rankerModule.h
-/home/jerome03/tescore/include/sort/ranker/rankerModule.h
-../../sort/masterlist/alphaMergeSort.h
-/home/jerome03/tescore/include/sort/masterlist/alphaMergeSort.h
+../../io/io.h
+/home/jerome03/tescore/include/io/io.h
 ../../sort/search/countScores.h
 /home/jerome03/tescore/include/sort/search/countScores.h
 

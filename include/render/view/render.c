@@ -47,16 +47,17 @@
 
 #include "render.h"
 
+//no time to check access
+#include "../../io/io.h"
+
 // temporary access
-#include "../../sort/ranker/rankerModule.h"
-#include "../../sort/masterlist/alphaMergeSort.h"
 #include "../../sort/search/countScores.h"
 
 //#region GLOBAL VARS
 DATASHEET   RAWDEMOSHEET;
-SUBSHEET    RAWUNSORTEDSHEET,
-            RAWSORTEDSHEET,
-            RAWMASTERLISTSHEET;
+/**SUBSHEET    RAWDEMOSHEET.masterlistCollection,
+            RAWDEMOSHEET.rankedCollection,
+            RAWDEMOSHEET.masterlistCollection;**/
 
 int         gradeScaling[11] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100},
             studentScaling[10] = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
@@ -108,71 +109,58 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
     renderSeparator(3);
     
     // PLACEHOLDER
-    char* renderableIndexNames[10] = {
-            "Keni Lobredo",
-            "Meni Nobredo",
-            "Eeni Fobredo",
-            "Qeni Robredo",
-            "Oeni Pobredo",
-            "Aeni Bobredo",
-            "Seni Tobredo",
-            "Geni Hobredo",
-            "Ieni Jobredo",
-            "Ceni Dobredo",
-    };
-
-    int renderableIndexValues[10] = {
-            95,
-            95,
-            90,
-            91,
-            95,
-            99,
-            93,
-            90,
-            92,
-            80,
-    };
+    char* renderableIndexNames[10];
+    int renderableIndexValues[10];
     
-    // pass placeholder values into subsheet struct
-    RAWUNSORTEDSHEET.size = 10;
-    RAWUNSORTEDSHEET.id = 3; //unsorted ID
-    for (int i=0; i<10; i++) {
-		RAWUNSORTEDSHEET.container[i].indexName = renderableIndexNames[i];
-		RAWUNSORTEDSHEET.container[i].value = renderableIndexValues[i];
-	}
-
+    // call initSheetDemo
+    RAWDEMOSHEET = initSheetDemo();
+    
     // PANELS : BAR GRAPH MATRIX & TOP RANKERS
     
     // retrieve scores and place them in array
     int unroundedScores[10] = {0};
     for (int i=0; i<10; i++) {
-		unroundedScores[i] = RAWUNSORTEDSHEET.container[i].value;
+		unroundedScores[i] = RAWDEMOSHEET.masterlistCollection.container[i].value;
 	}
     
     // round off these scores one by one and place them in another array
     int roundedScores[10] = {0};
+    int roundedValue;
+    int inArray;
     for (int i=0; i<10; i++) {
 		// round down to nearest 10
-		roundedScores[i] = RAWUNSORTEDSHEET.container[i].value - (RAWSORTEDSHEET.container[i].value % 10);
+		roundedValue = RAWDEMOSHEET.masterlistCollection.container[i].value - (RAWDEMOSHEET.masterlistCollection.container[i].value % 10);
+		//check if value already in array
+		inArray = 0;
+		for (int j=0; j<=i; j++) {
+			if (roundedScores[j] == roundedValue)
+				inArray = 1;
+		}
+		
+		//if value not in array, add it
+		if (!inArray)
+			roundedScores[i] = roundedValue;
+		// else just leave it zero
+		else
+			roundedScores[i] = 0;
     }
     
     // count the occurence of these scores in the subsheet
     int results[10][2];
-    countScores(roundedScores, 10, &RAWUNSORTEDSHEET, 10, results);
+    countScores(roundedScores, 10, &RAWDEMOSHEET.masterlistCollection, 10, results);
+    
+    for (int i=0; i<10; i++) {
+		printf("%d% d\n", results[i][0], results[i][1]);
+	}
     
     generateGraph(results);
 
-    
-	
-	// sort subsheet using ranker module
-	// (temporary, render not supposed to have access)
-	RAWSORTEDSHEET = ranker(RAWUNSORTEDSHEET);//, 10);
+ 
     
     // retrieve values from subsheet struct
     for (int i=0; i<10; i++) {
-		renderableIndexNames[i] = RAWSORTEDSHEET.container[i].indexName;
-		renderableIndexValues[i] = RAWSORTEDSHEET.container[i].value;
+		renderableIndexNames[i] = RAWDEMOSHEET.rankedCollection.container[i].indexName;
+		renderableIndexValues[i] = RAWDEMOSHEET.rankedCollection.container[i].value;
 	}
 
     renderMatrixRankerRow(
@@ -194,15 +182,13 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
     renderMasterListHeader(panelID);
     renderSeparator(3);
 	
-	//sort masterlist
-	alphaMergeSort(&RAWUNSORTEDSHEET, 0, 9);
-	RAWMASTERLISTSHEET = RAWUNSORTEDSHEET;
+	
 	
 	for (int i=0; i<10; i++) {
-		//printf("%s\n", RAWMASTERLISTSHEET.container[i].indexName); 
+		//printf("%s\n", RAWDEMOSHEET.masterlistCollection.container[i].indexName); 
 
-		renderMasterListRow(RAWMASTERLISTSHEET.container[i].indexName, \
-			RAWMASTERLISTSHEET.container[i].value, \
+		renderMasterListRow(RAWDEMOSHEET.masterlistCollection.container[i].indexName, \
+			RAWDEMOSHEET.masterlistCollection.container[i].value, \
 			selectionID, selectionX, panelID, i);
 	}
 

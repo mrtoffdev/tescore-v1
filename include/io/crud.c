@@ -8,7 +8,12 @@
 
 #include "../model/sheet.h"
 
-#define SIZE 10
+#include "../sort/ranker/rankerModule.h"
+#include "../sort/masterlist/alphaMergeSort.h"
+
+
+
+#define SIZE 100
 
 void append(){
 
@@ -46,11 +51,40 @@ void fetchData(FILE* DIB, char* indexNameArr[], char* indexValueArr[], int lineC
 
 DATASHEET initSheetDemo(){
     DATASHEET localInitSheet;
+    SUBSHEET RAWUNSORTEDSHEET;
+    SUBSHEET RAWSORTEDSHEET;
+    SUBSHEET RAWMASTERLISTSHEET;
     localInitSheet.author="admin";
     localInitSheet.name="masterlist";
+    
+    char* renderableIndexNames[10] = {
+            "Keni Lobredo",
+            "Meni Nobredo",
+            "Eeni Fobredo",
+            "Qeni Robredo",
+            "Oeni Pobredo",
+            "Aeni Bobredo",
+            "Seni Tobredo",
+            "Geni Hobredo",
+            "Ieni Jobredo",
+            "Ceni Dobredo",
+    };
+
+    int renderableIndexValues[10] = {
+            95,
+            95,
+            90,
+            91,
+            95,
+            99,
+            93,
+            90,
+            92,
+            80,
+    };
 
     // GENERATE CONTENTS
-    for (short i = 0; i < 10; ++i) {
+    /**for (short i = 0; i < 10; ++i) {
         INDEX insertIndex;
         char indexNameAppend[100] = "Jacob ";
 //        sprintf(indexNameAppend, "%d", i);
@@ -59,7 +93,25 @@ DATASHEET initSheetDemo(){
 
         localInitSheet.rankedCollection.container[i] = insertIndex;
         localInitSheet.masterlistCollection.container[i] = insertIndex;
-    }
+    }**/
+    
+    // pass placeholder values into subsheet struct
+    RAWUNSORTEDSHEET.size = 10;
+    RAWUNSORTEDSHEET.id = 3; //unsorted ID
+    for (int i=0; i<10; i++) {
+		RAWUNSORTEDSHEET.container[i].indexName = renderableIndexNames[i];
+		RAWUNSORTEDSHEET.container[i].value = renderableIndexValues[i];
+	}
+	
+	// sort subsheet using ranker module
+	RAWSORTEDSHEET = ranker(RAWUNSORTEDSHEET);//, 10);
+	
+	//sort masterlist
+	alphaMergeSort(&RAWUNSORTEDSHEET, 0, 9);
+	RAWMASTERLISTSHEET = RAWUNSORTEDSHEET;
+	
+	localInitSheet.rankedCollection = RAWSORTEDSHEET;
+	localInitSheet.masterlistCollection = RAWMASTERLISTSHEET;
 
     return localInitSheet;
 }
