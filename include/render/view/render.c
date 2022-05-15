@@ -148,38 +148,15 @@ void refreshFrame(Renderctx ctx, char commandLog[10][509]){
     SUBSHEET returnedSubsheet = ranker(sampleSheet.rankedCollection);
 
     // PLACEHOLDER
-    char* renderableIndexNames[10] = {
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-    };
+    char* renderableIndexNames[10];
 
-    int renderableIndexValues[10] = {
-            100,
-            100,
-            100,
-            100,
-            100,
-            100,
-            100,
-            100,
-            100,
-            100,
-    };
+    int renderableIndexValues[10];
 
     // still part of ranker implementation
     for(int i = 0; i<10; i++)
     {
         renderableIndexNames[i] = returnedSubsheet.container[i].indexName;
         renderableIndexValues[i] = returnedSubsheet.container[i].value;
-        printf("%-30s\t%d\n", renderableIndexNames[i], renderableIndexValues[i]);
     }
 
     renderMatrixRankerRow(
