@@ -121,16 +121,16 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
     };
 
     int renderableIndexValues[10] = {
-            100,
-            100,
-            100,
-            100,
-            100,
-            100,
-            100,
-            100,
-            100,
-            100,
+            95,
+            75,
+            70,
+            71,
+            85,
+            99,
+            73,
+            90,
+            72,
+            80,
     };
 
     renderMatrixRankerRow(
