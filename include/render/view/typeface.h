@@ -6,6 +6,7 @@
 #define TESCORE_TYPEFACE_H
 
 #define MAXADDRLENGTH 509
+
 //#region =========== DEFAULT COLOR PALETTE DEFS ===========
 #define DEFAULTFOREGROUND "x1B[38;5;15m"
 #define DEFAULTBACKGROUND "x1B[48;5;0m"
@@ -19,5 +20,13 @@ char* charHighlightBG(char* inputsrc, short bgID, char* commandLog[]);
 
 // TYPEFACE UTILS
 char* charForeground(char* inputsrc, short fgID, char* commandLog[]);
+
+// =========== TYPEFACE MODIFICATIONS ===========
+char* typefaceBold(int, char*);
+char* typefaceItalic(int, char*);
+char* typefaceUnderline(int, char*);
+
+char* typefaceReset(char*);
+char* typefaceColor(int, char*);
 
 #endif //TESCORE_TYPEFACE_H
