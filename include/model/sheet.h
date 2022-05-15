@@ -31,8 +31,6 @@
 #include "subsheet.h"
 
 typedef struct  DATASHEET {
-    char*       name,
-                author;
     SUBSHEET    rankedCollection;
     SUBSHEET    masterlistCollection;
 } DATASHEET;

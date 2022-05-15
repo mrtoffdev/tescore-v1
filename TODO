@@ -5,10 +5,10 @@
 - Input File Structure: Decrypted:
 
     /* =============== BEGIN FILE ===============
-    SheetName:<Str: SheetName>
-    SheetAuth:<Str: SheetAuth>
+    +Sheet Number one+
+    +John Wick+
 
-    Sheet::RankedSheet==
+    --
     John Cramer 100
     Jacob Ludwig Van Holmes 99
     Leibniz Justin Arnolds 97
@@ -21,7 +21,7 @@
     John Joseph Wykes 90
     ::
 
-    Sheet::MasterSheet==
+    --
     Jacob Ludwig Van Holmes 99
     Jake Gomez Jr 93
     John Cramer 100
@@ -32,7 +32,7 @@
     Leni Robredo 91
     William Afton 94
     Willy Wonka Jr 95
-    ::
+    ><
     */ =============== END FILE ===============
 
 - Basic CRUD functions
@@ -122,3 +122,4 @@
             - Init AES context with Key & IV
             - Encrypt with AES_CBC_encrypt (&ctx, Block Container, Block Length)
             - Profit
+

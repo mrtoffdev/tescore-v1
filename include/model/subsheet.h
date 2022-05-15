@@ -11,8 +11,6 @@
 #define MAXSTUDENTCOUNT 100
 
 typedef struct  SUBSHEET {
-    int         size;
-    int         id;
     INDEX       container[MAXSTUDENTCOUNT];
 } SUBSHEET;
 #endif

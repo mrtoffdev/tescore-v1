@@ -54,7 +54,7 @@ char*       sheetName = "SHORTNAME";
 char*       matrixGraph[10][11];
 //#endregion
 
-//#region =========== UI UTILS ===========
+//#region =========== RENDER ENTRY POINT ===========
 
 void refreshFrame(Renderctx ctx, char commandLog[10][509]){
 
@@ -102,48 +102,42 @@ void refreshFrame(Renderctx ctx, char commandLog[10][509]){
 
     // Ranker Implementation
     SUBSHEET sampleSubsheet =
-    {
-        1,
-        2,
-        {   
-             {"Fridge Grills", 85},
-             {"Window Tab Post", 92},
-             {"Roof Leaf", 96},
-             {"Coconut Rock", 79},
-             {"Shirt Switch Root", 86},
-             {"Screen Fruit", 88},
-             {"White Fan", 94},
-             {"Light Wall", 82},
-             {"Cloud Plane", 77},
-             {"Escaped Post", 97}
-        }
-    };
+            {
+                    {
+                            {"Fridge Grills", 85},
+                            {"Window Tab Post", 92},
+                            {"Roof Leaf", 96},
+                            {"Coconut Rock", 79},
+                            {"Shirt Switch Root", 86},
+                            {"Screen Fruit", 88},
+                            {"White Fan", 94},
+                            {"Light Wall", 82},
+                            {"Cloud Plane", 77},
+                            {"Escaped Post", 97}
+                    }
+            };
 
     SUBSHEET sample2Subsheet =
-    {
-        1,
-        2,
-        {   
-             {"Fridge Grills", 85},
-             {"Window Tab Post", 92},
-             {"Roof Leaf", 96},
-             {"Coconut Rock", 79},
-             {"Shirt Switch Root", 86},
-             {"Screen Fruit", 88},
-             {"White Fan", 94},
-             {"Light Wall", 82},
-             {"Cloud Plane", 77},
-             {"Escaped Post", 97}
-        }
-    };
+            {
+                    {
+                            {"Fridge Grills", 85},
+                            {"Window Tab Post", 92},
+                            {"Roof Leaf", 96},
+                            {"Coconut Rock", 79},
+                            {"Shirt Switch Root", 86},
+                            {"Screen Fruit", 88},
+                            {"White Fan", 94},
+                            {"Light Wall", 82},
+                            {"Cloud Plane", 77},
+                            {"Escaped Post", 97}
+                    }
+            };
 
-    DATASHEET sampleSheet = 
-    {
-        "name",
-        "author",
-        sampleSubsheet,
-        sample2Subsheet,
-    };
+    DATASHEET sampleSheet =
+            {
+                    sampleSubsheet,
+                    sample2Subsheet,
+            };
 
     SUBSHEET returnedSubsheet = ranker(sampleSheet.rankedCollection);
 
@@ -200,6 +194,9 @@ void refreshFrame(Renderctx ctx, char commandLog[10][509]){
     //#endregion
 
 }
+
+//#region =========== UI UTILS ===========
+
 void clearScreen(){
 
     // ALTS

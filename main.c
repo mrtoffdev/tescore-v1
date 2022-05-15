@@ -83,15 +83,14 @@ int main() {
 
     //#region =========== MAIN PROCESS ===========
 
-    //#region INIT CONTEXTS
+    // INIT CONTEXTS
     char            commandLog[COMMANDLOGMAXENTRY][509];
     DATASHEET       sessionSheet;
     Renderctx       tescore_render_ctx;
 
-
-    sheet_fetch_ctx(SessionSheetFile);
+    file_fetch_Datasheetctx(SessionSheetFile);
     tescore_render_ctx = render_init_ctx(sessionSheet);
-    //#endregion
+
 
     // CHECKS RENDER SYSTEM MODE (TESTING / RELEASE)
     switch (SANDBOX) {
@@ -137,24 +136,24 @@ void sandbox_scriptTesting(){
     //#region =========== ALPHAMERGESORT.H ===========
     if(SANDBOXID == 1){
 
-        // Generate Extended List of 10 units
-        struct strec extendedList[10];
-        for (int i=0; i<10; i++) {
-            strcpy(extendedList[i].name, studentData[i][0]);
-            extendedList[i].score = atoi(studentData[i][1]);
-        }
-        printf("Generated Unsorted List:\n");
-        for (int i=0; i<10; i++) {
-            printf("%s : %d\n", extendedList[i].name, extendedList[i].score);
-        }
-
-        printf("\nSorting List...\n");
-        alphaMergeSort(extendedList, 0, 9);
-
-        printf("Generated Sorted List:\n");
-        for (int i=0; i<10; i++) {
-            printf("%s : %d\n", extendedList[i].name, extendedList[i].score);
-        }
+//        // Generate Extended List of 10 units
+//        SUBSHEET extendedList[10];
+//        for (int i=0; i<10; i++) {
+//            strcpy(extendedList[i].name, studentData[i][0]);
+//            extendedList[i].score = atoi(studentData[i][1]);
+//        }
+//        printf("Generated Unsorted List:\n");
+//        for (int i=0; i<10; i++) {
+//            printf("%s : %d\n", extendedList[i].name, extendedList[i].score);
+//        }
+//
+//        printf("\nSorting List...\n");
+//        alphaMergeSort(extendedList, 0, 9);
+//
+//        printf("Generated Sorted List:\n");
+//        for (int i=0; i<10; i++) {
+//            printf("%s : %d\n", extendedList[i].name, extendedList[i].score);
+//        }
 
     } else
     if(SANDBOXID == 2){

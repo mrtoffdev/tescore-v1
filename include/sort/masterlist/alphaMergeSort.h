@@ -7,7 +7,6 @@
 #define TESCORE_ALPHAMERGESORT_H
 
 #include "../../model/datamodel.h"
-#include "strec.h"
 
 #define MAX 999
 

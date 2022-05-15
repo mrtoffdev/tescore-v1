@@ -54,7 +54,6 @@ void fetchData(FILE* DIB, char* indexNameArr[], char* indexValueArr[], int lineC
     }
 
 }
-
 void fetch_gradeTable(DATASHEET Datactx, int distributionTable[11][2]){
     // Placeholder Data
     uint8_t unsortedGradeRounds[10][2] = {
@@ -93,14 +92,11 @@ void fetch_gradeTable(DATASHEET Datactx, int distributionTable[11][2]){
 //    }
 }
 
-
 // DEV TEST FUNCTION
 
 DATASHEET initSheetDemo(){
 
     DATASHEET return_dataSheet;
-    return_dataSheet.author="admin";
-    return_dataSheet.name="masterlist";
 
     // GENERATE CONTENTS
     for (short i = 0; i < 10; ++i) {
@@ -117,11 +113,9 @@ DATASHEET initSheetDemo(){
 
     return return_dataSheet;
 }
+void file_InitMasterlist();
 
 
-void fetch_studentDistTable(DATASHEET Datactx){
-
-}
 
 
 

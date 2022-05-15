@@ -32,7 +32,7 @@ void fileops_decryptBuffer(struct AES_ctx ctx, uint8_t* encryptedBuffer, uint8_t
 
 void sheet_encryptBuffer(FILE*);
 void sheet_decryptBuffer(FILE*);
-void sheet_fetch_ctx(FILE*);
+void file_fetch_Datasheetctx(FILE*);
 
 // RENDER SYSTEM OPERATIONS
 Renderctx render_init_ctx(DATASHEET sessionSheet);
