@@ -16,6 +16,6 @@
 */
 
 // VOID
-void navigationKeyHandler(Renderctx ctx, char* commandLog[]);
+void navigationKeyHandler(Renderctx ctx, char commandLog[][509]);
 
 #endif

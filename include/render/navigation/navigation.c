@@ -49,9 +49,9 @@
 //#endregion
 
 //#region PRIVATE FUNC PROTS
-void safeRemoveCell(Renderctx ctx, char* commandLog[]);
-void safeEditCell(Renderctx ctx, char* commandLog[]);
-void switchNavPanel(short, char* []);
+void safeRemoveCell(Renderctx ctx, char commandLog[][509]);
+void safeEditCell(Renderctx ctx, char commandLog[][509]);
+void switchNavPanel(short, char commandLog[][509]);
 void clearStdinCache();
 //#endregion
 
@@ -60,7 +60,7 @@ int     NAVKEY = '1';
 //#endregion
 
 // OPERATIONS
-void navigationKeyHandler(Renderctx ctx, char* commandLog[]){
+void navigationKeyHandler(Renderctx ctx, char commandLog[][509]){
     // SAVE CURRENT PANELID
     short prevPanelID = ctx.sessionPanelID;
     uint8_t deleteConfirm = 0; // 1 - Confirming, 2 - Confirmed
@@ -87,7 +87,7 @@ void navigationKeyHandler(Renderctx ctx, char* commandLog[]){
                     // CONFIRMING CELL DELETE
                     ((ctx.renderCellX == 'X') && (ctx.operationMode == 1) && deleteConfirm == 1)
                 ){
-                    commandLog[0] = "Resetted all global nav values\n";
+                    strcpy((char *) commandLog[0], "Resetted all global nav values\n");
                     ctx.renderCellX = 'X';
                     ctx.operationMode = 1;
                     deleteConfirm = 0;
@@ -116,14 +116,14 @@ void navigationKeyHandler(Renderctx ctx, char* commandLog[]){
                 */
                 // If on View Mode & No Selection
                 if((ctx.operationMode == 1) && (ctx.renderCellX == 'X')){
-                    commandLog[0] = "Operation Mode: 2";
+                    strcpy((char *) commandLog[0], "Operation Mode: 2");
                     ctx.operationMode = 2;
                     ctx.renderCellX = 'L';
                     break;
                 } else
                 // If on Edit Mode & Selection
                 if((ctx.operationMode == 2) && (ctx.renderCellX != 'X')){
-                    commandLog[0] = "Operation Mode: 3";
+                    strcpy((char *) commandLog[0], "Operation Mode: 3");
                     ctx.operationMode = 3;
                     safeEditCell(ctx, commandLog);
                     ctx.operationMode = 1;
@@ -135,7 +135,7 @@ void navigationKeyHandler(Renderctx ctx, char* commandLog[]){
             case 'r':
                 if((ctx.operationMode == 1) && (ctx.renderCellX == 'X')){
                     deleteConfirm++;
-                    commandLog[0] = "Removing Cell. Press <R> to confirm: ";
+                    strcpy((char *) commandLog[0], "Removing Cell. Press <R> to confirm: ");
                     if (deleteConfirm == 2){
                         deleteConfirm = 0;
                         safeRemoveCell(ctx, commandLog);
@@ -151,7 +151,7 @@ void navigationKeyHandler(Renderctx ctx, char* commandLog[]){
                 ctx.renderCellIndex--;
 
                 // Testing
-                commandLog[0] = "Decremented renderCellIndex:";
+                strcpy((char *) commandLog[0], "Decremented renderCellIndex:");
 
             }
             break;
@@ -162,7 +162,7 @@ void navigationKeyHandler(Renderctx ctx, char* commandLog[]){
                 ctx.renderCellIndex++;
 
                 // Testing
-                commandLog[0] = "Incremented renderCellIndex:";
+                strcpy((char *) commandLog[0], "Incremented renderCellIndex:");
 //                printf("Incremented renderCellIndex: %d ", ctx.renderCellIndex);
             }
             break;
@@ -191,7 +191,7 @@ void navigationKeyHandler(Renderctx ctx, char* commandLog[]){
             ctx.renderCellIndex = 0;
             ctx.operationMode = 1;
             ctx.sessionPanelID = 1;
-            commandLog[0] = "Resetted all global nav values. Rendering Panel No: 1";
+            strcpy((char *) commandLog[0], "Resetted all global nav values. Rendering Panel No: 1");
             break;
 
         case '2':
@@ -199,7 +199,7 @@ void navigationKeyHandler(Renderctx ctx, char* commandLog[]){
             ctx.renderCellIndex = 0;
             ctx.operationMode = 1;
             ctx.sessionPanelID = 2;
-            commandLog[0] = "Resetted all global nav values. Rendering Panel No: 2";
+            strcpy((char *) commandLog[0], "Resetted all global nav values. Rendering Panel No: 2");
             break;
 
         case '3':
@@ -207,7 +207,7 @@ void navigationKeyHandler(Renderctx ctx, char* commandLog[]){
             ctx.renderCellIndex = 0;
             ctx.operationMode = 1;
             ctx.sessionPanelID = 3;
-            commandLog[0] = "Resetted all global nav values. Rendering Panel No: 3";
+            strcpy((char *) commandLog[0], "Resetted all global nav values. Rendering Panel No: 3");
             break;
 
         default:
@@ -228,7 +228,7 @@ void navigationKeyHandler(Renderctx ctx, char* commandLog[]){
     }
 }
 
-void safeEditCell(Renderctx ctx, char* commandLog[]){
+void safeEditCell(Renderctx ctx, char commandLog[][509]){
 
     clearStdinCache();
     char* entry = calloc(1,(sizeof commandLog[0]));
@@ -236,7 +236,7 @@ void safeEditCell(Renderctx ctx, char* commandLog[]){
 
     switch (ctx.renderCellX) {
         case 'L':
-            commandLog[0] = "Editing Left of Cell. Please Enter Value: ";
+            strcpy((char *) commandLog[0], "Editing Left of Cell. Please Enter Value: ");
             refreshFrame(ctx, commandLog);
 
             // commit note: softbug fixed through stdin fflush();
@@ -244,31 +244,31 @@ void safeEditCell(Renderctx ctx, char* commandLog[]){
             fgets(value, 40, stdin);
             strncat(entry, "Entered Value: ", 16);
             strncat(entry, value, strlen(value));
-            commandLog[0] = entry;
+            strcpy((char *) commandLog[0], entry);
             break;
 
         case 'R':
-            commandLog[0] = "Editing Right of Cell. Please Enter Value: ";
+            strcpy((char *) commandLog[0], "Editing Right of Cell. Please Enter Value: ");
             refreshFrame(ctx, commandLog);
 
             fgets(value, 30, stdin);
             strncat(entry, "Entered Value: ", 16);
             strncat(entry, value, strlen(value));
-            commandLog[0] = entry;
+            strcpy((char *) commandLog[0], entry);
             break;
 
         default:
-            commandLog[0] = "Not Editing a Cell Right Now";
+            strcpy((char *) commandLog[0], "Not Editing a Cell Right Now");
             break;
 
     }
 }
 
-void safeRemoveCell(Renderctx ctx, char* commandLog[]){
-    commandLog[0] = "Removing Cell";
+void safeRemoveCell(Renderctx ctx, char commandLog[][509]){
+    strcpy((char *) commandLog[0], "Removing Cell");
 }
 
-void switchNavPanel(short id, char* commandLog[]){
+void switchNavPanel(short id, char commandLog[][509]){
     printf("%d", id);
 }
 
