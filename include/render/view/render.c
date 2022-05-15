@@ -41,17 +41,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <stdint.h>
+#include <time.h>
 
 #include "render.h"
 
 //#region GLOBAL VARS
-DATASHEET   RAWDEMOSHEET;
-SUBSHEET    RAWUNSORTEDSHEET,
-            RAWSORTEDSHEET,
-            RAWMASTERLISTSHEET;
-
 int         gradeScaling[11] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100},
             studentScaling[10] = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
 char*       sheetName = "SHORTNAME";
@@ -60,7 +55,7 @@ char*       matrixGraph[10][11];
 
 //#region =========== UI UTILS ===========
 
-void refreshFrame(Renderctx ctx, char* commandLog[10]){
+void refreshFrame(Renderctx ctx, char commandLog[10][509]){
 
     /* REFRESH FRAME SEQUENCE
         + Start Benchmark Clock
@@ -98,7 +93,7 @@ void refreshFrame(Renderctx ctx, char* commandLog[10]){
 
     // HEADER
     renderSeparator(2);
-    renderHeader(indexCount, ctx.sessionPanelID, commandLog);
+    renderHeader(ctx);
     renderSeparator(3);
 
     // PANELS : BAR GRAPH MATRIX & TOP RANKERS
@@ -281,52 +276,13 @@ void generateGraph(){
     //#endregion
 }
 
-void generateMasterlistEntries(){
-
-}
-
-//#endregion
-
-//#region =========== PROMPTS ===========
-
-void terminatePrompt(){
-    exit(0);
-}
-
-//#endregion
-
-//#region =========== UI ELEMENTS ===========
-
-void renderWhiteSpace(int spaceSize){
-    for (int i = 0; i < spaceSize; ++i) {
-        printf("\n");
-    }
-}
-
-void renderSeparator(short id){
-    if(id == 1){
-        puts("\t─────────────────────────────────────────────────────────────────────────────────────────────────────────────");
-    } else
-    if (id == 2){
-        puts("\t┌───────────────────────────────────────────────────────────────────────────────────────────────────────────┐");
-    } else
-    if (id == 3){
-        puts("\t├───────────────────────────────────────────────────────────────────────────────────────────────────────────┤");
-    } else
-    if (id == 4){
-        puts("\t┕───────────────────────────────────────────────────────────────────────────────────────────────────────────┘");
-    }
-//    puts("\t-------------------------------------------------------------------------------------------------------------");
-
-}
-
 //#endregion
 
 //#region =========== UI PANELS ===========
 
-void renderHeader(int sessionStudentCount, short panelID, char* commandLog[]){
-
-    if(panelID == 1){
+void renderHeader(Renderctx ctx){
+    short sessionStudentCount = 10; //TODO REMOVE / REPLACE
+    if(ctx.sessionPanelID == 1){
         printf("\t|");
         printf("\x1B[38;5;16m\x1B[48;5;7m");
         printf("                       - Data Sheet -                      ");
@@ -336,7 +292,7 @@ void renderHeader(int sessionStudentCount, short panelID, char* commandLog[]){
         printf("\t│\t\t\t- Data Sheet -\t\t\t    │");
     }
 
-    if(panelID == 2){
+    if(ctx.sessionPanelID == 2){
         printf("\x1B[38;5;16m\x1B[48;5;7m");
         printf("     - Top 10 Students / %4d -    ", sessionStudentCount);
         printf("\x1B[38;5;15m\x1B[48;5;0m");
@@ -526,6 +482,42 @@ void renderMasterListRow(char* indexName, int indexVal, short selectionID, char 
 
 void defaultMasterListRow(char* indexName, int indexVal){
     printf("\t| • %-90s  |   %4d    │\n", indexName, indexVal);
+}
+
+//#endregion
+
+
+//#region =========== PROMPTS ===========
+
+void terminatePrompt(){
+    exit(0);
+}
+
+//#endregion
+
+//#region =========== UI ELEMENTS ===========
+
+void renderWhiteSpace(int spaceSize){
+    for (int i = 0; i < spaceSize; ++i) {
+        printf("\n");
+    }
+}
+
+void renderSeparator(short id){
+    if(id == 1){
+        puts("\t─────────────────────────────────────────────────────────────────────────────────────────────────────────────");
+    } else
+    if (id == 2){
+        puts("\t┌───────────────────────────────────────────────────────────────────────────────────────────────────────────┐");
+    } else
+    if (id == 3){
+        puts("\t├───────────────────────────────────────────────────────────────────────────────────────────────────────────┤");
+    } else
+    if (id == 4){
+        puts("\t┕───────────────────────────────────────────────────────────────────────────────────────────────────────────┘");
+    }
+//    puts("\t-------------------------------------------------------------------------------------------------------------");
+
 }
 
 //#endregion

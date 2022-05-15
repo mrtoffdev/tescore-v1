@@ -30,7 +30,7 @@
 #define MAX_PASS_CHAR 30
 
 // =========== UI UTILS ===========
-void refreshFrame(Renderctx ctx, char* commandLog[]);
+void refreshFrame(Renderctx ctx, char commandLog[][509]);
 void clearScreen();
 void indentCursor(short spaces);
 void generateGraph();
@@ -45,17 +45,10 @@ void renderWhiteSpace(int);
 void renderSeparator(short id);
 
 // =========== UI PANELS ===========
-void renderHeader(int sessionStudentCount, short panelID, char* commandLog[]);
+void renderHeader(Renderctx ctx);
 void renderSubHeader();
 void renderMatrixRankerRow(char* indexNameContainer[10], int* indexValContainer, short selectionID, char selectionX, short panelID);
 void renderMasterListHeader(short panelID);
 void renderMasterListRow(char* indexName, int indexVal, short selectionID, char selectionX, short panelID);
 
-// =========== TYPEFACE MODIFICATIONS ===========
-char* typefaceBold(int, char*);
-char* typefaceItalic(int, char*);
-char* typefaceUnderline(int, char*);
-
-char* typefaceReset(char*);
-char* typefaceColor(int, char*);
 #endif
