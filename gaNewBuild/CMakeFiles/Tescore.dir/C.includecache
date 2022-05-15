@@ -105,6 +105,8 @@ stdint.h
 -
 render.h
 /home/jerome03/tescore/include/render/view/render.h
+../../sort/ranker/rankerModule.h
+/home/jerome03/tescore/include/sort/ranker/rankerModule.h
 
 /home/jerome03/tescore/include/render/view/render.h
 ../../model/datamodel.h

@@ -42,6 +42,7 @@ CMakeFiles/Tescore.dir/include/render/view/render.c.o
  /home/jerome03/tescore/include/model/subsheet.h
  /home/jerome03/tescore/include/render/view/render.c
  /home/jerome03/tescore/include/render/view/render.h
+ /home/jerome03/tescore/include/sort/ranker/rankerModule.h
 CMakeFiles/Tescore.dir/include/render/view/typeface.c.o
  /home/jerome03/tescore/include/model/datamodel.h
  /home/jerome03/tescore/include/model/index.h

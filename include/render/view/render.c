@@ -47,6 +47,8 @@
 
 #include "render.h"
 
+// temporary access
+#include "../../sort/ranker/rankerModule.h"
 
 //#region GLOBAL VARS
 DATASHEET   RAWDEMOSHEET;
@@ -137,11 +139,19 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
     RAWUNSORTEDSHEET.size = 10;
     RAWUNSORTEDSHEET.id = 3; //unsorted ID
     for (int i=0; i<10; i++) {
-		RAWUNSORTEDSHEET.container->indexName = renderableIndexNames[i];
-		RAWUNSORTEDSHEET.container->value = renderableIndexValues[i];
+		RAWUNSORTEDSHEET.container[i].indexName = renderableIndexNames[i];
+		RAWUNSORTEDSHEET.container[i].value = renderableIndexValues[i];
 	}
+	
+	// sort subsheet using ranker module
+	// (temporary, render not supposed to have access)
+	RAWSORTEDSHEET = ranker(RAWUNSORTEDSHEET, 10);
     
     // retrieve values from subsheet struct
+    for (int i=0; i<10; i++) {
+		renderableIndexNames[i] = RAWSORTEDSHEET.container[i].indexName;
+		renderableIndexValues[i] = RAWSORTEDSHEET.container[i].value;
+	}
 
     renderMatrixRankerRow(
             renderableIndexNames,

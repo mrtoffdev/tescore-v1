@@ -12,6 +12,6 @@
 #define LIMIT 509 // Standard limit for char ANSI Compatibility
 
 // Method Calls
-SUBSHEET ranker(SUBSHEET unsortedSubsheet);
+SUBSHEET ranker(SUBSHEET unsortedSubsheet, int size);
 
 #endif
