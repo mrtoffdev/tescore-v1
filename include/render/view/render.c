@@ -132,6 +132,16 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
             72,
             80,
     };
+    
+    // pass placeholder values into subsheet struct
+    RAWUNSORTEDSHEET.size = 10;
+    RAWUNSORTEDSHEET.id = 3; //unsorted ID
+    for (int i=0; i<10; i++) {
+		RAWUNSORTEDSHEET.container->indexName = renderableIndexNames[i];
+		RAWUNSORTEDSHEET.container->value = renderableIndexValues[i];
+	}
+    
+    // retrieve values from subsheet struct
 
     renderMatrixRankerRow(
             renderableIndexNames,
