@@ -45,6 +45,7 @@
 #include <time.h>
 
 #include "render.h"
+#include "../../sort/ranker/rankerModule.h"
 
 //#region GLOBAL VARS
 int         gradeScaling[11] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100},
@@ -99,6 +100,53 @@ void refreshFrame(Renderctx ctx, char commandLog[10][509]){
     // PANELS : BAR GRAPH MATRIX & TOP RANKERS
     generateGraph();
 
+    // Ranker Implementation
+    SUBSHEET sampleSubsheet =
+    {
+        1,
+        2,
+        {   
+             {"Fridge Grills", 85},
+             {"Window Tab Post", 92},
+             {"Roof Leaf", 96},
+             {"Coconut Rock", 79},
+             {"Shirt Switch Root", 86},
+             {"Screen Fruit", 88},
+             {"White Fan", 94},
+             {"Light Wall", 82},
+             {"Cloud Plane", 77},
+             {"Escaped Post", 97}
+        }
+    };
+
+    SUBSHEET sample2Subsheet =
+    {
+        1,
+        2,
+        {   
+             {"Fridge Grills", 85},
+             {"Window Tab Post", 92},
+             {"Roof Leaf", 96},
+             {"Coconut Rock", 79},
+             {"Shirt Switch Root", 86},
+             {"Screen Fruit", 88},
+             {"White Fan", 94},
+             {"Light Wall", 82},
+             {"Cloud Plane", 77},
+             {"Escaped Post", 97}
+        }
+    };
+
+    DATASHEET sampleSheet = 
+    {
+        "name",
+        "author",
+        sampleSubsheet,
+        sample2Subsheet,
+    };
+
+    SUBSHEET returnedSubsheet = ranker(sampleSheet.rankedCollection);
+
     // PLACEHOLDER
     char* renderableIndexNames[10] = {
             "Leni Robredo",
@@ -125,6 +173,14 @@ void refreshFrame(Renderctx ctx, char commandLog[10][509]){
             100,
             100,
     };
+
+    // still part of ranker implementation
+    for(int i = 0; i<10; i++)
+    {
+        renderableIndexNames[i] = returnedSubsheet.container[i].indexName;
+        renderableIndexValues[i] = returnedSubsheet.container[i].value;
+        printf("%-30s\t%d\n", renderableIndexNames[i], renderableIndexValues[i]);
+    }
 
     renderMatrixRankerRow(
             renderableIndexNames,

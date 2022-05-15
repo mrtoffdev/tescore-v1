@@ -8,7 +8,6 @@
 #include "rankerModule.h"
 
 //#region LOCAL FUNCTION PROTOTYPES
-SUBSHEET ranker(SUBSHEET unsortedSubsheet);
 void bubbleSort(char string_array[][LIMIT], short score_array[], int lines);
 //#endregion
 
