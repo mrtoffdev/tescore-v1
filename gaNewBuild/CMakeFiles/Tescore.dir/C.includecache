@@ -109,6 +109,8 @@ render.h
 /home/jerome03/tescore/include/sort/ranker/rankerModule.h
 ../../sort/masterlist/alphaMergeSort.h
 /home/jerome03/tescore/include/sort/masterlist/alphaMergeSort.h
+../../sort/search/countScores.h
+/home/jerome03/tescore/include/sort/search/countScores.h
 
 /home/jerome03/tescore/include/render/view/render.h
 ../../model/datamodel.h
@@ -163,6 +165,20 @@ rankerModule.h
 /home/jerome03/tescore/include/sort/ranker/rankerModule.h
 ../../model/datamodel.h
 /home/jerome03/tescore/include/model/datamodel.h
+
+/home/jerome03/tescore/include/sort/search/countScores.c
+stdio.h
+-
+strec.h
+/home/jerome03/tescore/include/sort/search/strec.h
+countScores.h
+/home/jerome03/tescore/include/sort/search/countScores.h
+
+/home/jerome03/tescore/include/sort/search/countScores.h
+../../model/datamodel.h
+/home/jerome03/tescore/include/model/datamodel.h
+
+/home/jerome03/tescore/include/sort/search/strec.h
 
 /home/jerome03/tescore/include/utils/cmdlog.c
 cmdlog.h

@@ -420,6 +420,33 @@ include/sort/ranker/module.c.s:
 	$(MAKE) -f CMakeFiles/Tescore.dir/build.make CMakeFiles/Tescore.dir/include/sort/ranker/module.c.s
 .PHONY : include/sort/ranker/module.c.s
 
+include/sort/search/countScores.o: include/sort/search/countScores.c.o
+
+.PHONY : include/sort/search/countScores.o
+
+# target to build an object file
+include/sort/search/countScores.c.o:
+	$(MAKE) -f CMakeFiles/Tescore.dir/build.make CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o
+.PHONY : include/sort/search/countScores.c.o
+
+include/sort/search/countScores.i: include/sort/search/countScores.c.i
+
+.PHONY : include/sort/search/countScores.i
+
+# target to preprocess a source file
+include/sort/search/countScores.c.i:
+	$(MAKE) -f CMakeFiles/Tescore.dir/build.make CMakeFiles/Tescore.dir/include/sort/search/countScores.c.i
+.PHONY : include/sort/search/countScores.c.i
+
+include/sort/search/countScores.s: include/sort/search/countScores.c.s
+
+.PHONY : include/sort/search/countScores.s
+
+# target to generate assembly for a file
+include/sort/search/countScores.c.s:
+	$(MAKE) -f CMakeFiles/Tescore.dir/build.make CMakeFiles/Tescore.dir/include/sort/search/countScores.c.s
+.PHONY : include/sort/search/countScores.c.s
+
 include/utils/cmdlog.o: include/utils/cmdlog.c.o
 
 .PHONY : include/utils/cmdlog.o
@@ -516,6 +543,9 @@ help:
 	@echo "... include/sort/ranker/module.o"
 	@echo "... include/sort/ranker/module.i"
 	@echo "... include/sort/ranker/module.s"
+	@echo "... include/sort/search/countScores.o"
+	@echo "... include/sort/search/countScores.i"
+	@echo "... include/sort/search/countScores.s"
 	@echo "... include/utils/cmdlog.o"
 	@echo "... include/utils/cmdlog.i"
 	@echo "... include/utils/cmdlog.s"

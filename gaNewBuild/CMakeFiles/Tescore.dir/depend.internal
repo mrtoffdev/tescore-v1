@@ -45,6 +45,7 @@ CMakeFiles/Tescore.dir/include/render/view/render.c.o
  /home/jerome03/tescore/include/sort/masterlist/alphaMergeSort.h
  /home/jerome03/tescore/include/sort/masterlist/strec.h
  /home/jerome03/tescore/include/sort/ranker/rankerModule.h
+ /home/jerome03/tescore/include/sort/search/countScores.h
 CMakeFiles/Tescore.dir/include/render/view/typeface.c.o
  /home/jerome03/tescore/include/model/datamodel.h
  /home/jerome03/tescore/include/model/index.h
@@ -72,6 +73,14 @@ CMakeFiles/Tescore.dir/include/sort/ranker/module.c.o
  /home/jerome03/tescore/include/model/subsheet.h
  /home/jerome03/tescore/include/sort/ranker/module.c
  /home/jerome03/tescore/include/sort/ranker/rankerModule.h
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o
+ /home/jerome03/tescore/include/model/datamodel.h
+ /home/jerome03/tescore/include/model/index.h
+ /home/jerome03/tescore/include/model/sheet.h
+ /home/jerome03/tescore/include/model/subsheet.h
+ /home/jerome03/tescore/include/sort/search/countScores.c
+ /home/jerome03/tescore/include/sort/search/countScores.h
+ /home/jerome03/tescore/include/sort/search/strec.h
 CMakeFiles/Tescore.dir/include/utils/cmdlog.c.o
  /home/jerome03/tescore/include/utils/cmdlog.c
  /home/jerome03/tescore/include/utils/cmdlog.h

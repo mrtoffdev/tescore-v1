@@ -1,2 +1,4 @@
+#include "../../model/datamodel.h"
+
 void countScores(int scores[MAX], int scoreArrSize, \
-    struct strec studentList[MAX], int studentListSize, int results[MAX][2]);
+    SUBSHEET* studentList, int studentListSize, int results[MAX][2]);

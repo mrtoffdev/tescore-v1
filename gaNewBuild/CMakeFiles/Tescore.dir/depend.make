@@ -44,6 +44,7 @@ CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/render/view/re
 CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/sort/masterlist/alphaMergeSort.h
 CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/sort/masterlist/strec.h
 CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/sort/ranker/rankerModule.h
+CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/sort/search/countScores.h
 
 CMakeFiles/Tescore.dir/include/render/view/typeface.c.o: ../include/model/datamodel.h
 CMakeFiles/Tescore.dir/include/render/view/typeface.c.o: ../include/model/index.h
@@ -71,6 +72,14 @@ CMakeFiles/Tescore.dir/include/sort/ranker/module.c.o: ../include/model/sheet.h
 CMakeFiles/Tescore.dir/include/sort/ranker/module.c.o: ../include/model/subsheet.h
 CMakeFiles/Tescore.dir/include/sort/ranker/module.c.o: ../include/sort/ranker/module.c
 CMakeFiles/Tescore.dir/include/sort/ranker/module.c.o: ../include/sort/ranker/rankerModule.h
+
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o: ../include/model/datamodel.h
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o: ../include/model/index.h
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o: ../include/model/sheet.h
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o: ../include/model/subsheet.h
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o: ../include/sort/search/countScores.c
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o: ../include/sort/search/countScores.h
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o: ../include/sort/search/strec.h
 
 CMakeFiles/Tescore.dir/include/utils/cmdlog.c.o: ../include/utils/cmdlog.c
 CMakeFiles/Tescore.dir/include/utils/cmdlog.c.o: ../include/utils/cmdlog.h

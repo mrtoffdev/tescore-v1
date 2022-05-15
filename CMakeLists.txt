@@ -33,6 +33,10 @@ add_executable(
         include/sort/masterlist/alphabeticallySort.c
         include/sort/masterlist/alphaMergeSort.h
         include/sort/masterlist/alphaMergeSort.c
+        
+        # Search
+        include/sort/search/countScores.h
+        include/sort/search/countScores.c
 
         # Rendering
         include/render/view/auth.c

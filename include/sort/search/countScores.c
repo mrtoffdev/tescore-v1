@@ -8,7 +8,7 @@
 // function: counts the occurences of
 // specified scores in student records
 void countScores(int scores[MAX], int scoreArrSize, \
-    struct strec studentList[MAX], int studentListSize, int results[MAX][2]) {
+    SUBSHEET* studentList, int studentListSize, int results[MAX][2]) {
     
     int i, j;
     for (i=0; i<scoreArrSize; i++) {
@@ -20,7 +20,8 @@ void countScores(int scores[MAX], int scoreArrSize, \
     for (i=0; i<studentListSize; i++) {
         // compare to input scores
         for (j=0; j<scoreArrSize; j++) {
-            if (studentList[i].score == scores[j]) {
+            //if (studentList->container[i].value == scores[j]) {
+			if (studentList->container[i].value - (studentList->container[i].value % 10)  == scores[j]) {
                 // increment corresponding index
                 // in result array
                 results[j][1]++;

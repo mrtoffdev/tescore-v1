@@ -8,6 +8,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Tescore.dir/include/sort/ranker/module.c.o"
   "CMakeFiles/Tescore.dir/include/sort/masterlist/alphabeticallySort.c.o"
   "CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o"
+  "CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o"
   "CMakeFiles/Tescore.dir/include/render/view/auth.c.o"
   "CMakeFiles/Tescore.dir/include/render/view/render.c.o"
   "CMakeFiles/Tescore.dir/include/render/view/typeface.c.o"

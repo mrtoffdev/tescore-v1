@@ -15,6 +15,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/jerome03/tescore/include/sort/masterlist/alphaMergeSort.c" "/home/jerome03/tescore/gaNewBuild/CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o"
   "/home/jerome03/tescore/include/sort/masterlist/alphabeticallySort.c" "/home/jerome03/tescore/gaNewBuild/CMakeFiles/Tescore.dir/include/sort/masterlist/alphabeticallySort.c.o"
   "/home/jerome03/tescore/include/sort/ranker/module.c" "/home/jerome03/tescore/gaNewBuild/CMakeFiles/Tescore.dir/include/sort/ranker/module.c.o"
+  "/home/jerome03/tescore/include/sort/search/countScores.c" "/home/jerome03/tescore/gaNewBuild/CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o"
   "/home/jerome03/tescore/include/utils/cmdlog.c" "/home/jerome03/tescore/gaNewBuild/CMakeFiles/Tescore.dir/include/utils/cmdlog.c.o"
   "/home/jerome03/tescore/main.c" "/home/jerome03/tescore/gaNewBuild/CMakeFiles/Tescore.dir/main.c.o"
   )

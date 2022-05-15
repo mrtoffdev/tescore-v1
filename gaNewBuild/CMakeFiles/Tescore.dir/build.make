@@ -273,9 +273,33 @@ CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o.provides: CMak
 CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o.provides.build: CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o
 
 
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o: CMakeFiles/Tescore.dir/flags.make
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o: ../include/sort/search/countScores.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jerome03/tescore/gaNewBuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o   -c /home/jerome03/tescore/include/sort/search/countScores.c
+
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Tescore.dir/include/sort/search/countScores.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jerome03/tescore/include/sort/search/countScores.c > CMakeFiles/Tescore.dir/include/sort/search/countScores.c.i
+
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Tescore.dir/include/sort/search/countScores.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jerome03/tescore/include/sort/search/countScores.c -o CMakeFiles/Tescore.dir/include/sort/search/countScores.c.s
+
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o.requires:
+
+.PHONY : CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o.requires
+
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o.provides: CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o.requires
+	$(MAKE) -f CMakeFiles/Tescore.dir/build.make CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o.provides.build
+.PHONY : CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o.provides
+
+CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o.provides.build: CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o
+
+
 CMakeFiles/Tescore.dir/include/render/view/auth.c.o: CMakeFiles/Tescore.dir/flags.make
 CMakeFiles/Tescore.dir/include/render/view/auth.c.o: ../include/render/view/auth.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jerome03/tescore/gaNewBuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/Tescore.dir/include/render/view/auth.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jerome03/tescore/gaNewBuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/Tescore.dir/include/render/view/auth.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Tescore.dir/include/render/view/auth.c.o   -c /home/jerome03/tescore/include/render/view/auth.c
 
 CMakeFiles/Tescore.dir/include/render/view/auth.c.i: cmake_force
@@ -299,7 +323,7 @@ CMakeFiles/Tescore.dir/include/render/view/auth.c.o.provides.build: CMakeFiles/T
 
 CMakeFiles/Tescore.dir/include/render/view/render.c.o: CMakeFiles/Tescore.dir/flags.make
 CMakeFiles/Tescore.dir/include/render/view/render.c.o: ../include/render/view/render.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jerome03/tescore/gaNewBuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/Tescore.dir/include/render/view/render.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jerome03/tescore/gaNewBuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/Tescore.dir/include/render/view/render.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Tescore.dir/include/render/view/render.c.o   -c /home/jerome03/tescore/include/render/view/render.c
 
 CMakeFiles/Tescore.dir/include/render/view/render.c.i: cmake_force
@@ -323,7 +347,7 @@ CMakeFiles/Tescore.dir/include/render/view/render.c.o.provides.build: CMakeFiles
 
 CMakeFiles/Tescore.dir/include/render/view/typeface.c.o: CMakeFiles/Tescore.dir/flags.make
 CMakeFiles/Tescore.dir/include/render/view/typeface.c.o: ../include/render/view/typeface.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jerome03/tescore/gaNewBuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/Tescore.dir/include/render/view/typeface.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jerome03/tescore/gaNewBuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/Tescore.dir/include/render/view/typeface.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Tescore.dir/include/render/view/typeface.c.o   -c /home/jerome03/tescore/include/render/view/typeface.c
 
 CMakeFiles/Tescore.dir/include/render/view/typeface.c.i: cmake_force
@@ -347,7 +371,7 @@ CMakeFiles/Tescore.dir/include/render/view/typeface.c.o.provides.build: CMakeFil
 
 CMakeFiles/Tescore.dir/include/utils/cmdlog.c.o: CMakeFiles/Tescore.dir/flags.make
 CMakeFiles/Tescore.dir/include/utils/cmdlog.c.o: ../include/utils/cmdlog.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jerome03/tescore/gaNewBuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/Tescore.dir/include/utils/cmdlog.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jerome03/tescore/gaNewBuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/Tescore.dir/include/utils/cmdlog.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Tescore.dir/include/utils/cmdlog.c.o   -c /home/jerome03/tescore/include/utils/cmdlog.c
 
 CMakeFiles/Tescore.dir/include/utils/cmdlog.c.i: cmake_force
@@ -380,6 +404,7 @@ Tescore_OBJECTS = \
 "CMakeFiles/Tescore.dir/include/sort/ranker/module.c.o" \
 "CMakeFiles/Tescore.dir/include/sort/masterlist/alphabeticallySort.c.o" \
 "CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o" \
+"CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o" \
 "CMakeFiles/Tescore.dir/include/render/view/auth.c.o" \
 "CMakeFiles/Tescore.dir/include/render/view/render.c.o" \
 "CMakeFiles/Tescore.dir/include/render/view/typeface.c.o" \
@@ -397,13 +422,14 @@ Tescore: CMakeFiles/Tescore.dir/include/render/navigation/navigation.c.o
 Tescore: CMakeFiles/Tescore.dir/include/sort/ranker/module.c.o
 Tescore: CMakeFiles/Tescore.dir/include/sort/masterlist/alphabeticallySort.c.o
 Tescore: CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o
+Tescore: CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o
 Tescore: CMakeFiles/Tescore.dir/include/render/view/auth.c.o
 Tescore: CMakeFiles/Tescore.dir/include/render/view/render.c.o
 Tescore: CMakeFiles/Tescore.dir/include/render/view/typeface.c.o
 Tescore: CMakeFiles/Tescore.dir/include/utils/cmdlog.c.o
 Tescore: CMakeFiles/Tescore.dir/build.make
 Tescore: CMakeFiles/Tescore.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jerome03/tescore/gaNewBuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking C executable Tescore"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jerome03/tescore/gaNewBuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking C executable Tescore"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Tescore.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -420,6 +446,7 @@ CMakeFiles/Tescore.dir/requires: CMakeFiles/Tescore.dir/include/render/navigatio
 CMakeFiles/Tescore.dir/requires: CMakeFiles/Tescore.dir/include/sort/ranker/module.c.o.requires
 CMakeFiles/Tescore.dir/requires: CMakeFiles/Tescore.dir/include/sort/masterlist/alphabeticallySort.c.o.requires
 CMakeFiles/Tescore.dir/requires: CMakeFiles/Tescore.dir/include/sort/masterlist/alphaMergeSort.c.o.requires
+CMakeFiles/Tescore.dir/requires: CMakeFiles/Tescore.dir/include/sort/search/countScores.c.o.requires
 CMakeFiles/Tescore.dir/requires: CMakeFiles/Tescore.dir/include/render/view/auth.c.o.requires
 CMakeFiles/Tescore.dir/requires: CMakeFiles/Tescore.dir/include/render/view/render.c.o.requires
 CMakeFiles/Tescore.dir/requires: CMakeFiles/Tescore.dir/include/render/view/typeface.c.o.requires

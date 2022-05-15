@@ -50,6 +50,7 @@
 // temporary access
 #include "../../sort/ranker/rankerModule.h"
 #include "../../sort/masterlist/alphaMergeSort.h"
+#include "../../sort/search/countScores.h"
 
 //#region GLOBAL VARS
 DATASHEET   RAWDEMOSHEET;
@@ -105,10 +106,7 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
     renderSeparator(2);
     renderHeader(indexCount, panelID, commandLog);
     renderSeparator(3);
-
-    // PANELS : BAR GRAPH MATRIX & TOP RANKERS
-    generateGraph();
-
+    
     // PLACEHOLDER
     char* renderableIndexNames[10] = {
             "Keni Lobredo",
@@ -125,14 +123,14 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
 
     int renderableIndexValues[10] = {
             95,
-            75,
-            70,
-            71,
-            85,
-            99,
-            73,
+            95,
             90,
-            72,
+            91,
+            95,
+            99,
+            93,
+            90,
+            92,
             80,
     };
     
@@ -143,6 +141,29 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
 		RAWUNSORTEDSHEET.container[i].indexName = renderableIndexNames[i];
 		RAWUNSORTEDSHEET.container[i].value = renderableIndexValues[i];
 	}
+
+    // PANELS : BAR GRAPH MATRIX & TOP RANKERS
+    
+    // retrieve scores and place them in array
+    int unroundedScores[10] = {0};
+    for (int i=0; i<10; i++) {
+		unroundedScores[i] = RAWUNSORTEDSHEET.container[i].value;
+	}
+    
+    // round off these scores one by one and place them in another array
+    int roundedScores[10] = {0};
+    for (int i=0; i<10; i++) {
+		// round down to nearest 10
+		roundedScores[i] = RAWUNSORTEDSHEET.container[i].value - (RAWSORTEDSHEET.container[i].value % 10);
+    }
+    
+    // count the occurence of these scores in the subsheet
+    int results[10][2];
+    countScores(roundedScores, 10, &RAWUNSORTEDSHEET, 10, results);
+    
+    generateGraph(results);
+
+    
 	
 	// sort subsheet using ranker module
 	// (temporary, render not supposed to have access)
@@ -220,12 +241,12 @@ void indentCursor(short spaces){
     }
 }
 
-void generateGraph(){
+void generateGraph(int unsortedGradeRounds[10][2]){
 
     //#region INIT LOCAL VARIABLES
 
     // RAW GRADE SHEET COLLECTION
-    int     unsortedGradeRounds[10][2] = {
+    /**int     unsortedGradeRounds[10][2] = {
             {99, 2},
             {98, 4},
             {100, 10},
@@ -236,7 +257,7 @@ void generateGraph(){
             {87, 2},
             {69, 3},
             {91, 9}
-    };
+    };**/
     //#endregion
 
     //#region COUNT REFERENCE TABLE : For Rounding up IndexCount per IndexValue
