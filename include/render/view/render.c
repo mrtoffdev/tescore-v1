@@ -108,16 +108,16 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
 
     // PLACEHOLDER
     char* renderableIndexNames[10] = {
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
-            "Leni Robredo",
+            "Keni Lobredo",
+            "Meni Nobredo",
+            "Eeni Fobredo",
+            "Qeni Robredo",
+            "Oeni Pobredo",
+            "Aeni Bobredo",
+            "Seni Tobredo",
+            "Geni Hobredo",
+            "Ieni Jobredo",
+            "Ceni Dobredo",
     };
 
     int renderableIndexValues[10] = {
