@@ -149,9 +149,9 @@ void refreshFrame(DATASHEET sessionSheet, short panelID, short selectionID, char
     int results[10][2];
     countScores(roundedScores, 10, &RAWDEMOSHEET.masterlistCollection, 10, results);
     
-    for (int i=0; i<10; i++) {
+    /**for (int i=0; i<10; i++) {
 		printf("%d% d\n", results[i][0], results[i][1]);
-	}
+	}**/
     
     generateGraph(results);
 
