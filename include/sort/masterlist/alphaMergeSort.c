@@ -1,10 +1,15 @@
+/*========================================
+      MASTERLIST : MERGE SORT
+      Author: Jerome Loria
+  ========================================*/
+
 #include <string.h>
 
 #include "alphaMergeSort.h"
 
 #define MAX 999
 
-void alphaMerge(struct strec a[MAX], int i1, int j1, int i2, int j2);
+void alphaMerge(struct strec studentList[MAX], int i1, int j1, int i2, int j2);
 
 void alphaMergeSort(struct strec studentList[MAX], int start, int end) {
     
@@ -15,7 +20,6 @@ void alphaMergeSort(struct strec studentList[MAX], int start, int end) {
         alphaMergeSort(studentList, middle+1, end);
         alphaMerge(studentList, start, middle, middle+1, end);
     }
-    return;
 }
 
 void alphaMerge(struct strec studentList[MAX], int i1, int j1, int i2, int j2) {
@@ -48,5 +52,4 @@ void alphaMerge(struct strec studentList[MAX], int i1, int j1, int i2, int j2) {
         studentList[i] = temp[j];
     }
     
-    return;
 }

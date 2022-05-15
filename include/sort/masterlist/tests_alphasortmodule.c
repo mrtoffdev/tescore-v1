@@ -1,3 +1,8 @@
+/*========================================
+      MASTERLIST SORT ALGORITHMS TESTS
+      Author: Jerome Loria
+  ========================================*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,10 +14,13 @@
 
 int main() {
     
-    int basicSize = 3, extendedSize = 10, i;
-    
-    // sample student list
-    // for basic tests
+    int basicSize = 3,
+        extendedSize = 10,
+        i;
+
+    //#region =========== TESTS ===========
+
+    // Generate List of 3 Units
     struct strec studentList[3];
     strcpy(studentList[0].name, "Zebra Helicopter");
     studentList[0].score = 83;
@@ -21,8 +29,7 @@ int main() {
     strcpy(studentList[2].name, "Nylon Jeepney"); 
     studentList[2].score = 91;
     
-    // table containing raw data
-    // of more students
+    // Generator Init Data
     char *studentData[10][2] = {
         {"Fridge Grills", "85"},
         {"Window Tab Post", "92"},
@@ -36,9 +43,7 @@ int main() {
         {"Escaped Post", "97"}
     };
     
-    // convert raw data
-    // to array of 10 strecs
-    // for testing bigger arrays
+    // Generate Extended List of 10 units
     struct strec extendedList[10];
     for (i=0; i<extendedSize; i++) {
         strcpy(extendedList[i].name, studentData[i][0]);
