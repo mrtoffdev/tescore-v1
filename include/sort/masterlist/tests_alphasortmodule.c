@@ -18,6 +18,8 @@ int main() {
         extendedSize = 10,
         i;
 
+    int subsheeBasicSize = 10;
+
     //#region =========== TESTS ===========
 
     // Generate List of 3 Units
@@ -28,7 +30,52 @@ int main() {
     studentList[1].score = 95;
     strcpy(studentList[2].name, "Nylon Jeepney"); 
     studentList[2].score = 91;
-    
+
+    // // Testing Datasheet
+    // SUBSHEET sampleSubsheet =
+    // {
+    //     1,
+    //     2,
+    //     {   
+    //          {"Fridge Grills", 85},
+    //          {"Window Tab Post", 92},
+    //          {"Roof Leaf", 96},
+    //          {"Coconut Rock", 79},
+    //          {"Shirt Switch Root", 86},
+    //          {"Screen Fruit", 88},
+    //          {"White Fan", 94},
+    //          {"Light Wall", 82},
+    //          {"Cloud Plane", 77},
+    //          {"Escaped Post", 97}
+    //     }
+    // };
+
+    // SUBSHEET sample2Subsheet =
+    // {
+    //     1,
+    //     2,
+    //     {   
+    //          {"Fridge Grills", 85},
+    //          {"Window Tab Post", 92},
+    //          {"Roof Leaf", 96},
+    //          {"Coconut Rock", 79},
+    //          {"Shirt Switch Root", 86},
+    //          {"Screen Fruit", 88},
+    //          {"White Fan", 94},
+    //          {"Light Wall", 82},
+    //          {"Cloud Plane", 77},
+    //          {"Escaped Post", 97}
+    //     }
+    // };
+
+    // DATASHEET sampleSheet = 
+    // {
+    //     "name",
+    //     "author",
+    //     sampleSubsheet,
+    //     sample2Subsheet,
+    // };
+
     // Generator Init Data
     char *studentData[10][2] = {
         {"Fridge Grills", "85"},
@@ -84,6 +131,13 @@ int main() {
     // test 6
     if (strcmp(studentList[1].name, "Nylon Jeepney") == 0) printf("*");
     else printf("x");
+
+    // // testing modified code
+    // alphaMergeSortSubsheet(&sampleSheet.masterlistCollection, 0, basicSize-1);
+    // for (int i = 0; i<basicSize; i++)
+    // {
+    //     printf("%-30s\t%d\n", sampleSheet.masterlistCollection.container[i].indexName, sampleSheet.masterlistCollection.container[i].value);
+    // }
     
     
     // basic masterlist generator
