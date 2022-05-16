@@ -10,7 +10,7 @@
 
 #define MAX 999
 
-void alphaMergeSort(SUBSHEET *subsheet, int start, int end);
+void alphaMergeSort(SUBSHEET *subsheet, const int start, int end);
 
 // Jovic's Notes:
 // I need to replace the index arrays with subsheet.container[]

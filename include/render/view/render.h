@@ -26,6 +26,8 @@
 
 #include "../../model/datamodel.h"
 #include "../../model/renderctx.h"
+#include "../../sort/masterlist/alphaMergeSort.h"
+#include "../../sort/ranker/rankerModule.h"
 
 #define MAX_PASS_CHAR 30
 
@@ -33,7 +35,7 @@
 void refreshFrame(Renderctx ctx, char commandLog[][509]);
 void clearScreen();
 void indentCursor(short spaces);
-void generateGraph();
+void generateGraph(SUBSHEET MasterList);
 void defaultMasterListRow(char* indexName, int indexVal);
 
 // =========== PROMPTS ===========
@@ -49,6 +51,6 @@ void renderHeader(Renderctx ctx);
 void renderSubHeader();
 void renderMatrixRankerRow(char* indexNameContainer[10], int* indexValContainer, short selectionID, char selectionX, short panelID);
 void renderMasterListHeader(short panelID);
-void renderMasterListRow(char* indexName, int indexVal, short selectionID, char selectionX, short panelID);
+void renderMasterListRow(SUBSHEET MasterList, short selectionID, char selectionX, short panelID);
 
 #endif

@@ -24,7 +24,7 @@ void alphaMerge(SUBSHEET *subsheet, int i1, int j1, int i2, int j2);
 //     }
 // }
 
-void alphaMergeSort(SUBSHEET *subsheet, int start, int end) {
+void alphaMergeSort(SUBSHEET* subsheet, const int start, int end) {
     
     int middle;
     if (start < end) {

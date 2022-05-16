@@ -45,7 +45,6 @@
 #include <time.h>
 
 #include "render.h"
-#include "../../sort/ranker/rankerModule.h"
 
 //#region GLOBAL VARS
 int         gradeScaling[11] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100},
@@ -90,6 +89,73 @@ void refreshFrame(Renderctx ctx, char commandLog[10][509]){
     // FETCH TOTAL INDEX COUNT : DIV TOTAL BYTE SIZE OF COLLECTION BY ELEMENT BYTE SIZE
     int indexCount = sizeof (ctx.SessionSheet.masterlistCollection.container) / sizeof (ctx.SessionSheet.masterlistCollection.container[0]);
 
+    //#region Preparing renderData Context =============================================================
+    SUBSHEET Masterlist = {{
+            {"Fridge Grills", 85},
+            {"Window Tab Post", 92},
+            {"Roof Leaf", 96},
+            {"Coconut Rock", 79},
+            {"Shirt Switch Root", 86},
+            {"Screen Fruit", 88},
+            {"White Fan", 94},
+            {"Light Wall", 82},
+            {"Cloud Plane", 77},
+            {"Escaped Post", 97},
+            {"Cheryl Webster", 89},
+            {"Ayrton Alford", 45},
+            {"Zayyan Calderon", 23},
+            {"Lorena Vaughan", 0},
+            {"Hudson Burn", 0},
+            {"Amari Sharples", 0},
+            {"Beatrice Flowers", 0},
+            {"Ellouise Ponce", 0},
+            {"Zahid Arnold", 0},
+            {"Ciaron Wynn", 0},
+            {"Mikayla Nicholson", 98},
+            {"Riley-Jay Carney", 79},
+            {"Jan Good", 50},
+            {"Neil Pritchard", 88},
+            {"Emelie Yu", 87},
+            {"Ada Medina", 87},
+            {"Gideon Solis", 89},
+            {"Darin Rivas", 90},
+            {"Yasmine Wade", 99},
+            {"Aydin Wyatt", 100},
+            {"Eilish Whyte", 100},
+            {"Polly Bullock", 100},
+            {"Tony Emery", 100},
+            {"Darci Melton", 100},
+            {"Jo Corona", 100},
+            {"Lachlan Trevino", 95},
+            {"Clifford Johns", 79},
+            {"Darla Robbins", 85},
+            {"Jorja Mcclain", 60},
+            {"Jorja Mcclain", 65}
+        }};
+
+    // ALPHAMERGE SORT
+    alphaMergeSort(&Masterlist, 0, 39);
+    DATASHEET sampleSheet;
+    sampleSheet.masterlistCollection = Masterlist;
+
+    // RANKER SORT
+    sampleSheet.rankedCollection = ranker(sampleSheet.masterlistCollection);
+
+    // PLACEHOLDER
+    char* renderableIndexNames[10];
+    int renderableIndexValues[10];
+
+    // still part of ranker implementation
+    for(int i = 0; i<10; i++)
+    {
+        renderableIndexNames[i] = sampleSheet.rankedCollection.container[i].indexName;
+        renderableIndexValues[i] = sampleSheet.rankedCollection.container[i].value;
+//        renderableIndexNames[i] = returnedSubsheet.container[i].indexName;
+//        renderableIndexValues[i] = returnedSubsheet.container[i].value;
+    }
+
+    //#endregion
+
     //#region UPPER PANEL
 
     // HEADER
@@ -98,60 +164,7 @@ void refreshFrame(Renderctx ctx, char commandLog[10][509]){
     renderSeparator(3);
 
     // PANELS : BAR GRAPH MATRIX & TOP RANKERS
-    generateGraph();
-
-    // Ranker Implementation
-    SUBSHEET sampleSubsheet =
-            {
-                    {
-                            {"Fridge Grills", 85},
-                            {"Window Tab Post", 92},
-                            {"Roof Leaf", 96},
-                            {"Coconut Rock", 79},
-                            {"Shirt Switch Root", 86},
-                            {"Screen Fruit", 88},
-                            {"White Fan", 94},
-                            {"Light Wall", 82},
-                            {"Cloud Plane", 77},
-                            {"Escaped Post", 97}
-                    }
-            };
-
-    SUBSHEET sample2Subsheet =
-            {
-                    {
-                            {"Fridge Grills", 85},
-                            {"Window Tab Post", 92},
-                            {"Roof Leaf", 96},
-                            {"Coconut Rock", 79},
-                            {"Shirt Switch Root", 86},
-                            {"Screen Fruit", 88},
-                            {"White Fan", 94},
-                            {"Light Wall", 82},
-                            {"Cloud Plane", 77},
-                            {"Escaped Post", 97}
-                    }
-            };
-
-    DATASHEET sampleSheet =
-            {
-                    sampleSubsheet,
-                    sample2Subsheet,
-            };
-
-    SUBSHEET returnedSubsheet = ranker(sampleSheet.rankedCollection);
-
-    // PLACEHOLDER
-    char* renderableIndexNames[10];
-
-    int renderableIndexValues[10];
-
-    // still part of ranker implementation
-    for(int i = 0; i<10; i++)
-    {
-        renderableIndexNames[i] = returnedSubsheet.container[i].indexName;
-        renderableIndexValues[i] = returnedSubsheet.container[i].value;
-    }
+    generateGraph(Masterlist);
 
     renderMatrixRankerRow(
             renderableIndexNames,
@@ -172,8 +185,7 @@ void refreshFrame(Renderctx ctx, char commandLog[10][509]){
     renderMasterListHeader(ctx.sessionPanelID);
     renderSeparator(3);
 
-
-    renderMasterListRow("Keanu Reeves", 98, ctx.renderCellIndex, ctx.renderCellX, ctx.sessionPanelID);
+    renderMasterListRow(Masterlist, ctx.renderCellIndex, ctx.renderCellX, ctx.sessionPanelID);
 
     renderSeparator(4);
 
@@ -210,7 +222,7 @@ void indentCursor(short spaces){
         printf("\t");
     }
 }
-void generateGraph(){
+void generateGraph(SUBSHEET MasterList){
 
     //#region INIT LOCAL VARIABLES
 
@@ -238,15 +250,25 @@ void generateGraph(){
         studentCountReference[y][0] = gradeScaling[y];
     }
 
-    for (int y = 0; y < 11; ++y) {
-        for (int x = 0; x < 11; ++x) {
-            if(
-                // GRADE ATTAINED IS LESS/EQUAL TO GRADE TABLE
-                    (unsortedGradeRounds[x][0] >= studentCountReference[y][0]) &&
-                    // GRADE IS LESS THAN LOWER GRADE TABLE
-                    (unsortedGradeRounds[x][0] < studentCountReference[y+1][0])){
+//    for (int y = 0; y < 11; ++y) {
+//        for (int x = 0; x < 11; ++x) {
+//            if(
+//                // GRADE ATTAINED IS LESS/EQUAL TO GRADE TABLE
+//                    (unsortedGradeRounds[x][0] >= studentCountReference[y][0]) &&
+//                    // GRADE IS LESS THAN LOWER GRADE TABLE
+//                    (unsortedGradeRounds[x][0] < studentCountReference[y+1][0])){
+//
+//                studentCountReference[y][1] += unsortedGradeRounds[x][1];
+//            }
+//        }
+//    }
 
-                studentCountReference[y][1] += unsortedGradeRounds[x][1];
+    for (int y = 0; y < 11; ++y) {
+        for (int x = 0; x < 40; ++x) {
+            if ((MasterList.container[x].value >= studentCountReference[y][0]) &&
+                // GRADE IS LESS THAN LOWER GRADE TABLE
+                (MasterList.container[x].value < studentCountReference[y+1][0])){
+                studentCountReference[y][1]++;
             }
         }
     }
@@ -459,18 +481,18 @@ void renderMasterListHeader(short panelID){
         printf("\t│\t\t\t\t- Student Submission List -\t\t\t\t\t│           │\n");
     }
 }
-void renderMasterListRow(char* indexName, int indexVal, short selectionID, char selectionX, short panelID){
+void renderMasterListRow(SUBSHEET MasterList, short selectionID, char selectionX, short panelID){
     for (int i = 0; i < 10; ++i) {
         if (panelID == 3 && selectionID == i){
             switch (selectionX) {
                 case 'X':
                     printf("\t|");
                     printf("\x1B[38;5;16m\x1B[48;5;7m");
-                    printf(" • %-90s  ", indexName);
+                    printf(" • %-90s  ", MasterList.container[i].indexName);
                     printf("\x1B[38;5;15m\x1B[48;5;0m");
                     printf("|");
                     printf("\x1B[38;5;16m\x1B[48;5;7m");
-                    printf("   %4d    ", indexVal);
+                    printf("   %4d    ", MasterList.container[i].value);
                     printf("\x1B[38;5;15m\x1B[48;5;0m");
                     printf("│\n");
                     break;
@@ -478,24 +500,24 @@ void renderMasterListRow(char* indexName, int indexVal, short selectionID, char 
                 case 'L':
                     printf("\t|");
                     printf("\x1B[38;5;16m\x1B[48;5;7m");
-                    printf(" • %-90s  ", indexName);
+                    printf(" • %-90s  ", MasterList.container[i].indexName);
                     printf("\x1B[38;5;15m\x1B[48;5;0m");
-                    printf("|   %4d    │\n", indexVal);
+                    printf("|   %4d    │\n", MasterList.container[i].value);
                     break;
 
                 case 'R':
-                    printf("\t| • %-90s  |",indexName);
+                    printf("\t| • %-90s  |",MasterList.container[i].indexName);
                     printf("\x1B[38;5;16m\x1B[48;5;7m");
-                    printf("   %4d    ", indexVal);
+                    printf("   %4d    ", MasterList.container[i].value);
                     printf("\x1B[38;5;15m\x1B[48;5;0m");
                     printf("│\n");
                     break;
 
                 default:
-                    defaultMasterListRow(indexName, indexVal);
+                    defaultMasterListRow(MasterList.container[i].indexName, MasterList.container[i].value);
                     break;
             }
-        } else defaultMasterListRow(indexName, indexVal);
+        } else defaultMasterListRow(MasterList.container[i].indexName, MasterList.container[i].value);
 
     }
 
@@ -524,7 +546,6 @@ void renderWhiteSpace(int spaceSize){
         printf("\n");
     }
 }
-
 void renderSeparator(short id){
     if(id == 1){
         puts("\t─────────────────────────────────────────────────────────────────────────────────────────────────────────────");

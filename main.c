@@ -46,7 +46,7 @@
 #define COMMANDLOGMAXENTRY 10
 
 // DEVOPS
-#define SANDBOX 1
+#define SANDBOX 0
 #define SANDBOXID 2
 void sandbox_scriptTesting();
 
