@@ -57,28 +57,6 @@ char*       matrixGraph[10][11];
 
 void refreshFrame(Renderctx ctx, char commandLog[10][509]){
 
-    /* REFRESH FRAME SEQUENCE
-        + Start Benchmark Clock
-        + Clear Screen Buffer
-        + Render UI Elements
-            - Separator
-            - Header (Number of Students)
-            - Separator
-            - Upper Rows
-                - x10 formatted lines
-            - Separator
-            - Sub Header
-            - Separator
-                - x10 formatted lines
-        + Display Command Log
-            - Format: <TimeLog><Message
-
-        NOTE:
-            INDEX COUNT INCREMENTS FROM B TO T > SIDE OF GRAPH
-                ARR[] INCREMENTS FROM END TO START
-            INDEX VALUE INCREMENTS FROM R TO L > BOTTOM OF GRAPH
-    */
-
     // UNIT TEST CLOCKS
     clock_t refreshFrameExecTimeBegin = clock();
 
@@ -208,13 +186,10 @@ void refreshFrame(Renderctx ctx, char commandLog[10][509]){
 }
 
 //#region =========== UI UTILS ===========
-
 void clearScreen(){
-
     // ALTS
     //    printf("\e[1;1H\e[2J");
     //    printf("\x1b[2J\x1b[H");
-
     system("cls");
 }
 void indentCursor(short spaces){
@@ -324,11 +299,9 @@ void generateGraph(SUBSHEET MasterList){
     }
     //#endregion
 }
-
 //#endregion
 
 //#region =========== UI PANELS ===========
-
 void renderHeader(Renderctx ctx){
     short sessionStudentCount = 10; //TODO REMOVE / REPLACE
     if(ctx.sessionPanelID == 1){
@@ -527,20 +500,16 @@ void renderMasterListRow(SUBSHEET MasterList, short selectionID, char selectionX
 void defaultMasterListRow(char* indexName, int indexVal){
     printf("\t| • %-90s  |   %4d    │\n", indexName, indexVal);
 }
-
 //#endregion
 
 
 //#region =========== PROMPTS ===========
-
 void terminatePrompt(){
     exit(0);
 }
-
 //#endregion
 
 //#region =========== UI ELEMENTS ===========
-
 void renderWhiteSpace(int spaceSize){
     for (int i = 0; i < spaceSize; ++i) {
         printf("\n");
@@ -562,9 +531,4 @@ void renderSeparator(short id){
 //    puts("\t-------------------------------------------------------------------------------------------------------------");
 
 }
-
-//#endregion
-
-//#region =========== TESTS ===========
-
 //#endregion
