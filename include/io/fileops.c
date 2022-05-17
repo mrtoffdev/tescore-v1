@@ -20,7 +20,8 @@
 
 typedef enum {
     READ_STR = 0,
-    READ_HEX = 1
+    READ_HEX = 1,
+    READ_BLK = 2,
 } OPERATION_CODE;
 
 //#region =========== PRIVATE FUNCTIONS ===========
@@ -35,7 +36,7 @@ void sgt_aeshexbuffer(const char* in_strbuffer, uint8_t out_aeshexbuffer[][16]);
 void hgt_aesstrbuffer(const uint8_t* in_hexbuffer, char* out_aesstrbuffer);
 
 void sgt_strhexbuffer(const char* in_strhexbuffer, uint8_t out_hexbuffer[][16]);
-void gt_strmaster(const uint8_t* in_strhexbuffer, char* out_strbuffer);
+void hgt_strmaster(const uint8_t* in_strhexbuffer, char* out_strbuffer);
 
 //#region Legacy Protoypes
 uint64_t    fetch_maxBufferAlloc(char* plain_srcStrBuffer);
@@ -217,11 +218,12 @@ void testing(){
 }
 
 void script_fileopsTesting(){
-    uint8_t teststringblockcontainer[2][16];
-    char *teststring = "testingthestringtobuffer working";
+    char* teststring = "testingthestringtobuffer working";
+    size_t blocks = fetch_blockunits(teststring, READ_STR);
+    uint8_t teststringblockcontainer[blocks][16];
     // create string blocks
     sgt_strhexbuffer(teststring, teststringblockcontainer);
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < blocks; ++i) {
         for (int j = 0; j < 16; ++j) {
             printf("%.2x", teststringblockcontainer[i][j]);
         }
@@ -230,21 +232,21 @@ void script_fileopsTesting(){
     printf("\n\nEncrypting...\n\n");
     // encrypt
     struct AES_ctx ctx;
-    uint8_t teststringencrypted[2][16];
+    uint8_t teststringencrypted[blocks][16];
     AES_init_ctx(&ctx, INTERNALKEY);
     AES_init_ctx_iv(&ctx, INTERNALKEY, INTERNALIV);
-    enc_AES_encryptBufferBlocks(ctx, teststringblockcontainer, teststringencrypted, 2);
-    for (int i = 0; i < 2; ++i) {
+    enc_AES_encryptBufferBlocks(ctx, teststringblockcontainer, teststringencrypted, blocks);
+    for (int i = 0; i < blocks; ++i) {
         for (int j = 0; j < 16; ++j) {
             printf("%.2x", teststringencrypted[i][j]);
         }
     }
 
     printf("\n\nDecrypting...\n\n");
-    uint8_t teststringdecrypted[2][16];
+    uint8_t teststringdecrypted[blocks][16];
     AES_init_ctx_iv(&ctx, INTERNALKEY, INTERNALIV);
-    enc_AES_decryptBufferBlocks(ctx, teststringencrypted, teststringdecrypted, 2);
-    for (int i = 0; i < 2; ++i) {
+    enc_AES_decryptBufferBlocks(ctx, teststringencrypted, teststringdecrypted, blocks);
+    for (int i = 0; i < blocks; ++i) {
         for (int j = 0; j < 16; ++j) {
             printf("%.2x", teststringdecrypted[i][j]);
         }
@@ -363,8 +365,13 @@ void sgt_strhexbuffer(const char* in_strhexbuffer, uint8_t out_hexbuffer[][16]){
     }
 
 }
+void hgt_strmaster(const uint8_t* in_strhexbuffer, char* out_strbuffer){
 
+}
+// DEBUG
+void dbg_printbuffer(){
 
+}
 //#region Legacy Functions
 uint64_t    fetch_maxBufferAlloc(char* plain_srcStrBuffer){
     //TODO FUNCT UPDATE
