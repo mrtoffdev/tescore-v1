@@ -12,7 +12,6 @@
 #include "include/render/view/render.h"
 #include "include/model/renderctx.h"
 #include "include/render/navigation/navigation.h"
-#include "include/sort/masterlist/alphaMergeSort.h"
 
 /*
 
@@ -47,7 +46,7 @@
 
 // DEVOPS
 #define SANDBOX 0
-#define SANDBOXID 2
+#define SANDBOXID 1
 void sandbox_scriptTesting();
 
 // GLOBALS
@@ -133,40 +132,12 @@ void sandbox_scriptTesting(){
             {"Escaped Post", "97"}
     };
 
-    //#region =========== ALPHAMERGESORT.H ===========
+    //#region =========== SANDBOX SCRIPTS ===========
     if(SANDBOXID == 1){
-
-//        // Generate Extended List of 10 units
-//        SUBSHEET extendedList[10];
-//        for (int i=0; i<10; i++) {
-//            strcpy(extendedList[i].name, studentData[i][0]);
-//            extendedList[i].score = atoi(studentData[i][1]);
-//        }
-//        printf("Generated Unsorted List:\n");
-//        for (int i=0; i<10; i++) {
-//            printf("%s : %d\n", extendedList[i].name, extendedList[i].score);
-//        }
-//
-//        printf("\nSorting List...\n");
-//        alphaMergeSort(extendedList, 0, 9);
-//
-//        printf("Generated Sorted List:\n");
-//        for (int i=0; i<10; i++) {
-//            printf("%s : %d\n", extendedList[i].name, extendedList[i].score);
-//        }
-
+        script_fileopsTesting();
     } else
     if(SANDBOXID == 2){
-        // TESTING FILE ENCRYPTION
-        char* plain_strSrcBuffer = calloc(1024, 509);
-        plain_strSrcBuffer = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.000";
-//        plain_strSrcBuffer = "Tescore is a terminal-based grading sheet inspector that supports a dynamic, interactive user interface\nThere is no spoon.";
-
-        testing(plain_strSrcBuffer);
-    } else
-    if(SANDBOXID == 3){
-
-
+        exit(0);
     }
     //#endregion
 }
