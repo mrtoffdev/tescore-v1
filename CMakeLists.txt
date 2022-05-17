@@ -36,4 +36,4 @@ add_executable(
         # Rendering
         include/render/view/auth.c
         include/render/view/render.c
-        include/render/view/typeface.c include/sort/ranker/rankerModule.h include/render/view/typeface.h include/utils/cmdlog.c include/utils/cmdlog.h include/model/renderctx.h include/model/safeguard.h)
+        include/render/view/typeface.c include/sort/ranker/rankerModule.h include/render/view/typeface.h include/utils/cmdlog.c include/utils/cmdlog.h include/model/renderctx.h include/io/safeguard/safeguard.c include/io/safeguard/safeguard.h)
