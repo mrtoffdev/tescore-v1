@@ -1,0 +1,45 @@
+ENCRYPTION
+
+    FUNCTIONS: enc_ is for pre_encryption | dec_ is for post_encryption / decryption | redw : read encrypt decrypt write
+
+    sgt_aeshexbuffer()                              - Generates a 2D uint8_t array (src_aeshexbuffer) from a string that contains hex values of an encrypted masterlist
+    hgt_aesstrbuffer()                              - Generates a 2D string array (src_aesstrbuffer) from a uint8_t array (blk_aeshexbuffer) (in blocks of 32 bytes because hex uses 2 bytes / chars per int)
+
+    sgt_strhexbuffer()                              - Generates a 2D uint8_t array (src_strhexbuffer) from a 2D string array (src_strbuffer) containing the string encoded masterlist
+    sgt_strbuffer()                                 - Generates a 2D string array (src_strbuffer) from a string encoded masterlist
+
+    gt_strmaster()                                  - Generates a string that appends all blocks in a 2D string array
+
+    fetch_strbuffersize()                           - Fetches the size of the encoded masterlist string
+    fetch_hexbuffersize()                           - Fetches the size of a string that contains hex values of an encrypted masterlist
+    fetch_blockunits()                              - Fetches the blocks used by either a string that contains hex values of an encrypted masterlist, or a string encoded masterlist depending on operation mode
+
+    VARIABLES:
+        - blk_aeshexbuffer                          - A 2D uint8_t array containing the encrypted masterlist hexbuffer (in blocks of 16 bytes)
+        - blk_aesstrbuffer                          - A 2D string array containing the string encoded encrypted masterlist hexbuffer (in blocks of 32 bytes because hex uses 2 bytes / chars per int)
+
+        - blk_strhexbuffer                          - A 2D uint8_t array containing the hex conversion of the string encoded masterlist (in blocks of 16 bytes)
+        - blk_strbuffer                             - A 2D string array containing the string encoded masterlist (in blocks of 16 bytes)
+
+        - ctx_strbuffersize                         - The size of the encoded masterlist string
+        - ctx_hexbuffersize                         - The size of the encoded masterlist hex buffer
+        - ctx_blockunits                            - The number of blocks for current session | (srx_hexbuffer / 2) / 16 for hexbuffers
+        - ctx_key                                   - A custom passkey for the AES ctx
+
+        - hex_strbuffer                             - A string that contains the entire decrypted masterlist in string form
+        - str_strbuffer                             - A string that contains the entire decrypted masterlist in string form
+
+    FILE DECRYPTION PROCESS:
+        1 Read encoded (string)hexbuffer from file
+        1 Translate whole (string)hexbuffer into hexadecimals in uint8_t[BUFFERSIZE]
+        2 Divide uint_t array into blocks of 16 bytes and insert hex values into uint8_t container[BLOCKS][16]
+        3 Insert into custom decryption function
+        4 Append whole decrypted uint8_t container[BLOCKS][16] into a whole string
+        5 Disassemble string and generate masterlist
+
+    FILE ENCRYPTION PROCESS:
+        1 Convert whole (string)masterlistbuffer into hexadecimals in uint8_t[BUFFERSIZE]
+        2 Divide uint8_t array into blocks of 16 bytes and insert hex values into uint8_t container[BLOCKS][16]
+        3 Insert into custom encryption function
+        4 Translate whole encrypted uint8_t container[BLOCKS][16] into a whole string
+        5 Write encoded (string)hexbuffer to file
