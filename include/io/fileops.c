@@ -1,7 +1,7 @@
 /*========================================
-      FILE DECRYPTION
-      Authors: Christopher Abadillos Jr.
-               Jovic Francis Rayco
+    FILE OPERATIONS
+    Head Author: Christopher Abadillos Jr.
+    Contributor: Jovic Francis Rayco
   ========================================*/
 
 #include <stdio.h>
@@ -12,33 +12,32 @@
 #include "../render/view/render.h"
 #include "lib/aes.h"
 
-#define DEBUGMODE 1
+#define DEBUGMODE 0
 #define MAXSTRBUFFERSIZE 3344
 #define INTERNALKEY "tescoreinternals"
 #define INTERNALIV "XXXCCCVVVIIIOOOE"
+#define BLKLEN 16
 
-//#region =========== DOCS ===========
-/*
-    VARIABLE NAMING SCHEME
-
-    char*       plain_srcStrBuffer          - Container of Plaintext to be encoded
-    uint8_t     ctx_hexBufferContainer      - Container of H
-
-
-    FUNCTIONS: enc_ is for pre_encryption | dec_ is for post_encryption / decryption
-
-    enc_generateHexBufferFromStr()                  - Generates a uint8_t translation of input char* plain_srcStrBuffer
-    enc_generateHexBufferFromStr()                  - Generates a char* translation of input uint8_t ctx_hexBufferContainer
-    enc_translateStrHexBuffertoHex()                - Generates a uint8_t initialized with string encoded hex data ctx_srcHexStrBuffer
-
-    enc_dsmblStrBuffer()                            - Disassembles the char* into a char* array of 16 bits
-
- */
-//#endregion
+typedef enum {
+    READ_STR = 0,
+    READ_HEX = 1
+} OPERATION_CODE;
 
 //#region =========== PRIVATE FUNCTIONS ===========
 
-// UTILITY
+// FETCH
+size_t fetch_rawbuffersize(const char* in_strbuffer);
+size_t fetch_strbuffersize(const char* in_strbuffer);
+size_t fetch_blockunits(const char* in_strbuffer, OPERATION_CODE mode);
+
+// GENERATE
+void sgt_aeshexbuffer(const char* in_strbuffer, uint8_t out_aeshexbuffer[][16]);
+void hgt_aesstrbuffer(const uint8_t* in_hexbuffer, char* out_aesstrbuffer);
+
+void sgt_strhexbuffer(const char* in_strhexbuffer, uint8_t out_hexbuffer[][16]);
+void gt_strmaster(const uint8_t* in_strhexbuffer, char* out_strbuffer);
+
+//#region Legacy Protoypes
 uint64_t    fetch_maxBufferAlloc(char* plain_srcStrBuffer);
 size_t      enc_fetchBlockCount(char* plain_srcStrBuffer);
 size_t      enc_fetchBlockCountfromHex(char* raw_srcStrBuffer);
@@ -59,14 +58,11 @@ void        enc_generateHexBufferEncryptable(char ctx_dsmblStrBuffer[][16], uint
 void        enc_generateHexBlocks(uint8_t* ctx_hexBufferContainer, char plain_srcStrBuffer);
 
 void        hex_removeBufferPadding(uint8_t* ctx_inRawBuffer, uint64_t size);
-
-//RETURN
-
+//#endregion
 
 //#endregion
 
-//#region TESTING OPS
-void testing(const char* plain_strSrcBuffer){
+void testing(){
     struct AES_ctx ctx;
 
     //#region ENCRYPTION DETAILS
@@ -119,51 +115,43 @@ void testing(const char* plain_strSrcBuffer){
                                       "6f706d656e74206e656564732e303000";
     //#endregion
 
-    /*
-        Raw buffer (char*) decryption process
-            - Translate whole buffer into hexadecimals in uint8_t[BUFFERSIZE]
-            - Divide string into blocks of 16 bytes
-            - Insert hex values into uint8_t container[BLOCKS][16]
-            - Insert into custom decryption function
-    */
-
     //#region SUB DECRYPTION TEST =====================================================================
 
-    // Fetch strBuffer details
-    size_t  demo_strSize = strlen(demo_rawHexBufferString);
-    size_t  demo_blockSize = enc_fetchBlockCountfromHex(demo_rawHexBufferString);
-    printf("Raw Buffer Size: %d\n", demo_strSize);
-    printf("Actual Buffer Size: %d\n", demo_strSize/2);
-    printf("Block Size: %d\n", demo_blockSize);
-
-    // Translate whole buffer into hex
-    uint8_t demo_translatedHexValues[demo_strSize];
-    enc_translateStrHexBuffertoHex(demo_rawHexBufferString, demo_translatedHexValues, demo_strSize);
-
-    printf("StrBuffer to Buffer: \n\n");
-    for (int i = 0; i < demo_blockSize * 16; ++i) {
-        printf("%.2x", demo_translatedHexValues[i]);
-    }
-
-    printf("\n\nSize of translated buffer: %d\n\n", sizeof demo_translatedHexValues);
-
-    // Divide into blocks and insert hex
-    uint8_t demo_BufferDecryptableBlock[demo_blockSize][16];
-    enc_dsmblHexBuffer(demo_translatedHexValues, demo_BufferDecryptableBlock, demo_blockSize); //TODO FIX
-
-    printf("Disassembled Buffer (Decryptable Buffer): \n");
-    for (int i = 0; i < demo_blockSize; ++i) {
-        for (int j = 0; j < 16; ++j) {
-            printf("%.2x", demo_BufferDecryptableBlock[i][j]);
-        }
-        printf("\n");
-    }
-
-    // Insert into custom decrypt function
-    uint8_t demo_BufferDecryptedBlocks[demo_blockSize][16];
-
-    AES_init_ctx_iv(&ctx, key, iv); //TODO VERY IMPORTANT TO INIT IV EVERY PROCESS
-    enc_AES_decryptBufferBlocks(ctx, demo_BufferDecryptableBlock, demo_BufferDecryptedBlocks, demo_blockSize);
+//    // Fetch strBuffer details
+//    size_t  demo_strSize = strlen(demo_rawHexBufferString);
+//    size_t  demo_blockSize = enc_fetchBlockCountfromHex(demo_rawHexBufferString);
+//    printf("Raw Buffer Size: %d\n", demo_strSize);
+//    printf("Actual Buffer Size: %d\n", demo_strSize/2);
+//    printf("Block Size: %d\n", demo_blockSize);
+//
+//    // Translate whole buffer into hex
+//    uint8_t demo_translatedHexValues[demo_strSize];
+//    enc_translateStrHexBuffertoHex(demo_rawHexBufferString, demo_translatedHexValues, demo_strSize);
+//
+//    printf("StrBuffer to Buffer: \n\n");
+//    for (int i = 0; i < demo_blockSize * 16; ++i) {
+//        printf("%.2x", demo_translatedHexValues[i]);
+//    }
+//
+//    printf("\n\nSize of translated buffer: %d\n\n", sizeof demo_translatedHexValues);
+//
+//    // Divide into blocks and insert hex
+//    uint8_t demo_BufferDecryptableBlock[demo_blockSize][16];
+//    enc_dsmblHexBuffer(demo_translatedHexValues, demo_BufferDecryptableBlock, demo_blockSize); //TODO FIX
+//
+//    printf("Disassembled Buffer (Decryptable Buffer): \n");
+//    for (int i = 0; i < demo_blockSize; ++i) {
+//        for (int j = 0; j < 16; ++j) {
+//            printf("%.2x", demo_BufferDecryptableBlock[i][j]);
+//        }
+//        printf("\n");
+//    }
+//
+//    // Insert into custom decrypt function
+//    uint8_t demo_BufferDecryptedBlocks[demo_blockSize][16];
+//
+//    AES_init_ctx_iv(&ctx, key, iv); //TODO VERY IMPORTANT TO INIT IV EVERY PROCESS
+//    enc_AES_decryptBufferBlocks(ctx, demo_BufferDecryptableBlock, demo_BufferDecryptedBlocks, demo_blockSize);
 
     //#endregion
 
@@ -226,222 +214,158 @@ void testing(const char* plain_strSrcBuffer){
 
     //#endregion
 
-    //#region LEGACY CODE
+}
 
-//    strncat(lineone, ctx_dsmblStrBuffer[0], 16);
-//    strncat(lineone, ctx_dsmblStrBuffer[1], 16);
+void script_fileopsTesting(){
+    uint8_t teststringblockcontainer[2][16];
+    char *teststring = "testingthestringtobuffer working";
+    // create string blocks
+    sgt_strhexbuffer(teststring, teststringblockcontainer);
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 16; ++j) {
+            printf("%.2x", teststringblockcontainer[i][j]);
+        }
+    }
 
-//    printf("Current Block Count: %d\n", ctx_inBufferBlocks);
-//    for (int i = 0; i < ctx_inBufferBlocks; ++i) {
-//        for (int j = 0; j < 16; ++j) {
-////            printf("Current StrBuffer Values: %s\n", ctx_dsmblStrBuffer[i]);
-//            ctx_dsmblHexBuffer[i][j] = ctx_dsmblStrBuffer[i][j];
-//        }
-//    }
+    printf("\n\nEncrypting...\n\n");
+    // encrypt
+    struct AES_ctx ctx;
+    uint8_t teststringencrypted[2][16];
+    AES_init_ctx(&ctx, INTERNALKEY);
+    AES_init_ctx_iv(&ctx, INTERNALKEY, INTERNALIV);
+    enc_AES_encryptBufferBlocks(ctx, teststringblockcontainer, teststringencrypted, 2);
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 16; ++j) {
+            printf("%.2x", teststringencrypted[i][j]);
+        }
+    }
 
-//    for (int i = 0; i < ctx_inBufferBlocks; ++i) {
-//        printf("Current Block (Hex Container): %.2x\n", ctx_dsmblHexBuffer[i]);
-//    }
+    printf("\n\nDecrypting...\n\n");
+    uint8_t teststringdecrypted[2][16];
+    AES_init_ctx_iv(&ctx, INTERNALKEY, INTERNALIV);
+    enc_AES_decryptBufferBlocks(ctx, teststringencrypted, teststringdecrypted, 2);
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 16; ++j) {
+            printf("%.2x", teststringdecrypted[i][j]);
+        }
+    }
 
-//    // insert plaintxt to uint8_t arr[]
-//    for (int i = 0; i < inStrSize; ++i) {
-//        str[i] = plain_strSrcBuffer[i];
-//    }
+    system("pause");
+}
 
-//            uint8_t str[] = "The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal. [beep] A single lap should be completed each time you hear this sound. [ding] Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.0tescoreinternals";
+// FETCH
+size_t fetch_rawbuffersize(const char* in_strbuffer){
+    return strlen(in_strbuffer) / 2;
+}
+size_t fetch_strbuffersize(const char* in_strbuffer){
+    return strlen(in_strbuffer);
+}
+size_t fetch_blockunits(const char* in_strbuffer, OPERATION_CODE mode){
+    size_t in_size = strlen(in_strbuffer);
+    size_t blocks = 0;
+    switch (mode) {
+        case 0:
+            blocks = (/* For null terminators */ in_size / 16) + in_size;
+            if (in_size % 16 != 0) blocks++;
+            return blocks;
+            break;
 
-//    // print all buffer
-//    uint8_t testBar[2];
-//    char testChar[2] = "jk";
-//    testBar[0] = (int)testChar[0];
-//    testBar[1] = (int)testChar[1];
-//    printf("%x", testBar[0]);
-//    printf("%x", testBar[1]);
-//
-//    printf("\n raw buffer \n");
-//    for (int i = 0; i < inStrSize; ++i) {
-//        fprintf(localFile,"%.2x", str[i]);
-//    }
-//    fprintf(localFile, "\n\n");
-//    AES_init_ctx_iv(&ctx, key, iv);
-//    AES_CBC_encrypt_buffer(&ctx, str, inStrSize);
-//
-//    printf("\n Encrypted buffer\n");
-//
-//    for (int i = 0; i < inStrSize; ++i) {
-//        fprintf(localFile,"%.2x", str[i]);
-//    }
-//    fprintf(localFile, "\n\n");
-//    printf("\n Decrypted buffer\n");
-//
-//    AES_init_ctx_iv(&ctx, key, iv);
-//    AES_CBC_decrypt_buffer(&ctx, str, inStrSize);
-//
-//    for (int i = 0; i < inStrSize; ++i) {
-//        fprintf(localFile,"%.2x", str[i]);
-//    }
-//
-//    fclose(localFile);
-//    printf("\n");
+        case 1:
+            return (strlen(in_strbuffer) / 2) / 16;
+            break;
 
+        default:
+            break;
+    }
+    return blocks;
+}
 
-//
-//    struct AES_ctx ctx;
-//
-//    //#region TESTING ENCRYPTED BUFFER HANDLING
-//
-//    //#region Encrypted Buffer
-//    char* encryptedBuffer = "46a3db430b2a525e14eb3f0415496085"
-//                            "427f176ade887ae67042307c09a66635"
-//                            "efa30635bbc7f2ed0e0fe5604198632d"
-//                            "7d336459ee99ddef429826a8256da775"
-//                            "28d0626363fd68a41638e22349efd833"
-//                            "0f477ea4b3a75d3912f83f3b997a3669"
-//                            "c2d2182412628e60484f4c80891f966d"
-//                            "8a04c51627637cef3ea5d2d9633d3bd7";
-//    //#endregion
-//
-////    uint32_t ctx_encBufferLength = strlen(ctx_rawBufferContainer);
-////    uint8_t encryptedBufferTestbench[ctx_encBufferLength/2]; // Decrypted Buffer is always n/2 of encrypted buffer size
-////
-////    // ENCRYPTED BUFFER HANDLER
-////    printf("Encrypted Buffer length: %d\n", ctx_encBufferLength);
-////    hex_disassembleCharBuffer(encryptedBufferTestbench, ctx_rawBufferContainer);
-//
-//    //#endregion
-//
-//    //#region BUFFER DISASSEMBLER
-////    char hextempcontainer[2];
-////    int counter = 0;
-////    for (int i = 0; i < encryptedBufferLength; i+=2) {
-////        hextempcontainer[0] = ctx_rawBufferContainer[i];
-////        hextempcontainer[1] = ctx_rawBufferContainer[i+1];
-////
-////        encryptedBufferTestbench[counter] = (int)strtol(hextempcontainer, NULL, 16);
-////        counter++;
-////    }
-//    //#endregion
-//
-//    //#region GENERATE KEY CONTAINER
-//    uint8_t     key[] = "aaaaaaaaaaaaaaaa";
-//    uint8_t     iv[]  = "bbbbbbbbbbbbbbbb";
-//
-//    //#endregion
-//
-//    //#region =========== MAIN ENCRYPTION PROCESS ===========
-//
-//    // SIZE: FETCH BUFFER SIZE FOR SRC STRING BUFFER
-//    size_t      ctx_targetBufferSize = fetch_maxBufferAlloc(plain_strSrcBuffer);
-//    // VAR: FINAL STRING BUFFER FOR CONVERSION
-//    char*       ctx_finalStrBuffer = pad_strBuffer(plain_strSrcBuffer, ctx_targetBufferSize);
-//
-//    printf("Final Padded Str: \n\n%s\n\n", ctx_finalStrBuffer); //TODO PASS
-//
-//    size_t      ctx_srcBufferLen = strlen(plain_strSrcBuffer);
-//    size_t      ctx_FStrBufferLen = strlen(ctx_finalStrBuffer);
-//    printf("Final Padded Str Length: %d\n", ctx_FStrBufferLen);
-//
-//    uint8_t     ctx_rawBufferContainer[ctx_targetBufferSize];  // VAR: FINAL RAW BUFFER CONTAINER FOR CONVERSION
-//    enc_generateHexBuffer(ctx_rawBufferContainer, ctx_finalStrBuffer, ctx_targetBufferSize);
-//
-//    printf("SizeOf Hex Buffer Container: %d\n", sizeof ctx_rawBufferContainer);
-//    printf("Encoded String (Unencrypted): \n\n");
-//    for (int i = 0; i < ctx_targetBufferSize; ++i) {
-//        printf("%.2x", ctx_finalStrBuffer[i]);
-//    }
-////    enc_writeBufferData("C:\\demo.txt", ctx_rawBufferContainer, finalStrBuffer_length);
-//
-////    hex_removeBufferPadding(ctx_rawBufferContainer, finalStrBuffer_length);
-//
-//    printf("\n\nSize of Translated Buffer: %d\n\n", sizeof ctx_rawBufferContainer / sizeof ctx_rawBufferContainer[0]);
-//    printf("Decoded String: \n\n%s\n\n", ctx_rawBufferContainer);
-//
-//    AES_init_ctx_iv(&ctx, key, iv);
-//    AES_CBC_encrypt_buffer(&ctx, ctx_rawBufferContainer, ctx_targetBufferSize);
-//
-//    printf("Encoded String (Encrypted): \n\n");
-//    for (int i = 0; i < ctx_targetBufferSize; ++i) {
-//        printf("%.2x", ctx_finalStrBuffer[i]);
-//    }
-//
-//    //#region LEGACY CODE
-//    // Insert final buffer into uint8_t encryptable container
-////    for (int i = 0; i < buffer_totalLength; ++i) {
-////        encryptable_finalBuffer[i] = buffer_finalBufferctx[i];
-////    }
-////
-////    uint8_t str[sizeof buffer_finalBufferctx - 1];
-////
-////    for (int i = 0; i < sizeof buffer_finalBufferctx - 1; ++i) {
-////        str[i] = encryptable_finalBuffer[i];
-////    }
-////
-////    printf( "============ INPUT ==========\n\n"
-////            "%s"
-////            "\n\n=============================\n\n", sample_inputStrBuffer);
-////
-////    printf("Input String Size: %d\n", stringbuffer_length);
-////    printf("Padding Size (%d): %s\n", strlen(padding), padding);
-////    printf("Buffer Total Length: ", buffer_totalLength);
-////    printf("Encryptable Buffer Size (Len): %d\n", bufferSize);
-////    printf("1st Char of encryptable: %c\n\n", buffer_finalBufferctx);
-////    printf("=========== CHARACTER BUFFER ===========\n\n%s\n\n========================================\n\n", buffer_finalBufferctx);
-////    printf("Final Buffer Size: %d\n\n", sizeof buffer_finalBufferctx);
-////    printf("=========== RAW FINAL BUFFER ===========\n\n%s\n\n========================================\n", (char *)encryptable_finalBuffer);
-////    printf("Size of buffer: %d", sizeof str);
-////    printf("\nRaw Buffer\n\n");
-////    for (int i = 0; i < buffer_totalLength; ++i) {
-////        printf("%.2x", encryptable_finalBuffer[i]);
-////    }
-////
-////    printf("\nEncrypted buffer\n\n");
-////
-////    for (int i = 0; i < buffer_totalLength; ++i) {
-////        printf("%.2x", encryptable_finalBuffer[i]);
-////    }
-//
-//    //#region LEGACY CODE (DECRYPTION ALGORITHM)
-////
-////    printf("\n Decrypted buffer\n");
-////
-////    AES_init_ctx_iv(&ctx, key, iv);
-////    AES_CBC_decrypt_buffer(&ctx, encryptable_finalBuffer, bufferSize);
-////
-////    for (int i = 0; i < bufferSize; ++i) {
-////        printf("%.2x", encryptable_finalBuffer[i]);
-////    }
-////
-////    int removedPadding = 0;
-////    for (uint64_t i = bufferSize-1; i > bufferSize-1 - paddingamt; --i) {
-////        encryptable_finalBuffer[i] = ' ';
-////        removedPadding++;
-////    }
-////    printf("Removed Padding: %d\n", removedPadding);
-////
-//////    for (int i = 0; i < 32; ++i) {
-//////        printf("%.2x", str[i]);
-//////    }
-////    printf("%s\n\n",(char *) &encryptable_finalBuffer);
-////
-////    // Checking Integrity
-////    int lostData = 0;
-////    for (int i = 0; i < stringbuffer_length; ++i) {
-////        if ((encryptable_finalBuffer[i] != sample_inputStrBuffer[i]) && encryptable_finalBuffer[i] != ' '){
-////            lostData++;
-////        }
-////    }
-////
-////    if (lostData != 0){
-////        printf("Integrity Check Failed: Lost Data = %d", lostData);
-////    } else {
-////        printf("Integrity Check Verified: Lost Data = %d", lostData);
-////    }
-////#endregion
+void sgt_aeshexbuffer(const char* in_strbuffer, uint8_t out_aeshexbuffer[][16]){
+    // Fetch ctx
+    size_t buffersize = strlen(in_strbuffer);
+    size_t blocks = fetch_blockunits(in_strbuffer, READ_HEX);
+
+    // Translate strhex to hex
+    char hexctr[2];
+    int ctr_buffer = 0;
+    uint8_t hexbuffer[buffersize / 2];
+    for (int i = 0; i < buffersize; i+=2) {
+        // Take 2 chars & store as hex digit
+        hexctr[0] = in_strbuffer[i];
+        hexctr[1] = in_strbuffer[i+1];
+
+        hexbuffer[ctr_buffer] = (int)strtol(hexctr, NULL, 16);
+        ctr_buffer++;
+    }
+
+    // Reset counter and assemble blocks
+    ctr_buffer = 0;
+    for (int i = 0; i < blocks; ++i) {
+        for (int j = 0; j < 16; ++j) {
+            out_aeshexbuffer[i][j] = hexbuffer[ctr_buffer];
+        }
+    }
+    // Note: aeshexbuffer has to be disassembled in blocks of 16 bytes for the decryption algorithm
+}
+void hgt_aesstrbuffer(const uint8_t* in_hexbuffer, char* out_aesstrbuffer){
+    // Fetch ctx
+    size_t blocks = sizeof(in_hexbuffer) / 16;
+    char hexbuffer[2];
+    for (int i = 0; i < blocks; ++i) {
+        for (int j = 0; j < 32; j+=2) {
+            snprintf(hexbuffer, 2, "%.2x", hexbuffer);
+        }
+        strncat(out_aesstrbuffer, hexbuffer, 2);
+    }
+    // Note: no need to disassemble into blocks of 16 bytes since this the strbuffer is to be written through filestream
+}
+
+void sgt_strhexbuffer(const char* in_strhexbuffer, uint8_t out_hexbuffer[][16]){
+    // Fetch ctx
+    size_t blocks = fetch_blockunits(in_strhexbuffer, READ_STR);
+    size_t bufferlen = strlen(in_strhexbuffer);
+
+    char ctr_block[16];
+    int ctr_str = 0;
+    size_t lastindex = 0;
+    for (int i = 0; i < blocks; ++i) {
+        DEBUGMODE == 1 ? printf("Current Block: %d\n", i+1) : 0;
+
+        // Reset blockContainer
+        for (int j = 0; j < 16; ++j) {
+            if (j == 15) {
+                // Auto append null terminator
+                ctr_block[j] = '\0';
+            } else {
+                ctr_block[j] = '0';
+            }
+        }
+
+        // Disassemble strbuffer to hex
+        for (uint64_t j = 0; j < 15; ++j) {
+            if (lastindex < bufferlen){
+                ctr_block[j] = in_strhexbuffer[lastindex];
+
+                DEBUGMODE == 1 ? printf("Current Char: %c\n", ctr_block[j]) : 0;
+                lastindex++;
+            } else {
+                ctr_block[j] = '0';
+            }
+        }
+
+        // Assemble into output hexbuffer
+        for (int j = 0; j < 16; ++j) {
+            out_hexbuffer[i][j] = ctr_block[j];
+        }
+
+        DEBUGMODE == 1 ? printf("Current Block String: %s\n", out_hexbuffer[i]) : 0;
+    }
 
 }
 
-//#region =========== UTILITY ===========
-uint64_t fetch_maxBufferAlloc(char* plain_srcStrBuffer){
+
+//#region Legacy Functions
+uint64_t    fetch_maxBufferAlloc(char* plain_srcStrBuffer){
     //TODO FUNCT UPDATE
     uint64_t bufferSize = 0;
     uint64_t strBufferSize = strlen(plain_srcStrBuffer);
@@ -450,7 +374,7 @@ uint64_t fetch_maxBufferAlloc(char* plain_srcStrBuffer){
     }
     return bufferSize;
 }
-size_t enc_fetchBlockCount(char* plain_srcStrBuffer){
+size_t      enc_fetchBlockCount(char* plain_srcStrBuffer){
     //TODO FUNCT PASS
     size_t bufferSize = strlen(plain_srcStrBuffer); // Raw Buffer
     size_t processedBuffer = bufferSize/16 + bufferSize; // Considers the null termination char for every block end
@@ -459,10 +383,10 @@ size_t enc_fetchBlockCount(char* plain_srcStrBuffer){
     if (strlen(plain_srcStrBuffer) % 16 != 0) blocksProcessed++; // Extra block if raw buffer has excess bytes
     return blocksProcessed;
 }
-size_t enc_fetchBlockCountfromHex(char* raw_srcStrBuffer){
+size_t      enc_fetchBlockCountfromHex(char* raw_srcStrBuffer){
     return (strlen(raw_srcStrBuffer) / 16) / 2;
 }
-char* pad_strBuffer(char* plain_strSrcBuffer, size_t ctx_targetBufferSize){
+char*       pad_strBuffer(char* plain_strSrcBuffer, size_t ctx_targetBufferSize){
     char* ctx_finalStrBuffer = malloc(ctx_targetBufferSize);
 
     size_t srclength = strlen(plain_strSrcBuffer); //10
@@ -498,7 +422,7 @@ void enc_generateStrBufferFromHex(const uint8_t* ctx_hexBufferContainer, char* c
     }
 }
 
-//TODO ALWAYS INITIALiZE AES CTX BEFORE RUNNING MAIN ENCRYPTION FUNCITONS
+// MAIN ENCRYPTION FUNCTIONS
 void enc_AES_encryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferEncryptableBlocks[][16], uint8_t ctx_BufferEncryptedBlocks[][16], size_t ctx_inBufferBlocks){
     DEBUGMODE == 1 ? printf("Encryption:\n\n") : 0;
     for (int i = 0; i < ctx_inBufferBlocks; ++i) {
@@ -638,7 +562,7 @@ void hex_removeBufferPadding(uint8_t* ctx_inRawBuffer, uint64_t size){
     }
     ctx_inRawBuffer[index+1] = '\0';
 }
-//#endregion
+
 
 //#region =========== ENCRYPTION / DECRYPTION ===========
 void encryptMasterlist(char* ctx_masterListStrBuffer, char* ctx_EncryptedMasterListStr){
@@ -959,4 +883,7 @@ void file_DisassembleMasterlist(){
 }
 void file_WriteDatasheettoFile(){
 }
+//#endregion
+//#endregion
+
 //#endregion
