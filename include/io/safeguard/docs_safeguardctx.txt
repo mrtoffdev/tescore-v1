@@ -6,9 +6,7 @@ ENCRYPTION
     hgt_aesstrbuffer()                              - Generates a 2D string array (src_aesstrbuffer) from a uint8_t array (blk_aeshexbuffer) (in blocks of 32 bytes because hex uses 2 bytes / chars per int)
 
     sgt_strhexbuffer()                              - Generates a 2D uint8_t array (src_strhexbuffer) from a 2D string array (src_strbuffer) containing the string encoded masterlist
-    sgt_strbuffer()                                 - Generates a 2D string array (src_strbuffer) from a string encoded masterlist
-
-    gt_strmaster()                                  - Generates a string that appends all blocks in a 2D string array
+    hgt_strmaster()                                 - Generates a string that appends all blocks in a 2D string array
 
     fetch_strbuffersize()                           - Fetches the size of the encoded masterlist string
     fetch_hexbuffersize()                           - Fetches the size of a string that contains hex values of an encrypted masterlist
