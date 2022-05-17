@@ -263,10 +263,11 @@ size_t fetch_strbuffersize(const char* in_strbuffer){
 size_t fetch_blockunits(const char* in_strbuffer, OPERATION_CODE mode){
     size_t in_size = strlen(in_strbuffer);
     size_t blocks = 0;
+    size_t nterms = in_size / 16;
     switch (mode) {
         case 0:
-            blocks = (/* For null terminators */ in_size / 16) + in_size;
-            if (in_size % 16 != 0) blocks++;
+            blocks = (in_size + nterms) / 16;
+            if ((in_size + nterms) % 16 != 0) blocks++;
             return blocks;
             break;
 
