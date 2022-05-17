@@ -1,0 +1,20 @@
+REFRESH FRAME SEQUENCE
+    + Start Benchmark Clock
+    + Clear Screen Buffer
+    + Render UI Elements
+        - Separator
+        - Header (Number of Students)
+        - Separator
+        - Upper Rows
+            - x10 formatted lines
+        - Separator
+        - Sub Header
+        - Separator
+            - x10 formatted lines
+    + Display Command Log
+        - Format: <TimeLog><Message
+
+NOTE:
+    INDEX COUNT INCREMENTS FROM B TO T > SIDE OF GRAPH
+        ARR[] INCREMENTS FROM END TO START
+    INDEX VALUE INCREMENTS FROM R TO L > BOTTOM OF GRAPH
