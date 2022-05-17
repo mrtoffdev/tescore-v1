@@ -5,61 +5,21 @@
 
 #include <stdio.h>
 #include <conio.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-
 #include "navigation.h"
 #include "../view/render.h"
-
-//#region =========== DOCS ===========
-/*  NAVIGATION SYSTEM
-
-    GLOBAL VARIABLES
-    - renderCellIndex         position of navigation cursor in table, from top to bottom
-    - cellSelection     position of navigation cursor within cell
-        - <A>           left (L)
-        - <D>           right (R)
-
-    GLOBAL NAVIGATION
-    - <1><2><3>         switching between panels
-    - <W><A><S><D>      panel / table navigation
-    - <Q>               program termination prompt
-
-    MASTERLIST NAVIGATION
-    - <E>               editing highlighted cell
-    - <R>               removing highlighted cell
-
-    RANKER LIST NAVIGATION
-    - <E>               expand ranking list
-    - <Q>               close expanded tab
-
-    OPERATION MODES
-    - 1                 view / read only
-    - 2                 edit permissions
-    - 3                 write permissions
-    - 4                 delete permissions
-
-    CELL SELECTION POSITIONS
-    - X                 default (all highlighted, no edits can be made)
-    - L                 editing index name
-    - R                 editing index value
-
-*/
-//#endregion
 
 //#region PRIVATE FUNC PROTS
 void safeRemoveCell(Renderctx ctx, char commandLog[][509]);
 void safeEditCell(Renderctx ctx, char commandLog[][509]);
 void switchNavPanel(short, char commandLog[][509]);
-void clearStdinCache();
 //#endregion
 
-//#region GLOBAL VARIABLES
-int     NAVKEY = '1';
-//#endregion
+int NAVKEY = '1';
 
-// OPERATIONS
+// HANDLERS
 void navigationKeyHandler(Renderctx ctx, char commandLog[][509]){
     // SAVE CURRENT PANELID
     short prevPanelID = ctx.sessionPanelID;
@@ -228,9 +188,10 @@ void navigationKeyHandler(Renderctx ctx, char commandLog[][509]){
     }
 }
 
+// OPERATIONS
 void safeEditCell(Renderctx ctx, char commandLog[][509]){
 
-    clearStdinCache();
+    fflush(stdin);
     char* entry = calloc(1,(sizeof commandLog[0]));
     char* value = malloc(40);
 
@@ -263,15 +224,9 @@ void safeEditCell(Renderctx ctx, char commandLog[][509]){
 
     }
 }
-
 void safeRemoveCell(Renderctx ctx, char commandLog[][509]){
     strcpy((char *) commandLog[0], "Removing Cell");
 }
-
 void switchNavPanel(short id, char commandLog[][509]){
     printf("%d", id);
-}
-
-void clearStdinCache(){
-    fflush(stdin);
 }
