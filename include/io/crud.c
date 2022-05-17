@@ -54,7 +54,6 @@ void fetchData(FILE* DIB, char* indexNameArr[], char* indexValueArr[], int lineC
     }
 
 }
-
 void fetch_gradeTable(DATASHEET Datactx, int distributionTable[11][2]){
     // Placeholder Data
     uint8_t unsortedGradeRounds[10][2] = {
