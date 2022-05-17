@@ -18,7 +18,7 @@
 /*========================================
                   Testing
   ========================================*/
-void testing(const char* plain_strSrcBuffer);
+void script_fileopsTesting();
 void fetchData(FILE*, char* [], char* [], int);
 void closeFile(FILE*);
 
@@ -30,8 +30,6 @@ void closeFile(FILE*);
 void enc_writeBufferData(char* file_outDest, uint8_t* src_outBuffer, uint64_t size);
 void fileops_decryptBuffer(struct AES_ctx ctx, uint8_t* encryptedBuffer, uint8_t* key, uint8_t* iv, size_t bufferSize, char* srcBuffer);
 
-void sheet_encryptBuffer(FILE*);
-void sheet_decryptBuffer(FILE*);
 void file_fetch_Datasheetctx(FILE*);
 
 // RENDER SYSTEM OPERATIONS
