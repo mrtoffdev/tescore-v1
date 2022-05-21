@@ -5,7 +5,7 @@
 #ifndef TESCORE_RANKERMODULE_H
 #define TESCORE_RANKERMODULE_H
 
-#include "../../model/datamodel.h"
+#include "../../../model/models.h"
 
 // Module Parameters
 #define SIZE 100

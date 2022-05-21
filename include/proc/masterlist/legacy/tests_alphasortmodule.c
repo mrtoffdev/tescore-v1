@@ -111,7 +111,7 @@ int main() {
     else printf("x");
     
     // revert the basic arrangement 
-    // for merge sort version testing
+    // for merge proc version testing
     strcpy(studentList[0].name, "Zebra Helicopter");
     studentList[0].score = 83;
     strcpy(studentList[1].name, "Apple Bus"); 
@@ -119,7 +119,7 @@ int main() {
     strcpy(studentList[2].name, "Nylon Jeepney"); 
     studentList[2].score = 91;
     
-    // merge sort masterlist generator
+    // merge proc masterlist generator
     // with basic tests
     alphaMergeSort(studentList, 0, basicSize-1);
     // test 4
@@ -154,13 +154,13 @@ int main() {
     else printf("x");
     
     // revert the extended arrangement 
-    // for merge sort version testing
+    // for merge proc version testing
     for (i=0; i<extendedSize; i++) {
         strcpy(extendedList[i].name, studentData[i][0]);
         extendedList[i].score = atoi(studentData[i][1]);
     }
     
-    // merge sort masterlist generator
+    // merge proc masterlist generator
     // tested on extended list
     alphaMergeSort(extendedList, 0, extendedSize-1);
     // test 10

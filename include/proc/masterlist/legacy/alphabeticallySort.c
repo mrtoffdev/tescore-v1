@@ -2,15 +2,15 @@
 
 #include "alphabeticallySort.h"
 
-/** function: alphabetically sort list of students
+/** function: alphabetically proc list of students
  takes an array of unsorted strecs (student records)
 **/
 
 // this will rearrange the struct array,
 // make a backup if needed
 void alphabeticallySort(struct strec studentList[MAX], int size) {
-    // modified insertion sort,
-    // might switch to merge sort if needed
+    // modified insertion proc,
+    // might switch to merge proc if needed
     
     int i, j;
     struct strec key;
