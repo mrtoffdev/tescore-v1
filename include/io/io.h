@@ -1,15 +1,15 @@
 /*========================================
-      FILE OPERATIONS HEADER
+      INPUT / OUTPUT
       Author: Christopher Abadillos Jr.
   ========================================*/
 #ifndef TESCORE_IO_H
 #define TESCORE_IO_H
 
-#include "../model/datamodel.h"     // Needed for Datasheet context
+#include "../model/models.h"        // Needed for Datasheet context
 #include "../model/renderctx.h"     // Needed for Renderctx context
-#include "../io/lib/aes.h"
 
 #define MAXADDRLENGTH 509                   // Standard string char limit for ANSI Compatibility
+#define MAXMASTERLEN 5000
 #define DEFAULTFILEADDRESS "../demo.txt"    // Default demo.txt outside ../cmake-build-debug
 
 // Scripts
@@ -17,19 +17,24 @@ void script_fileopsTesting();
 void fetchData(FILE*, char* [], char* [], int);
 void closeFile(FILE*);
 
-// FILEOPS
-void file_fetch_Datasheetctx(FILE*);
-Renderctx render_init_ctx(DATASHEET sessionSheet);
+void CRUD_TEST();
 
-// SAFEGUARD
+// FETCH / INIT CONTEXTS
+Sheetctx init_sheetdefctx();
+Renderctx init_renderctx(Sheetctx in_sctx);
 
-// RENDER SYSTEM OPERATIONS
+// ENTRY POINT
+Sheetctx save_readsheetctx();
+void save_writesheetctx();
 
-// DATASHEET OPERATIONS
+// DECONSTRUCTOR
+Sheetctx sheet_deconststr(char* in_strmasterlist);
+void sheet_conststr(Sheetctx in_sctxmaster, char* out_strmasterlist);
 
-// SORT MODULES
-SUBSHEET rankerModule();
-SUBSHEET masterlistModule();
+// FILE OPERATIONS
+void file_writemasterlist(const char* in_fileaddress, const char* in_strbuffer);
+char* file_readmasterlist(const char* in_fileaddress);
+
 #endif
 
 /*
