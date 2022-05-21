@@ -2,43 +2,6 @@
       FRAME RENDERING
       Author: Christopher Abadillos Jr.
   ========================================*/
-
-//#region =========== DOCS ===========
-
-/* RENDERING SYSTEM
-
-    FUNCTION CALLS
-        - refreshFrame()    : Renders the main interactive GUI for the first time
-        - terminatePrompt() : Renders the program termination prompt
-
-    BAR GRAPH - 2D Char Matrix System
-        - Divide the number of students into 10
-            - If divisible by 10, set all notches with $Quotient increments
-            - If not divisible by 10, divide by 9, set all notches with $Quotient increments, and set the last / highest notch to remainder
-                - e.g. 81 =
-
-    REFRESHING FRAMES
-        - Refresh call will re-render all three panels
-        - refreshFrame() will also be the primary call when rendering the panels for the first time
-
-*/
-
-/* ENABLING UTF8 SUPPORT FOR MICROSOFT WINDOWS CONSOLES
-
-    #include <windows.h>
-    SetConsoleOutputCP(CP_UTF8);
-
-*/
-
-/*
-    ANSI REFERENCES
-
-        BLOCK CHARACTER     : █
-        VERTICAL SEPARATOR  : │
-*/
-
-//#endregion
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
