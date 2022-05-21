@@ -8,13 +8,12 @@ add_executable(
 
         # Struct Models
         include/model/index.h
-        include/model/sheet.h
-        include/model/subsheet.h include/model/datamodel.h
+        include/model/models.h
 
         # IO
         include/io/io.h
         include/io/crud.c
-        include/io/fileops.c
+        include/io/safeguard/safeguard.c
         include/io/lib/aes.c
         include/io/lib/aes.h
 
@@ -24,16 +23,21 @@ add_executable(
 
         # ====== Sorting Modules ======
 
-        # Ranker
-        include/sort/ranker/module.c
+        # Sorting Modules
+        include/proc/proc.h
+        include/proc/ranker/ranker.c
+        include/proc/masterlist/alphaMergeSort.c
 
-        # Masterlist
-        include/sort/masterlist/alphabeticallySort.h
-        include/sort/masterlist/alphabeticallySort.c
-        include/sort/masterlist/alphaMergeSort.h
-        include/sort/masterlist/alphaMergeSort.c
 
         # Rendering
+        include/model/renderctx.h
         include/render/view/auth.c
         include/render/view/render.c
-        include/render/view/typeface.c include/sort/ranker/rankerModule.h include/render/view/typeface.h include/utils/cmdlog.c include/utils/cmdlog.h include/model/renderctx.h include/io/safeguard/safeguard.c include/io/safeguard/safeguard.h)
+
+        include/utils/cmdlog.c
+        include/utils/cmdlog.h
+
+        # File Operations
+        include/model/Sheetctx.h
+        include/io/safeguard/safeguard.h
+)
