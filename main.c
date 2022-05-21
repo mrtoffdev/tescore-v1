@@ -8,9 +8,16 @@
 #include <windows.h>
 #include <stdint.h>
 
+// Models
+#include "include/model/models.h"
+
+// File Operations / CRUD
 #include "include/io/io.h"
+
+// Render System
 #include "include/render/view/render.h"
-#include "include/model/renderctx.h"
+
+// Navigation System
 #include "include/render/navigation/navigation.h"
 
 /*
@@ -34,7 +41,7 @@
         - Only [Navigation.c/h] & [Main.c] has access to [IO.h]
             - Only Main.c & Navigation.c/h will be using FileOps
 
-        - Only [Main.c] has access to [/sort] modules
+        - Only [Main.c] has access to [/proc] modules
 
         - Only [IO.h] has access to [Decrypt.c], [Encrypt.c], & [CRUD.c]
             - IO.h serves as a collective interface to multiple CRUD / FileOps modules
@@ -45,7 +52,7 @@
 #define COMMANDLOGMAXENTRY 10
 
 // DEVOPS
-#define SANDBOX 0
+#define SANDBOX 1
 #define SANDBOXID 1
 void sandbox_scriptTesting();
 
@@ -74,67 +81,38 @@ int main() {
     SetConsoleTitle(WINDOWTITLE);
     HWND hWnd=GetConsoleWindowNT();
     if (SANDBOX == 1){
-        MoveWindow(hWnd,500,0,1020,1200,TRUE);
+        MoveWindow(hWnd,500,0,1100,1140,TRUE);
     } else {
         MoveWindow(hWnd,450,200,1020,650,TRUE);
     }
     //#endregion
 
-    //#region =========== MAIN PROCESS ===========
+    char        commandLog[COMMANDLOGMAXENTRY][509];
+    Renderctx   global_renderctx;
+    Sheetctx    global_Sheetctx;
 
-    // INIT CONTEXTS
-    char            commandLog[COMMANDLOGMAXENTRY][509];
-    DATASHEET       sessionSheet;
-    Renderctx       tescore_render_ctx;
-
-    file_fetch_Datasheetctx(SessionSheetFile);
-    tescore_render_ctx = render_init_ctx(sessionSheet);
-
+    global_Sheetctx = save_readsheetctx();
+    global_renderctx = init_renderctx(global_Sheetctx);
 
     // CHECKS RENDER SYSTEM MODE (TESTING / RELEASE)
-    switch (SANDBOX) {
-        case 0:
-            refreshFrame(tescore_render_ctx, commandLog);
-            break;
-
-        case 1:
-            sandbox_scriptTesting();
-            break;
-
-        default:
-            break;
-    }
-
-    indentCursor(1);
+    SANDBOX == 1 ? sandbox_scriptTesting() : 0;
 
     // START NAVIGATION HANDLER AFTER INIT RENDER
-    navigationKeyHandler(tescore_render_ctx,  commandLog);
+    refreshFrame(global_renderctx, global_Sheetctx, commandLog);
+    navigationKeyHandler(global_renderctx,  global_Sheetctx, commandLog);
 
+    // PROGRAM INTERRUPTION
     puts("PROGRAM INTERRUPTED");
     system("pause");
-    return 0;
-    //#endregion
+    return EXIT_SUCCESS;
 }
 
 void sandbox_scriptTesting(){
 
-    // Generator Init Data
-    char *studentData[10][2] = {
-            {"Fridge Grills", "85"},
-            {"Window Tab Post", "92"},
-            {"Roof Leaf", "96"},
-            {"Coconut Rock", "79"},
-            {"Shirt Switch Root", "86"},
-            {"Screen Fruit", "88"},
-            {"White Fan", "94"},
-            {"Light Wall", "82"},
-            {"Cloud Plane", "77"},
-            {"Escaped Post", "97"}
-    };
-
     //#region =========== SANDBOX SCRIPTS ===========
     if(SANDBOXID == 1){
-        script_fileopsTesting();
+//        script_fileopsTesting();
+        CRUD_TEST();
     } else
     if(SANDBOXID == 2){
         exit(0);
