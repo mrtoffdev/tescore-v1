@@ -2,12 +2,12 @@
       DATA MODELS INTERFACE
       Author: Christopher Abadillos Jr.
   ========================================*/
-#ifndef TESCORE_DATAMODEL_H
-#define TESCORE_DATAMODEL_H
+#ifndef TESCORE_MODELS_H
+#define TESCORE_MODELS_H
 
 #include "../model/index.h"
-#include "../model/sheet.h"
-#include "../model/subsheet.h"
+#include "../model/Sheetctx.h"
+#include "../model/renderctx.h"
 
 #endif
 
