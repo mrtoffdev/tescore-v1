@@ -8,8 +8,8 @@
 // DATA MODEL PARAMETERS
 #define MAXNAMECHARLIMIT 509 // Standard limit for char ANSI Compatibility
 
-typedef struct  INDEX {
-    char        *indexName;
-    short       value;
-} INDEX;
+typedef struct Index {
+    char    indexName[MAXNAMECHARLIMIT];
+    short   value;
+} Index;
 #endif
