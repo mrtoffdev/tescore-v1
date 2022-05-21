@@ -5,7 +5,7 @@
 #ifndef TESCORE_NAVIGATION_H
 #define TESCORE_NAVIGATION_H
 
-#include "../../model/datamodel.h"
+#include "../../model/models.h"
 #include "../../model/renderctx.h"
 
 /*
@@ -16,6 +16,6 @@
 */
 
 // VOID
-void navigationKeyHandler(Renderctx ctx, char commandLog[][509]);
+void navigationKeyHandler(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]);
 
 #endif

@@ -2,7 +2,6 @@
       NAVIGATION SYSTEM
       Author: Christopher Abadillos Jr.
   ========================================*/
-
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
@@ -12,28 +11,28 @@
 #include "../view/render.h"
 
 //#region PRIVATE FUNC PROTS
-void safeRemoveCell(Renderctx ctx, char commandLog[][509]);
-void safeEditCell(Renderctx ctx, char commandLog[][509]);
-void switchNavPanel(short, char commandLog[][509]);
+void op_editcell(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]);
+void op_rmcell(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]);
+void op_setpanel(short, char commandLog[][509]);
 //#endregion
 
 int NAVKEY = '1';
 
 // HANDLERS
-void navigationKeyHandler(Renderctx ctx, char commandLog[][509]){
+void navigationKeyHandler(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]){
     // SAVE CURRENT PANELID
     short prevPanelID = ctx.sessionPanelID;
     uint8_t deleteConfirm = 0; // 1 - Confirming, 2 - Confirmed
 
+    // Start key handler
+    indentCursor(1);
     while (NAVKEY != EOF || ctx.handlerMode != 1){
         NAVKEY = _getch();
         ctx.NAVKEY = NAVKEY;
 
         switch (ctx.NAVKEY) {
-
             //#region OPERATION KEYS
-            case 'Q':
-            case 'q':
+            case 'Q': case 'q':
                 /*
                     Q OPERATION
                         - Checks if the cell selection is not default & currently in edit mode
@@ -42,7 +41,7 @@ void navigationKeyHandler(Renderctx ctx, char commandLog[][509]){
                                 - Show terminate program prompt
                 */
                 if(
-                    // ON EDIT MODE
+                    // ON EDIT MODE OR
                     ((ctx.renderCellX != 'X') && (ctx.operationMode != 1) && deleteConfirm == 0) ||
                     // CONFIRMING CELL DELETE
                     ((ctx.renderCellX == 'X') && (ctx.operationMode == 1) && deleteConfirm == 1)
@@ -57,8 +56,7 @@ void navigationKeyHandler(Renderctx ctx, char commandLog[][509]){
                     break;
                 }
 
-            case 'E':
-            case 'e':
+            case 'E': case 'e':
                 /*
                     E OPERATION
                         - Checks if the global nav variables are at default
@@ -85,25 +83,23 @@ void navigationKeyHandler(Renderctx ctx, char commandLog[][509]){
                 if((ctx.operationMode == 2) && (ctx.renderCellX != 'X')){
                     strcpy((char *) commandLog[0], "Operation Mode: 3");
                     ctx.operationMode = 3;
-                    safeEditCell(ctx, commandLog);
+                    op_editcell(ctx, in_sctx, commandLog);
                     ctx.operationMode = 1;
                     ctx.renderCellX = 'X';
                     break;
                 } else break;
 
-            case 'R':
-            case 'r':
+            case 'R': case 'r':
                 if((ctx.operationMode == 1) && (ctx.renderCellX == 'X')){
                     deleteConfirm++;
                     strcpy((char *) commandLog[0], "Removing Cell. Press <R> to confirm: ");
                     if (deleteConfirm == 2){
                         deleteConfirm = 0;
-                        safeRemoveCell(ctx, commandLog);
+                        op_rmcell(ctx, in_sctx,commandLog);
                     }
                     break;
                 } else break;
                 //#endregion
-
             //#region NAVIGATION KEYS
         case 'W':
         case 'w':
@@ -143,7 +139,6 @@ void navigationKeyHandler(Renderctx ctx, char commandLog[][509]){
                 break;
             } else break;
             //#endregion
-
             //#region PANEL KEYS
 
         case '1':
@@ -173,7 +168,6 @@ void navigationKeyHandler(Renderctx ctx, char commandLog[][509]){
         default:
             break;
             //#endregion
-
         }
 
         indentCursor(1);
@@ -181,15 +175,16 @@ void navigationKeyHandler(Renderctx ctx, char commandLog[][509]){
         // check if panelID values have changed and render frame ID
         // prevents re-rendering the frame if panelID hasn't changed
         if (ctx.sessionPanelID != prevPanelID){
-            switchNavPanel(ctx.sessionPanelID, commandLog);
+            op_setpanel(ctx.sessionPanelID, commandLog);
         }
 
-        refreshFrame(ctx, commandLog);
+        // Update references
+        refreshFrame(ctx, in_sctx, commandLog);
     }
 }
 
-// OPERATIONS
-void safeEditCell(Renderctx ctx, char commandLog[][509]){
+// CRUD OPERATIONS
+void op_editcell(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]){
 
     fflush(stdin);
     char* entry = calloc(1,(sizeof commandLog[0]));
@@ -198,7 +193,7 @@ void safeEditCell(Renderctx ctx, char commandLog[][509]){
     switch (ctx.renderCellX) {
         case 'L':
             strcpy((char *) commandLog[0], "Editing Left of Cell. Please Enter Value: ");
-            refreshFrame(ctx, commandLog);
+            refreshFrame(ctx, in_sctx, commandLog);
 
             // commit note: softbug fixed through stdin fflush();
 
@@ -210,7 +205,7 @@ void safeEditCell(Renderctx ctx, char commandLog[][509]){
 
         case 'R':
             strcpy((char *) commandLog[0], "Editing Right of Cell. Please Enter Value: ");
-            refreshFrame(ctx, commandLog);
+            refreshFrame(ctx, in_sctx, commandLog);
 
             fgets(value, 30, stdin);
             strncat(entry, "Entered Value: ", 16);
@@ -224,9 +219,11 @@ void safeEditCell(Renderctx ctx, char commandLog[][509]){
 
     }
 }
-void safeRemoveCell(Renderctx ctx, char commandLog[][509]){
+void op_rmcell(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]){
     strcpy((char *) commandLog[0], "Removing Cell");
 }
-void switchNavPanel(short id, char commandLog[][509]){
+
+// RENDERCTX OPERATIONS
+void op_setpanel(short id, char commandLog[][509]){
     printf("%d", id);
 }
