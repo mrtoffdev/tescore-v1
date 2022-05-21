@@ -6,12 +6,11 @@
 #define TESCORE_RENDERCTX_H
 
 #include <stdint.h>
-#include "datamodel.h"
+#include "models.h"
 
 #define MAXCOMMANDENTRIES 10
 typedef struct Renderctx {
-    DATASHEET   SessionSheet;                       // Main Datasheet
-    int         distributionTable[11][2];           // Student Distribution Reference for Graph Gen
+    Sheetctx    SessionSheet;                       // Main Datasheet
     char        renderCellX;                        // Selection for Operation
     uint8_t     NAVKEY,                             // Navigation Key
                 handlerMode,                        // Navigation Handler Mode
@@ -19,8 +18,11 @@ typedef struct Renderctx {
                 sessionPanelID,                     // Frame Panel to Render
                 renderCellIndex;                    // Frame Index to Render
     char*       sheetName,                          // Embedded Sheet Name
-                graphLayout[10][11],                // Bar Graph Layout Container
                 commandLog[MAXCOMMANDENTRIES];      // Command Log Entries Container
+
+// Legacy props
+//                graphLayout[10][11],                // Bar Graph Layout Container
+//    int         distributionTable[11][2];           // Student Distribution Reference for Graph Gen
 } Renderctx;
 
 #endif
