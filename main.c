@@ -87,19 +87,24 @@ int main() {
     }
     //#endregion
 
+    // INIT CONTAINERS & CONTEXTS
     char        commandLog[COMMANDLOGMAXENTRY][509];
     Renderctx   global_renderctx;
     Sheetctx    global_Sheetctx;
 
+    // Initialize Default Render Context
     global_Sheetctx = save_readsheetctx();
-    global_renderctx = init_renderctx(global_Sheetctx);
 
+    // Deconstruct sheet
+    global_renderctx = init_renderctx(global_Sheetctx);
+    printf("received address: %s\n", global_Sheetctx.address);
+    system("pause");
     // CHECKS RENDER SYSTEM MODE (TESTING / RELEASE)
-    SANDBOX == 1 ? sandbox_scriptTesting() : 0;
+//    SANDBOX == 1 ? CRUD_TEST(global_Sheetctx): 0;
 
     // START NAVIGATION HANDLER AFTER INIT RENDER
-    refreshFrame(global_renderctx, global_Sheetctx, commandLog);
-    navigationKeyHandler(global_renderctx,  global_Sheetctx, commandLog);
+    refreshFrame(&global_renderctx, &global_Sheetctx, commandLog);
+    navigationKeyHandler(&global_renderctx,  &global_Sheetctx, commandLog);
 
     // PROGRAM INTERRUPTION
     puts("PROGRAM INTERRUPTED");
@@ -112,7 +117,6 @@ void sandbox_scriptTesting(){
     //#region =========== SANDBOX SCRIPTS ===========
     if(SANDBOXID == 1){
 //        script_fileopsTesting();
-        CRUD_TEST();
     } else
     if(SANDBOXID == 2){
         exit(0);
