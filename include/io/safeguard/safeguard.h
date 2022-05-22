@@ -1,3 +1,7 @@
+/*========================================
+    SAFEGUARD ENCRYPTION / DECRYPTION
+    Head Author: Christopher Abadillos Jr.
+  ========================================*/
 #ifndef TESCORE_SAFEGUARD_H
 #define TESCORE_SAFEGUARD_H
 
