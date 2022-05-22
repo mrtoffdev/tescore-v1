@@ -14,4 +14,8 @@ typedef struct Safeguardctx {
     char*       plain_strSrcBuffer;
 } Safeguardctx;
 
+// Interface
+void proc_encryptbuffer(const char* in_strmasterbuffer, char* out_encmasterbuffer);
+void proc_decryptbuffer(const char* in_strmasterhexbuffer, char* out_decmasterstrbuffer);
+
 #endif //TESCORE_SAFEGUARD_H

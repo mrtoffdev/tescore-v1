@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "../io.h"
+#include "safeguard.h"
 #include "../../render/view/render.h"
 #include "../lib/aes.h"
 
@@ -38,8 +39,6 @@ void hgt_aesstrbuffer(const uint8_t in_hexbuffer[][16], char* out_aesstrbuffer, 
 void sgt_strhexbuffer(const char* in_strhexbuffer, uint8_t out_hexbuffer[][16]);
 void hgt_strmaster(const uint8_t in_strhexbuffer[][16], char out_strbuffer[], size_t blocks);
 
-void proc_encryptbuffer(const char* in_strmasterbuffer, char* out_encmasterbuffer);
-void proc_decryptbuffer(const char* in_strmasterhexbuffer, char* out_decmasterstrbuffer);
 
 //#region Legacy Protoypes
 uint64_t    fetch_maxBufferAlloc(char* plain_srcStrBuffer);
@@ -146,7 +145,6 @@ void proc_encryptbuffer(const char* in_strmasterbuffer, char* out_encmasterbuffe
 
     struct AES_ctx ctx;
     AES_init_ctx(&ctx, INTERNALKEY);
-    AES_init_ctx_iv(&ctx, INTERNALKEY, INTERNALIV);
 
     // Call outside function to encrypt
     enc_AES_encryptBufferBlocks(ctx, teststringblockcontainer, teststringencrypted, blocks);
@@ -180,7 +178,6 @@ void proc_decryptbuffer(const char* in_strmasterhexbuffer, char* out_decmasterst
     uint8_t in_strhexdecrypted[blocks][16];
     struct AES_ctx ctx;
     AES_init_ctx(&ctx, INTERNALKEY);
-    AES_init_ctx_iv(&ctx, INTERNALKEY, INTERNALIV);
     enc_AES_decryptBufferBlocks(ctx, in_strhexblocks, in_strhexdecrypted, blocks);
 
 //    // print blocks
@@ -318,6 +315,7 @@ void hgt_strmaster(const uint8_t in_strhexbuffer[][16], char out_strbuffer[], si
 
 void enc_AES_encryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferEncryptableBlocks[][16], uint8_t ctx_BufferEncryptedBlocks[][16], size_t ctx_inBufferBlocks){
     DEBUGMODE == 1 ? printf("\n\nFrom: enc_AES_encryptBufferBlocks(): =========\n\nEncrypted hex:\n\n") : 0;
+
     for (int i = 0; i < ctx_inBufferBlocks; ++i) {
         uint8_t ctx_BufferBlockEncryptable[16];
         // Create a encryptable buffer block
@@ -326,6 +324,7 @@ void enc_AES_encryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferEncryptab
         }
 
         // Emcryption Function in AES128.h
+        AES_init_ctx_iv(&ctx, INTERNALKEY, INTERNALIV);
         AES_CBC_encrypt_buffer(&ctx, ctx_BufferBlockEncryptable, 16);
 
         // Insert encrypted buffer into container
@@ -352,6 +351,7 @@ void enc_AES_decryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferDecryptab
         }
         DEBUGMODE == 1 ? printf("\n") : 0 ;
 
+        AES_init_ctx_iv(&ctx, INTERNALKEY, INTERNALIV);
         AES_CBC_decrypt_buffer(&ctx, ctx_BufferBlockDecryptable, 16);
 
         DEBUGMODE == 1 ? printf("Post Decrypted Block:\n") : 0 ;
