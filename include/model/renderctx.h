@@ -16,7 +16,9 @@ typedef struct Renderctx {
                 handlerMode,                        // Navigation Handler Mode
                 operationMode,                      // Program Operation Mode
                 sessionPanelID,                     // Frame Panel to Render
-                renderCellIndex;                    // Frame Index to Render
+                renderCellIndex,                    // Frame Index to Render
+                buffer_start,
+                buffer_end;
     char*       sheetName,                          // Embedded Sheet Name
                 commandLog[MAXCOMMANDENTRIES];      // Command Log Entries Container
 

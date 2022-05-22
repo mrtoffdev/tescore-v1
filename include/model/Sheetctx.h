@@ -12,6 +12,7 @@
 typedef struct Sheetctx {
     char* name;
     char* passphrase;
+    char* address;
     Index masterlist[LIMIT_INDEX];
     size_t size;
 } Sheetctx;
