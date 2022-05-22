@@ -42,10 +42,13 @@ Sheetctx save_readsheetctx(){
     char* extension = ".dib";
     int pass = 0;
     int ctr = 3;
-    for (size_t i = in_addrlen-1; i > in_addrlen-5; --i) {
-        FileAddress[i] == extension[ctr] ? pass++: 0;
-        printf("Checking File Extension: %c to %c", FileAddress[i], extension[ctr]);
-        ctr--;
+
+    if (DEBUGMODE == 1){
+        for (size_t i = in_addrlen-1; i > in_addrlen-5; --i) {
+            FileAddress[i] == extension[ctr] ? pass++: 0;
+            printf("Checking File Extension: %c to %c", FileAddress[i], extension[ctr]);
+            ctr--;
+        }
     }
     if ((pass < 3) && !(strcmp(FileAddress, def_fileaddress) == 0)){
         clearScreen();
@@ -154,8 +157,10 @@ void save_writesheetctx(Sheetctx in_sctxmaster, const char* out_fileaddress){
     // Write to File
     file_writemasterlist(out_fileaddress, out_encstrmaster);
 
-    printf("\nConstructed StrMaster:\n\n%s\n\n", out_strmaster);
-    printf("\nEncrypted StrMaster:\n\n%s\n\n", out_encstrmaster);
+    if (DEBUGMODE == 1){
+        printf("\nConstructed StrMaster:\n\n%s\n\n", out_strmaster);
+        printf("\nEncrypted StrMaster:\n\n%s\n\n", out_encstrmaster);
+    }
     system("pause");
 }
 
@@ -247,7 +252,7 @@ Sheetctx init_sheetdefctx(){
     Sheetctx out_sctx = {
             "Demo_sheet.dib",
             "apasswordof16byt",
-            "Internal Demo Dataset",
+            "Demo_sheet.dib",
     };
 
     size_t in_mastersize = util_fetchmastersize(sample);
@@ -263,13 +268,13 @@ Sheetctx init_sheetdefctx(){
 void file_writemasterlist(const char* in_fileaddress, const char* in_strbuffer){
     FILE* outfile;
     outfile = fopen(in_fileaddress, "w");
-    printf("Written File:\n\n%s\n\n", in_strbuffer);
+    DEBUGMODE == 1 ? ("Written File:\n\n%s\n\n", in_strbuffer): 0;
     fprintf(outfile, in_strbuffer);
     fclose(outfile);
 }
 char* file_readmasterlist(FILE* in_file){
     char* in_strbuffer = calloc(1, 4096);
-    printf("Read File\n");
+    DEBUGMODE == 1 ? printf("Read File\n"): 0;
     fscanf(in_file, "%s", in_strbuffer);
     fclose(in_file);
     return in_strbuffer;
@@ -361,8 +366,10 @@ Sheetctx sheet_deconststr(char* in_strmasterlist, char* in_fileaddress){
     }
 
     // Debug
-    for (int i = 0; i < in_lines; ++i) {
-        printf("Stored Index: %d,\nName: %s Grade: %d\n", i, out_sctxmaster.masterlist[i].indexName, out_sctxmaster.masterlist[i].value);
+    if (DEBUGMODE == 1){
+        for (int i = 0; i < in_lines; ++i) {
+            printf("Stored Index: %d,\nName: %s Grade: %d\n", i, out_sctxmaster.masterlist[i].indexName, out_sctxmaster.masterlist[i].value);
+        }
     }
 
     DEBUGMODE == 1 ? system("pause"): 0;
@@ -383,7 +390,7 @@ void sheet_conststr(Sheetctx in_sctxmaster, char* out_strmasterlist){
         snprintf(temp_gradectr, 4,"%hd", in_sctxmaster.masterlist[i].value); // Convert Graded to StrGrade
 
         DEBUGMODE == 1 ? printf("Entry No %d: ", i): 0;
-        printf("%s %s\n", temp_gradectr, in_sctxmaster.masterlist[i].indexName);
+        DEBUGMODE == 1 ? printf("%s %s\n", temp_gradectr, in_sctxmaster.masterlist[i].indexName): 0;
 
         strcat(out_strmasterlist, temp_gradectr); // Insert Grade
         strcat(out_strmasterlist, in_sctxmaster.masterlist[i].indexName); // Insert Name

@@ -82,7 +82,6 @@ void navigationKeyHandler(Renderctx* ctx, Sheetctx* in_sctx, char commandLog[][5
                         strcpy((char *) commandLog[0], command);
                         refreshFrame(ctx, in_sctx, commandLog, 0);
                         save_writesheetctx(*in_sctx, in_sctx->address);
-                        system("pause");
                         exit(EXIT_SUCCESS);
                     } else break;
                 } else break;
