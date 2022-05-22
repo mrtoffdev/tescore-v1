@@ -17,7 +17,7 @@ void script_fileopsTesting();
 void fetchData(FILE*, char* [], char* [], int);
 void closeFile(FILE*);
 
-void CRUD_TEST();
+void CRUD_TEST(Sheetctx in_sctxmaster);
 
 // FETCH / INIT CONTEXTS
 Sheetctx init_sheetdefctx();
@@ -25,7 +25,7 @@ Renderctx init_renderctx(Sheetctx in_sctx);
 
 // ENTRY POINT
 Sheetctx save_readsheetctx();
-void save_writesheetctx();
+void save_writesheetctx(Sheetctx in_sctxmaster, const char* out_fileaddress);
 
 // DECONSTRUCTOR
 Sheetctx sheet_deconststr(char* in_strmasterlist);
@@ -33,7 +33,10 @@ void sheet_conststr(Sheetctx in_sctxmaster, char* out_strmasterlist);
 
 // FILE OPERATIONS
 void file_writemasterlist(const char* in_fileaddress, const char* in_strbuffer);
-char* file_readmasterlist(const char* in_fileaddress);
+char* file_readmasterlist(FILE* in_file);
+
+// UTILS
+size_t util_fetchmastersize(Sheetctx in_sctx);
 
 #endif
 

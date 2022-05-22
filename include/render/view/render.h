@@ -12,7 +12,7 @@
 #define MAX_PASS_CHAR 30
 
 // =========== UI UTILS ===========
-void refreshFrame(Renderctx in_rctx, Sheetctx in_sctx,char commandLog[][509]);
+void refreshFrame(Renderctx* in_rctx, Sheetctx* in_sctx,char commandLog[][509]);
 void clearScreen();
 void indentCursor(short spaces);
 void generateGraph(Sheetctx in_sctxmasterlist);
@@ -27,10 +27,10 @@ void renderWhiteSpace(int);
 void renderSeparator(short id);
 
 // =========== UI PANELS ===========
-void renderHeader(Renderctx ctx);
+void renderHeader(Renderctx ctx, Sheetctx in_sctx);
 void renderSubHeader();
-void renderMatrixRankerRow(char* indexNameContainer[10], short* indexValContainer, Renderctx in_rctx);
+void renderMatrixRankerRow(char rg_collection[][2][MAXNAMECHARLIMIT], Renderctx in_rctx);
 void renderMasterListHeader(short panelID);
-void renderMasterListRow(Index sctx_masterlist[], short selectionID, char selectionX, short panelID);
+void renderMasterListRow(Index sctx_masterlist[], Renderctx in_rctx);
 
 #endif

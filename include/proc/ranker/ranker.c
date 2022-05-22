@@ -5,13 +5,17 @@
 #include <stdio.h>
 #include <string.h>
 #include "../proc.h"
+#include "../../io/io.h"
+
+#define DEBUGMODE 0
 
 void bubbleSort(char string_array[][LIMIT_STRLEN], short score_array[], size_t lines);
 
-void module_ranksort(Sheetctx in_sctx, Index out_ranked[])
+void module_ranksort(Sheetctx in_sctx, Index out_ranked[10])
 {
     // FETCH CTX
-    size_t size = sizeof(in_sctx.masterlist) / sizeof (in_sctx.masterlist[0]);
+    size_t size = util_fetchmastersize(in_sctx);
+    DEBUGMODE == 1 ? printf("Ranker Module - Received Size: %d\n", size): 0;
 
     // ISOLATE DATA FROM in_sctx TO TEMP CONTAINERS
     short scores[LIMIT_STUDENTS] = {0};
@@ -21,6 +25,14 @@ void module_ranksort(Sheetctx in_sctx, Index out_ranked[])
     {
         scores[i] = in_sctx.masterlist[i].value;
         strcpy(names[i], in_sctx.masterlist[i].indexName);
+    }
+
+    if (DEBUGMODE == 1){
+        printf("Received Data: \n");
+        for (int i = 0; i < size; ++i) {
+            printf("%s : %d\n", names[i], scores[i]);
+        }
+
     }
 
     // CALL OUTSIDE FUNCTION FOR SORT

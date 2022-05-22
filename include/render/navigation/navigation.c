@@ -7,30 +7,40 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+
+// Interface
 #include "navigation.h"
+
+// Render System
 #include "../view/render.h"
 
+// File Operations & Utils
+#include "../../io/io.h"
+
+// Merge Sort Call
+#include "../../proc/proc.h"
+
 //#region PRIVATE FUNC PROTS
-void op_editcell(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]);
-void op_rmcell(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]);
+void op_editcell(Renderctx* ctx, Sheetctx* in_sctx, Index in_sctxcell, char commandLog[][509]);
+void op_rmcell(Renderctx* ctx, Sheetctx* in_sctx, char commandLog[][509]);
 void op_setpanel(short, char commandLog[][509]);
 //#endregion
 
 int NAVKEY = '1';
 
 // HANDLERS
-void navigationKeyHandler(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]){
+void navigationKeyHandler(Renderctx* ctx, Sheetctx* in_sctx, char commandLog[][509]){
     // SAVE CURRENT PANELID
-    short prevPanelID = ctx.sessionPanelID;
+    short prevPanelID = ctx->sessionPanelID;
     uint8_t deleteConfirm = 0; // 1 - Confirming, 2 - Confirmed
 
     // Start key handler
     indentCursor(1);
-    while (NAVKEY != EOF || ctx.handlerMode != 1){
+    while (NAVKEY != EOF || ctx->handlerMode != 1){
         NAVKEY = _getch();
-        ctx.NAVKEY = NAVKEY;
+        ctx->NAVKEY = NAVKEY;
 
-        switch (ctx.NAVKEY) {
+        switch (ctx->NAVKEY) {
             //#region OPERATION KEYS
             case 'Q': case 'q':
                 /*
@@ -42,20 +52,28 @@ void navigationKeyHandler(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509
                 */
                 if(
                     // ON EDIT MODE OR
-                    ((ctx.renderCellX != 'X') && (ctx.operationMode != 1) && deleteConfirm == 0) ||
+                    ((ctx->renderCellX != 'X') && (ctx->operationMode != 1) && deleteConfirm == 0) ||
                     // CONFIRMING CELL DELETE
-                    ((ctx.renderCellX == 'X') && (ctx.operationMode == 1) && deleteConfirm == 1)
+                    ((ctx->renderCellX == 'X') && (ctx->operationMode == 1) && deleteConfirm == 1)
                 ){
                     strcpy((char *) commandLog[0], "Resetted all global nav values\n");
-                    ctx.renderCellX = 'X';
-                    ctx.operationMode = 1;
+                    ctx->renderCellX = 'X';
+                    ctx->operationMode = 1;
                     deleteConfirm = 0;
                     break;
-                } else {
-                    terminatePrompt();
-                    break;
                 }
-
+                if (((ctx->renderCellX == 'X') && (ctx->operationMode == 1)) && (deleteConfirm == 0)){
+                    // IF NOT ON EDIT MODE / DELETE MODE
+                    char* command = calloc(1, strlen(in_sctx->address));
+                    printf("Test fetch address: %s", in_sctx->address);
+                    system("pause");
+                    snprintf(command, strlen(in_sctx->address), "Terminating program.. Saving & Encrypting all data", in_sctx->address);
+                    strcpy((char *) commandLog[0], command);
+                    refreshFrame(ctx, in_sctx, commandLog);
+                    save_writesheetctx(*in_sctx, in_sctx->address);
+                    system("pause");
+                    break;
+                } else break;
             case 'E': case 'e':
                 /*
                     E OPERATION
@@ -73,24 +91,37 @@ void navigationKeyHandler(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509
                             - The highlighted element can now be changed
                 */
                 // If on View Mode & No Selection
-                if((ctx.operationMode == 1) && (ctx.renderCellX == 'X')){
+                if((ctx->operationMode == 1) && (ctx->renderCellX == 'X') && ctx->sessionPanelID == 3){
                     strcpy((char *) commandLog[0], "Operation Mode: 2");
-                    ctx.operationMode = 2;
-                    ctx.renderCellX = 'L';
+                    ctx->operationMode = 2;
+                    ctx->renderCellX = 'L';
                     break;
                 } else
                 // If on Edit Mode & Selection
-                if((ctx.operationMode == 2) && (ctx.renderCellX != 'X')){
+                if((ctx->operationMode == 2) && (ctx->renderCellX != 'X')){
                     strcpy((char *) commandLog[0], "Operation Mode: 3");
-                    ctx.operationMode = 3;
-                    op_editcell(ctx, in_sctx, commandLog);
-                    ctx.operationMode = 1;
-                    ctx.renderCellX = 'X';
+                    ctx->operationMode = 3;
+                    op_editcell(ctx, in_sctx, in_sctx->masterlist[ctx->renderCellIndex], commandLog);
+                    ctx->operationMode = 1;
+                    ctx->renderCellX = 'X';
                     break;
                 } else break;
-
+            case 't': case 'T':
+                if ((ctx->NAVKEY == 't' || ctx->NAVKEY == 'T') && ctx->operationMode < 2){
+                    strcpy((char *) commandLog[0], "Operation Mode: 2. Adding new Entry: ");
+                    ctx->sessionPanelID = 3;
+                    ctx->operationMode = 3;
+                    ctx->renderCellIndex = (size_t)util_fetchmastersize(*in_sctx);
+                    ctx->renderCellX = 'L';
+                    op_editcell(ctx, in_sctx, in_sctx->masterlist[ctx->renderCellIndex], commandLog);
+                    ctx->renderCellX = 'R';
+                    op_editcell(ctx, in_sctx, in_sctx->masterlist[ctx->renderCellIndex], commandLog);
+                    ctx->operationMode = 1;
+                    ctx->renderCellX = 'X';
+                    break;
+                } else break;
             case 'R': case 'r':
-                if((ctx.operationMode == 1) && (ctx.renderCellX == 'X')){
+                if((ctx->operationMode == 1) && (ctx->renderCellX == 'X')){
                     deleteConfirm++;
                     strcpy((char *) commandLog[0], "Removing Cell. Press <R> to confirm: ");
                     if (deleteConfirm == 2){
@@ -103,9 +134,12 @@ void navigationKeyHandler(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509
             //#region NAVIGATION KEYS
         case 'W':
         case 'w':
-            if(ctx.renderCellIndex > 0) {
-                ctx.renderCellIndex--;
-
+            if(ctx->renderCellIndex > 0) {
+                ctx->renderCellIndex--;
+                if (ctx->renderCellIndex < ctx->buffer_start){
+                    ctx->buffer_start--;
+                    ctx->buffer_end--;
+                }
                 // Testing
                 strcpy((char *) commandLog[0], "Decremented renderCellIndex:");
 
@@ -114,54 +148,61 @@ void navigationKeyHandler(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509
 
         case 'S':
         case 's':
-            if(ctx.renderCellIndex < 9) {
-                ctx.renderCellIndex++;
-
-                // Testing
-                strcpy((char *) commandLog[0], "Incremented renderCellIndex:");
-//                printf("Incremented renderCellIndex: %d ", ctx.renderCellIndex);
+            // Check if on Ranker Panel
+            if (ctx->sessionPanelID != 2){
+                if((ctx->renderCellIndex+1 < util_fetchmastersize(*in_sctx)) && util_fetchmastersize(*in_sctx) != 0) {
+                    ctx->renderCellIndex++;
+                    if (ctx->renderCellIndex >= ctx->buffer_end){
+                        ctx->buffer_end++;
+                        ctx->buffer_start++;
+                    }
+                    // Testing
+                    strcpy((char *) commandLog[0], "Incremented renderCellIndex:");
+                } else break;
+            } else {
+                if (ctx->renderCellIndex < 9){
+                    ctx->renderCellIndex++;
+                }
             }
+
             break;
 
         case 'A':
         case 'a':
-            if(ctx.operationMode == 2) {
-                ctx.renderCellX = 'L';
-//                printf("\tCell Selection: %c ", ctx.renderCellX);
+            if(ctx->operationMode == 2) {
+                ctx->renderCellX = 'L';
                 break;
             } else break;
 
         case 'D':
         case 'd':
-            if(ctx.operationMode == 2) {
-                ctx.renderCellX = 'R';
-//                printf("\tCell Selection: %c ", ctx.renderCellX);
+            if(ctx->operationMode == 2) {
+                ctx->renderCellX = 'R';
                 break;
             } else break;
             //#endregion
             //#region PANEL KEYS
-
         case '1':
-            ctx.renderCellX = 'X';
-            ctx.renderCellIndex = 0;
-            ctx.operationMode = 1;
-            ctx.sessionPanelID = 1;
+            ctx->renderCellX = 'X';
+            ctx->renderCellIndex = 0;
+            ctx->operationMode = 1;
+            ctx->sessionPanelID = 1;
             strcpy((char *) commandLog[0], "Resetted all global nav values. Rendering Panel No: 1");
             break;
 
         case '2':
-            ctx.renderCellX = 'X';
-            ctx.renderCellIndex = 0;
-            ctx.operationMode = 1;
-            ctx.sessionPanelID = 2;
+            ctx->renderCellX = 'X';
+            ctx->renderCellIndex = 0;
+            ctx->operationMode = 1;
+            ctx->sessionPanelID = 2;
             strcpy((char *) commandLog[0], "Resetted all global nav values. Rendering Panel No: 2");
             break;
 
         case '3':
-            ctx.renderCellX = 'X';
-            ctx.renderCellIndex = 0;
-            ctx.operationMode = 1;
-            ctx.sessionPanelID = 3;
+            ctx->renderCellX = 'X';
+            ctx->renderCellIndex = 0;
+            ctx->operationMode = 1;
+            ctx->sessionPanelID = 3;
             strcpy((char *) commandLog[0], "Resetted all global nav values. Rendering Panel No: 3");
             break;
 
@@ -174,8 +215,8 @@ void navigationKeyHandler(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509
 
         // check if panelID values have changed and render frame ID
         // prevents re-rendering the frame if panelID hasn't changed
-        if (ctx.sessionPanelID != prevPanelID){
-            op_setpanel(ctx.sessionPanelID, commandLog);
+        if (ctx->sessionPanelID != prevPanelID){
+            op_setpanel(ctx->sessionPanelID, commandLog);
         }
 
         // Update references
@@ -184,13 +225,13 @@ void navigationKeyHandler(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509
 }
 
 // CRUD OPERATIONS
-void op_editcell(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]){
+void op_editcell(Renderctx* ctx, Sheetctx* in_sctx, Index in_sctxcell, char commandLog[][509]){
 
     fflush(stdin);
     char* entry = calloc(1,(sizeof commandLog[0]));
     char* value = malloc(40);
 
-    switch (ctx.renderCellX) {
+    switch (ctx->renderCellX) {
         case 'L':
             strcpy((char *) commandLog[0], "Editing Left of Cell. Please Enter Value: ");
             refreshFrame(ctx, in_sctx, commandLog);
@@ -198,6 +239,9 @@ void op_editcell(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]){
             // commit note: softbug fixed through stdin fflush();
 
             fgets(value, 40, stdin);
+            size_t valuelen = strlen(value);
+            value[valuelen-1] = '\0';
+            strcpy(in_sctx->masterlist[ctx->renderCellIndex].indexName, value);
             strncat(entry, "Entered Value: ", 16);
             strncat(entry, value, strlen(value));
             strcpy((char *) commandLog[0], entry);
@@ -208,6 +252,9 @@ void op_editcell(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]){
             refreshFrame(ctx, in_sctx, commandLog);
 
             fgets(value, 30, stdin);
+            size_t vallen = strlen(value);
+            int ctr_gradeval = strtol(value, NULL, 10);
+            in_sctx->masterlist[ctx->renderCellIndex].value = (short)ctr_gradeval;
             strncat(entry, "Entered Value: ", 16);
             strncat(entry, value, strlen(value));
             strcpy((char *) commandLog[0], entry);
@@ -219,8 +266,24 @@ void op_editcell(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]){
 
     }
 }
-void op_rmcell(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]){
+void op_rmcell(Renderctx* ctx, Sheetctx* in_sctx, char commandLog[][509]){
+    // Print Dialogue
     strcpy((char *) commandLog[0], "Removing Cell");
+
+    // Fetch Ctx
+    const size_t deletedindex = ctx->renderCellIndex;
+    const size_t sctx_mstrct = util_fetchmastersize(*in_sctx);
+
+    // Move index above to current deleted index
+    for (size_t i = deletedindex; i < sctx_mstrct; ++i) {
+        strcpy(in_sctx->masterlist[i].indexName, in_sctx->masterlist[i+1].indexName);
+        in_sctx->masterlist[i].value = in_sctx->masterlist[i+1].value;
+    }
+
+    // Reset Viewbuffer
+    ctx->buffer_start = 0;
+    ctx->buffer_end = 10;
+    ctx->renderCellIndex = 0;
 }
 
 // RENDERCTX OPERATIONS

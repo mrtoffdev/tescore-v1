@@ -5,12 +5,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <time.h>
 #include <string.h>
 #include "render.h"
 #include "../../proc/proc.h"
+#include "../../io/io.h"
 
-#define DEBUGMODE 1
+#define DEBUGMODE 0
 
 // CLEAR SCREEN DEFS
 #define WINCLR "cls"
@@ -24,33 +24,20 @@ char*       sheetName = "SHORTNAME";
 char*       matrixGraph[10][11];
 
 // Framebuffer
-void refreshFrame(Renderctx in_rctx, Sheetctx in_sctx, char commandLog[10][509]){
-    // Process: Sheetctx >> RankerModule == Return: Index[10](Ranked) >> Generator == Index[i].name(char) Index[i].value(char) == ctx_masterlist[i][i]
-
-    //#region Sample Sheet
-    Sheetctx samplesheet = {
-            "Sheetname",
-            "passphrase",
-            {
-                    {"Jacob Holmes", 100},
-                    {"John Handwick", 50},
-                    {"Henry Godlot", 90},
-            },
-            3
-    };
-    //#endregion
-
+void refreshFrame(Renderctx* in_rctx, Sheetctx* in_sctx, char commandLog[10][509]){
+    // Process: Sheetctx >> RankerModule == Return: Index[10](Ranked) >>
+    // Generator == Index[i].name(char) Index[i].value(char) == ctx_masterlist[i][i]
     //#region Reset Screen
     clearScreen();
     renderWhiteSpace(3);
     //#endregion
-
+    printf("Current RenderIndex: %d\n", in_rctx->renderCellIndex);
+    printf("Masterlist Size: %d\n", util_fetchmastersize(*in_sctx));
+    printf("Current Cell Selection: %c\n", in_rctx->renderCellX);
+    printf("Current Operation Mode: %d\n", in_rctx->operationMode);
+    //#region INITIALIZE DATA
     // FETCH CTX
-    size_t size_chk = 0;
-    while ((samplesheet.masterlist[size_chk].indexName[0] > 64 && samplesheet.masterlist[size_chk].indexName[0]< 90) ||
-            (samplesheet.masterlist[size_chk].indexName[0] > 96 && samplesheet.masterlist[size_chk].indexName[0]< 123)){
-        size_chk++;
-    }
+    size_t size_chk = util_fetchmastersize(*in_sctx);
     DEBUGMODE == 1 ? printf("Estimated Masterlist Size: %d\n", size_chk): 0;
 
     // MASTERLIST DECONSTRUCTOR
@@ -58,13 +45,13 @@ void refreshFrame(Renderctx in_rctx, Sheetctx in_sctx, char commandLog[10][509])
 
     DEBUGMODE == 1 ? printf("\nChecking Data: \n", size_chk): 0;
     for (int i = 0; i < size_chk; ++i) {
-        if ((samplesheet.masterlist[i].indexName[0] > 64 && samplesheet.masterlist[i].indexName[0] < 90) ||
-            (samplesheet.masterlist[i].indexName[0] > 96 && samplesheet.masterlist[i].indexName[0] < 123)){
+        if ((in_sctx->masterlist[i].indexName[0] > 64 && in_sctx->masterlist[i].indexName[0] < 90) ||
+            (in_sctx->masterlist[i].indexName[0] > 96 && in_sctx->masterlist[i].indexName[0] < 123)){
 
-            DEBUGMODE == 1 ? printf("Starting char found: %c Masterlist Size: %d\n", samplesheet.masterlist[i].indexName[0], i+1) : 0;
-            ctx_masterlist[i][0] = samplesheet.masterlist[i].indexName;
+            DEBUGMODE == 1 ? printf("Starting char found: %c Masterlist Size: %d\n", in_sctx->masterlist[i].indexName[0], i+1) : 0;
+            ctx_masterlist[i][0] = in_sctx->masterlist[i].indexName;
 
-            int gr_val = samplesheet.masterlist[i].value;
+            int gr_val = in_sctx->masterlist[i].value;
             char* temp = malloc(3);
             itoa(gr_val, temp, 10);
             ctx_masterlist[i][1] = temp;
@@ -82,61 +69,99 @@ void refreshFrame(Renderctx in_rctx, Sheetctx in_sctx, char commandLog[10][509])
         }
     }
 
-    // CALL SORT FUNCTIONS -------------------------------------------------------------
+    // -> CALL SORT FUNCTIONS <-
 
-    // ALPHAMERGE SORT
-    Index out_master[LIMIT_STUDENTS];
-    module_alphasort(&samplesheet, 0, size_chk - 1);
+    // ALPHAMERGE SORT ---------------------------------------------------------
+    size_chk > 0 ? module_alphasort(in_sctx, 0, size_chk - 1): 0;
 
+    // Print Merge Sorted Masterlist
     if (DEBUGMODE == 1){
         printf("\n\nMergesort Out: \n", size_chk);
         for (int i = 0; i < size_chk; ++i) {
-            printf("%s : %d\n",samplesheet.masterlist[i].indexName, samplesheet.masterlist[i].value);
+            printf("%s : %d\n",in_sctx->masterlist[i].indexName, in_sctx->masterlist[i].value);
         };
     }
 
-    //#region Ranking Module Prep
-    // RANKER SORT
+    // RANKER SORT -------------------------------------------------------------
     Index out_ranked[10];
-    module_ranksort(in_rctx.SessionSheet, out_ranked);
+    module_ranksort(*in_sctx, out_ranked);
 
-    char* rg_names[10];
-    short rg_grades[10];
-
-    // Print Ranked Containers
+    // Print received data from Ranker Mod
     if (DEBUGMODE == 1){
-        printf("Fetched Ranker List: \n");
-        for (int i = 0; i < size_chk; ++i) {
-            printf("Name: %s Grade: %hd", rg_names, rg_grades);
+        puts("Received from Ranker:\n\n");
+        for (int i = 0; i < 10; ++i) {
+            printf("%s : %d\n", out_ranked[i].indexName, out_ranked[i].value);
         }
+        putchar('\n');
+    }
+
+    // RANKER DECONSTRUCTOR
+    char rg_collection[10][2][MAXNAMECHARLIMIT];
+
+    if (size_chk >= 10){
+
+        for (int i = 0; i < 10; ++i) {
+            char int_ctr[4];
+            strcpy(int_ctr, " "); // clear container
+            int rankval = out_ranked[i].value;
+            snprintf(int_ctr,4, "%d", rankval);
+
+            size_t wordsize = strlen(out_ranked[i].indexName);
+            strncpy(rg_collection[i][0], out_ranked[i].indexName, wordsize);
+            rg_collection[i][0][wordsize] = '\0';
+            strncpy(rg_collection[i][1], int_ctr, strlen(out_ranked[i].indexName));
+            strncat(rg_collection[i][1], "\0",1);
+        }
+
+    } else if (size_chk < 10){
+
+        for (int i = 0; i < size_chk; ++i) {
+            char int_ctr[4];
+            strcpy(int_ctr, " "); // clear container
+            int rankval = out_ranked[i].value;
+            snprintf(int_ctr,4, "%d", rankval);
+
+            size_t wordsize = strlen(out_ranked[i].indexName);
+            strncpy(rg_collection[i][0], out_ranked[i].indexName, strlen(out_ranked[i].indexName));
+            rg_collection[i][0][wordsize] = '\0';
+            strncpy(rg_collection[i][1], int_ctr, strlen(out_ranked[i].indexName));
+            strncat(rg_collection[i][1], "\0",1);
+        }
+        for (size_t i = size_chk; i < 10; ++i) {
+            strncpy(rg_collection[i][0], " \0", 2);
+            strncpy(rg_collection[i][1], " \0", 2);
+        }
+    }
+
+    if (DEBUGMODE == 1){
+        puts("Deconstructed from Ranker:");
+        for (int i = 0; i < 10; ++i) {
+            printf("%s : %s\n", rg_collection[i][0], rg_collection[i][1]);
+        }
+        putchar('\n');
     }
     //#endregion
 
     //#region UPPER PANEL
-
-    // HEADER
     renderSeparator(2);
-    renderHeader(in_rctx);
+    renderHeader(*in_rctx, *in_sctx);
     renderSeparator(3);
 
-    // PANELS : BAR GRAPH MATRIX & TOP RANKERS
-    generateGraph(in_rctx.SessionSheet);
+    generateGraph(*in_sctx); // Prep graph for matrixranker
 
-    renderMatrixRankerRow(rg_names, rg_grades, in_rctx);
+    renderMatrixRankerRow(rg_collection, *in_rctx); // Render prepped graph
 
     renderSeparator(3);
 
     // BAR GRAPH MATRIX : INDEX VALUE REFERENCE
     renderSubHeader(gradeScaling, "DefaultDemoSheet");
     renderSeparator(3);
-
     //#endregion
-
     //#region LOWER PANEL
-    renderMasterListHeader(in_rctx.sessionPanelID);
+    renderMasterListHeader(in_rctx->sessionPanelID);
     renderSeparator(3);
 
-    renderMasterListRow(in_rctx.SessionSheet.masterlist, in_rctx.renderCellIndex, in_rctx.renderCellX, in_rctx.sessionPanelID);
+    renderMasterListRow(in_sctx->masterlist, *in_rctx);
 
     renderSeparator(4);
 
@@ -173,17 +198,17 @@ void generateGraph(Sheetctx in_sctx){
     //#endregion
 
     // Fetch ctx
-    size_t size = sizeof(in_sctx.masterlist) / sizeof(in_sctx.masterlist[0]);
+    size_t size = util_fetchmastersize(in_sctx);
 
     // Generate Graph Reference Table
-    int     studentCountReference[11][2] = {0};
+    int studentCountReference[11][2] = {0};
     for (int y = 0; y < 11; ++y) {
         // MATCH MATRIX[N][0] WITH GRADE SCALING
         studentCountReference[y][0] = gradeScaling[y];
     }
     // Fetch no. of students within grade range
     for (int y = 0; y < 11; ++y) {
-        for (int x = 0; x < 40; ++x) {
+        for (int x = 0; x < size; ++x) {
             if ((in_sctx.masterlist[x].value >= studentCountReference[y][0]) &&
                 // GRADE IS LESS THAN LOWER GRADE TABLE
                 (in_sctx.masterlist[x].value < studentCountReference[y+1][0])){
@@ -255,8 +280,8 @@ void generateGraph(Sheetctx in_sctx){
 } //TODO FIXED
 
 // Panels
-void renderHeader(Renderctx in_rctx){
-    short sessionStudentCount = sizeof(in_rctx.SessionSheet.masterlist) / sizeof(in_rctx.SessionSheet.masterlist[0]);
+void renderHeader(Renderctx in_rctx, Sheetctx in_sctx){
+    size_t sessionStudentCount = util_fetchmastersize(in_sctx);
 
     if(in_rctx.sessionPanelID == 1){
         printf("\t|\x1B[38;5;16m\x1B[48;5;7m");
@@ -285,29 +310,14 @@ void renderSubHeader(){
     printf("\t│    ");
 
     for (int i = 0; i < 11; i++) {
-        printf("|%4d", gradeScaling[i]);
+        printf("|%-4d", gradeScaling[i]);
     }
 
     printf("│ Sheet Name: %-30s    │\n", sheetName);
 
-    //#region Legacy Code
-    //    printf("\t|    |%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d|%4d| Sheet Name: %-18s \t|\t    |\n",
-    //           gradeScaling[0],
-    //           gradeScaling[1],
-    //           gradeScaling[2],
-    //           gradeScaling[3],
-    //           gradeScaling[4],
-    //           gradeScaling[5],
-    //           gradeScaling[6],
-    //           gradeScaling[7],
-    //           gradeScaling[8],
-    //           gradeScaling[9],
-    //           gradeScaling[10],
-    //           sheetName);
-    //#endregion
 } //TODO NOTHING TO CHANGE
 
-void renderMatrixRankerRow(char* rg_names[10], short* rg_grades, Renderctx in_rctx){
+void renderMatrixRankerRow(char rg_collection[][2][MAXNAMECHARLIMIT], Renderctx in_rctx){
 
     // Fetch ctx
     short selectionID = in_rctx.renderCellIndex;
@@ -337,15 +347,13 @@ void renderMatrixRankerRow(char* rg_names[10], short* rg_grades, Renderctx in_rc
                     printf("│");
                     printf("\x1B[38;5;16m\x1B[48;5;7m");
 
-                    &rg_names[inverseY] != NULL ? printf("  • %-27s    ", rg_names[inverseY]):
-                    printf("  • %-27s    ", " ");
+                    printf("  • %-27s    ", &rg_collection[inverseY][0]);
 
                     printf("\x1B[38;5;15m\x1B[48;5;0m");
                     printf("│");
                     printf("\x1B[38;5;16m\x1B[48;5;7m");
 
-                    &rg_grades[inverseY] != NULL ? printf("   %4d    ", rg_grades[inverseY]) :
-                    printf("   %4s    ", " ");
+                    printf("   %4s    ", &rg_collection[inverseY][1]);
 
                     printf("\x1B[38;5;15m\x1B[48;5;0m");
                     printf("│\n");
@@ -355,36 +363,30 @@ void renderMatrixRankerRow(char* rg_names[10], short* rg_grades, Renderctx in_rc
                     printf("│");
                     printf("\x1B[38;5;16m\x1B[48;5;7m");
 
-                    &rg_names[inverseY] != NULL ? printf("  • %-27s    ", rg_names[inverseY]):
-                    printf("  • %-27s    ", " ");
+                    printf("  • %-27s    ", &rg_collection[inverseY][0]);
 
                     printf("\x1B[38;5;15m\x1B[48;5;0m");
 
-                    &rg_grades[inverseY] != NULL ? printf("   %4d    ", rg_grades[inverseY]) :
-                    printf("   %4s    ", " ");
+                    printf("   %4s    ", &rg_collection[inverseY][1]);
                     break;
 
                 case 'R':
-                    &rg_names[inverseY] != NULL ? printf("  • %-27s    ", rg_names[inverseY]):
-                    printf("  • %-27s    ", " ");
+                    printf("  • %-27s    ", &rg_collection[inverseY][0]);
 
                     printf("\x1B[38;5;16m\x1B[48;5;7m");
 
-                    &rg_grades[inverseY] != NULL ? printf("   %4d    ", rg_grades[inverseY]) :
-                    printf("   %4s    ", " ");
+                    printf("   %4s    ", &rg_collection[inverseY][1]);
 
                     printf("\x1B[38;5;15m\x1B[48;5;0m");
                     printf("│\n");
                     break;
 
                 default:
-                    rg_names != NULL && rg_grades != NULL ? printf("│  • %-27s    │   %4d    │\n", rg_names[inverseY], rg_grades[inverseY]):
-                    printf("│  • %-27s    │   %4s    │\n", " ", " ");
+                    printf("│  • %-27s    │   %4s    │\n", &rg_collection[inverseY][0], &rg_collection[inverseY][1]);
                     break;
             }
         } else {
-            rg_names != NULL && rg_grades != NULL ? printf("│  • %-27s    │   %4d    │\n", rg_names[inverseY], rg_grades[inverseY]):
-            printf("│  • %-27s    │   %4s    │\n", " ", " ");
+            printf("│  • %-27s    │   %4s    │\n", &rg_collection[inverseY][0], &rg_collection[inverseY][1]);
         }
 
         inverseY++;
@@ -427,8 +429,16 @@ void renderMasterListHeader(short panelID){
         printf("\t│\t\t\t\t- Student Submission List -\t\t\t\t\t│           │\n");
     }
 }
-void renderMasterListRow(Index sctx_masterlist[], short selectionID, char selectionX, short panelID){
-    for (int i = 0; i < 10; ++i) {
+
+void renderMasterListRow(Index sctx_masterlist[], Renderctx in_rctx){
+    // Fetch ctx
+    size_t selectionID = in_rctx.renderCellIndex;
+    size_t panelID = in_rctx.sessionPanelID;
+    char selectionX = in_rctx.renderCellX;
+
+    // Adjust masterlist buffer position based on selection
+
+    for (size_t i = in_rctx.buffer_start; i < in_rctx.buffer_end; ++i) {
         if (panelID == 3 && selectionID == i){
             switch (selectionX) {
                 case 'X':
@@ -467,6 +477,7 @@ void renderMasterListRow(Index sctx_masterlist[], short selectionID, char select
 
     }
 }
+
 void defaultMasterListRow(char* indexName, int indexVal){
     printf("\t| • %-90s  |   %4d    │\n", indexName, indexVal);
 }

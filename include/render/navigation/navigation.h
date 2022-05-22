@@ -8,14 +8,7 @@
 #include "../../model/models.h"
 #include "../../model/renderctx.h"
 
-/*
-    FUNCTION CALLS
-        VOID
-        - parseNavigationKey(key, panelID)      : Checks passed in key & performs corresponding action
-
-*/
-
 // VOID
-void navigationKeyHandler(Renderctx ctx, Sheetctx in_sctx, char commandLog[][509]);
+void navigationKeyHandler(Renderctx* ctx, Sheetctx* in_sctx, char commandLog[][509]);
 
 #endif
