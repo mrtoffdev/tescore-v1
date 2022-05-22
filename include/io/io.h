@@ -28,7 +28,7 @@ Sheetctx save_readsheetctx();
 void save_writesheetctx(Sheetctx in_sctxmaster, const char* out_fileaddress);
 
 // DECONSTRUCTOR
-Sheetctx sheet_deconststr(char* in_strmasterlist);
+Sheetctx sheet_deconststr(char* in_strmasterlist, char* in_fileaddress);
 void sheet_conststr(Sheetctx in_sctxmaster, char* out_strmasterlist);
 
 // FILE OPERATIONS
