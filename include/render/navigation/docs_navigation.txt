@@ -9,7 +9,8 @@
 
     GLOBAL NAVIGATION
     - <1><2><3>                 switching between panels
-    - <W><A><S><D>              panel / table navigation
+    - <W><S>                    move up | move down
+    - <A><D>                    move left | move right
     - <Q>                       program termination prompt
 
     MASTERLIST NAVIGATION
