@@ -1,6 +1,7 @@
 /*========================================
       CRUD OPERATIONS
       Author: Christopher Abadillos Jr.
+      Contributor: Jovic Francis Rayco (Deconstructor)
   ========================================*/
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,19 +19,7 @@
 // SORT ALGORITHMS
 #include "../proc/proc.h"
 
-#define DEBUGMODE 1
-
-// TEST SCRIPTS
-void CRUD_TEST(Sheetctx in_sctxmaster){
-//    char* strmasterenc = "a8525e2a75499e55f6add2ede49a8e4e2c99b3cdf9591fd55f8cfe6a5202f3f89a75575589dcf55d9a6a02575a820e14865be0ecc7bb52910e0b008da007b39781ec9a93f96c70d8dd0dcfd59ca04d5b64af0798cb9153e590d648a9df4aa051b29a2347a597b00b5fd9be083ed39b5ecd5d04a347ccb735a213926a267279ea1d8e98937ea9b3095eb7764b184741ad26d28591033cd0f47b73403efb9d3b79bbe0e0b38dda2caba01b223510aad19baf7ffdba04a123f7c1fd32ce61bc3b4ff0c3a237c32e5f40f707820d6d724b255d5595bf34784df6507d224cfcf1221a170bf3b85aebe3091b5a0efbf34dabd22b62f602bd138cb7dec7b577d09cd78c39762b36edf2f2355adc98f54e101bd348c0316f0cc12f23afc8e398b2b1102e3a58660c197a8f0efe26b4df34086eba69c5f9accc33a835e5a13e979e730b4e4176beda2ea5e3627ce54476804c3c177cc7a02a53fc3c70d4fbbdabc7fc9dd733746e065fe4d0d18915222cf699daa2e937b4be3460e7ed4bae85b77da556e240656fec4006d2c465ece8290bde57a01a03a79dcfd841674fbdd34ebf0e188c5f6f85f7d22931551b6142af183e406283e01c252fb836d370b049b456e25ac2145dbd683005cf5c8a479302a58f3649d929621e148ba3a9da3dde066cad0656f3a3fa9bdb324b2ea91b7095295291e6e145f9b0aeff4bea96a20c2c2adb14e36af19666f6cbe8e976262b43bb3cf2ccfe8c5a02b1a3e3655e86cd0bfa8a72e186404918216dcdaaaa3a4ca1154edc4bcbc82b7ae322ca3c9a918b35b3926167097eca9e44cde3c288da660edba017de97cf44e783a2dc7131bccc3aea0b69ef769546aacd29c02991d74b4c46571713d139cc960946425c4317e6953a8c0883a7d213db8a9da03b43d8beb0826483e8";
-//    char* outfile = malloc(MAXMASTERLEN);
-//
-//    proc_decryptbuffer(strmasterenc, outfile);
-//    printf("\n\nOutfile found: \n\n%s\n\n", outfile);
-//    system("pause");
-//    save_writesheetctx(in_sctxmaster);
-    save_writesheetctx(in_sctxmaster, "C:\\makefile2.dib");
-}
+#define DEBUGMODE 0
 
 // -> ENTRY POINTS <-
 Sheetctx save_readsheetctx(){
@@ -79,7 +68,7 @@ Sheetctx save_readsheetctx(){
         system("pause");
         clearScreen();
         return out_sctx;
-    } else
+    }
 
     // If file opened in FileAddress does not exist
     if(!in_file){
@@ -123,7 +112,8 @@ Sheetctx save_readsheetctx(){
             system("pause");
             goto scan;
         }
-    } else {
+    }
+    else {
         Sheetctx out_readsctx;
         char* in_strmasterlist = file_readmasterlist(in_file);
         char* in_decryptedstrmaster = malloc(MAXMASTERLEN);
@@ -131,7 +121,7 @@ Sheetctx save_readsheetctx(){
         proc_decryptbuffer(in_strmasterlist, in_decryptedstrmaster);
         printf("\n\nOutfile found: \n\n%s\n\n", in_decryptedstrmaster);
 
-        out_readsctx = sheet_deconststr(in_decryptedstrmaster);
+        out_readsctx = sheet_deconststr(in_decryptedstrmaster, FileAddress);
         system("pause");
         clearScreen();
         return out_readsctx;
@@ -182,7 +172,6 @@ size_t util_fetchmastersize(Sheetctx in_sctx){
 // INIT DEFAULT CONTEXTS
 Renderctx init_renderctx(Sheetctx in_sctx){
     Renderctx ctx = {
-            in_sctx,
             'X',
             '1',
             0,
@@ -191,7 +180,6 @@ Renderctx init_renderctx(Sheetctx in_sctx){
             1,
             0,
             10,
-            in_sctx.name,
     };
 
     // Initialize Default Values
@@ -258,8 +246,8 @@ Sheetctx init_sheetdefctx(){
 
     Sheetctx out_sctx = {
             "Demo_sheet.dib",
-            "Admin",
             "apasswordof16byt",
+            "Internal Demo Dataset",
     };
 
     size_t in_mastersize = util_fetchmastersize(sample);
@@ -271,8 +259,24 @@ Sheetctx init_sheetdefctx(){
     return out_sctx;
 }
 
+// FILE OPERATIONS
+void file_writemasterlist(const char* in_fileaddress, const char* in_strbuffer){
+    FILE* outfile;
+    outfile = fopen(in_fileaddress, "w");
+    printf("Written File:\n\n%s\n\n", in_strbuffer);
+    fprintf(outfile, in_strbuffer);
+    fclose(outfile);
+}
+char* file_readmasterlist(FILE* in_file){
+    char* in_strbuffer = calloc(1, 4096);
+    printf("Read File\n");
+    fscanf(in_file, "%s", in_strbuffer);
+    fclose(in_file);
+    return in_strbuffer;
+}
+
 // DECONSTRUCTION / CONSTRUCTION
-Sheetctx sheet_deconststr(char* in_strmasterlist){
+Sheetctx sheet_deconststr(char* in_strmasterlist, char* in_fileaddress){
     // Fetch Ctx:
     size_t in_lines = 0;
     size_t in_len = strlen(in_strmasterlist);
@@ -347,8 +351,9 @@ Sheetctx sheet_deconststr(char* in_strmasterlist){
 
     // Assemble Sheetctx
     Sheetctx out_sctxmaster = {
-            "DIB Sheet",
-            "passphrase"
+            in_fileaddress,
+            "passphrase",
+            in_fileaddress,
     };
     for (int i = 0; i < in_lines; ++i) {
         out_sctxmaster.masterlist[i].value = (short)out_grades[i];
@@ -389,72 +394,14 @@ void sheet_conststr(Sheetctx in_sctxmaster, char* out_strmasterlist){
     DEBUGMODE == 1 ? ("Deconstructed String\n\n%s\n\n", out_strmasterlist): 0;
 }
 
-// FILE OPERATIONS
-void file_writemasterlist(const char* in_fileaddress, const char* in_strbuffer){
-    FILE* outfile;
-    outfile = fopen(in_fileaddress, "w");
-    printf("Written File:\n\n%s\n\n", in_strbuffer);
-    fprintf(outfile, in_strbuffer);
-    fclose(outfile);
-}
-char* file_readmasterlist(FILE* in_file){
-    char* in_strbuffer = calloc(1, 4096);
-    printf("Read File\n");
-    fscanf(in_file, "%s", in_strbuffer);
-    fclose(in_file);
-    return in_strbuffer;
-}
-
-//#region LEGACY =============
-// DATASHEET OPERATIONS
-void fetchData(FILE* DIB, char* indexNameArr[], char* indexValueArr[], int lineCount){
-
-
-
-}
-void fetch_gradeTable(Sheetctx Datactx, int distributionTable[11][2]){
-    // Placeholder Data
-    uint8_t unsortedGradeRounds[10][2] = {
-            {99, 2},
-            {98, 4},
-            {100, 10},
-            {47, 26},
-            {80, 5},
-            {72, 7},
-            {94, 10},
-            {87, 2},
-            {69, 3},
-            {91, 9}
-    };
-
-    uint8_t gradeTable[11] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-    uint8_t collection_size = sizeof unsortedGradeRounds / sizeof unsortedGradeRounds[0];
-
-    for (int y = 0; y < 11; ++y) {
-        // MATCH MATRIX[N][0] WITH GRADE SCALING
-        distributionTable[y][0] = gradeTable[y];
-    }
-
-//    for (int y = 0; y < 11; ++y) {
+// TEST SCRIPTS
+void CRUD_TEST(Sheetctx in_sctxmaster){
+//    char* strmasterenc = "a8525e2a75499e55f6add2ede49a8e4e2c99b3cdf9591fd55f8cfe6a5202f3f89a75575589dcf55d9a6a02575a820e14865be0ecc7bb52910e0b008da007b39781ec9a93f96c70d8dd0dcfd59ca04d5b64af0798cb9153e590d648a9df4aa051b29a2347a597b00b5fd9be083ed39b5ecd5d04a347ccb735a213926a267279ea1d8e98937ea9b3095eb7764b184741ad26d28591033cd0f47b73403efb9d3b79bbe0e0b38dda2caba01b223510aad19baf7ffdba04a123f7c1fd32ce61bc3b4ff0c3a237c32e5f40f707820d6d724b255d5595bf34784df6507d224cfcf1221a170bf3b85aebe3091b5a0efbf34dabd22b62f602bd138cb7dec7b577d09cd78c39762b36edf2f2355adc98f54e101bd348c0316f0cc12f23afc8e398b2b1102e3a58660c197a8f0efe26b4df34086eba69c5f9accc33a835e5a13e979e730b4e4176beda2ea5e3627ce54476804c3c177cc7a02a53fc3c70d4fbbdabc7fc9dd733746e065fe4d0d18915222cf699daa2e937b4be3460e7ed4bae85b77da556e240656fec4006d2c465ece8290bde57a01a03a79dcfd841674fbdd34ebf0e188c5f6f85f7d22931551b6142af183e406283e01c252fb836d370b049b456e25ac2145dbd683005cf5c8a479302a58f3649d929621e148ba3a9da3dde066cad0656f3a3fa9bdb324b2ea91b7095295291e6e145f9b0aeff4bea96a20c2c2adb14e36af19666f6cbe8e976262b43bb3cf2ccfe8c5a02b1a3e3655e86cd0bfa8a72e186404918216dcdaaaa3a4ca1154edc4bcbc82b7ae322ca3c9a918b35b3926167097eca9e44cde3c288da660edba017de97cf44e783a2dc7131bccc3aea0b69ef769546aacd29c02991d74b4c46571713d139cc960946425c4317e6953a8c0883a7d213db8a9da03b43d8beb0826483e8";
+//    char* outfile = malloc(MAXMASTERLEN);
 //
-//        for (int x = 0; x < collection_size; ++x) {
-//            if(
-//                // GRADE ATTAINED IS LESS/EQUAL TO GRADE TABLE
-//                (unsortedGradeRounds[x][0] >= distributionTable[y][0]) &&
-//                // GRADE IS LESS THAN LOWER GRADE TABLE
-//                (unsortedGradeRounds[x][0] < distributionTable[y+1][0])){
-//
-//                distributionTable[y][1] += unsortedGradeRounds[x][1];
-//            }
-//        }
-//    }
+//    proc_decryptbuffer(strmasterenc, outfile);
+//    printf("\n\nOutfile found: \n\n%s\n\n", outfile);
+//    system("pause");
+//    save_writesheetctx(in_sctxmaster);
+//    save_writesheetctx(in_sctxmaster, "C:\\makefile2.dib");
 }
-
-// DEV TEST FUNCTION
-void file_InitMasterlist();
-//#endregion
-
-
-
-
-
