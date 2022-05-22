@@ -8,9 +8,7 @@
 #include <stdint.h>
 #include "models.h"
 
-#define MAXCOMMANDENTRIES 10
 typedef struct Renderctx {
-    Sheetctx    SessionSheet;                       // Main Datasheet
     char        renderCellX;                        // Selection for Operation
     uint8_t     NAVKEY,                             // Navigation Key
                 handlerMode,                        // Navigation Handler Mode
@@ -19,12 +17,6 @@ typedef struct Renderctx {
                 renderCellIndex,                    // Frame Index to Render
                 buffer_start,
                 buffer_end;
-    char*       sheetName,                          // Embedded Sheet Name
-                commandLog[MAXCOMMANDENTRIES];      // Command Log Entries Container
-
-// Legacy props
-//                graphLayout[10][11],                // Bar Graph Layout Container
-//    int         distributionTable[11][2];           // Student Distribution Reference for Graph Gen
 } Renderctx;
 
 #endif
