@@ -43,13 +43,13 @@ Sheetctx save_readsheetctx(){
     int pass = 0;
     int ctr = 3;
 
-    if (DEBUGMODE == 1){
-        for (size_t i = in_addrlen-1; i > in_addrlen-5; --i) {
-            FileAddress[i] == extension[ctr] ? pass++: 0;
-            printf("Checking File Extension: %c to %c", FileAddress[i], extension[ctr]);
-            ctr--;
-        }
+
+    for (size_t i = in_addrlen-1; i > in_addrlen-5; --i) {
+        FileAddress[i] == extension[ctr] ? pass++: 0;
+        DEBUGMODE == 1 ? printf("Checking File Extension: %c to %c", FileAddress[i], extension[ctr]): 0;
+        ctr--;
     }
+
     if ((pass < 3) && !(strcmp(FileAddress, def_fileaddress) == 0)){
         clearScreen();
         indentCursor(5);
@@ -76,7 +76,7 @@ Sheetctx save_readsheetctx(){
     // If file opened in FileAddress does not exist
     if(!in_file){
         clearScreen();
-        indentCursor(5);
+        indentCursor(4);
 
         // Prompt to create new sheet at that address
         printf("Invalid Filename. Create new sheet in %s? (y/n): ", FileAddress);
@@ -100,6 +100,7 @@ Sheetctx save_readsheetctx(){
             clearScreen();
             indentCursor(6);
             printf("Saved address: %s\n", FileAddress);
+            indentCursor(6);
             puts("Created new Sheet.\n\n");
             indentCursor(6);
             system("pause");
@@ -122,7 +123,7 @@ Sheetctx save_readsheetctx(){
         char* in_decryptedstrmaster = malloc(MAXMASTERLEN);
 
         proc_decryptbuffer(in_strmasterlist, in_decryptedstrmaster);
-        printf("\n\nOutfile found: \n\n%s\n\n", in_decryptedstrmaster);
+        DEBUGMODE == 1? printf("\n\nOutfile found: \n\n%s\n\n", in_decryptedstrmaster): 0;
 
         out_readsctx = sheet_deconststr(in_decryptedstrmaster, FileAddress);
         system("pause");

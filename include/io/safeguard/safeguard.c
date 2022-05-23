@@ -137,7 +137,7 @@ void proc_decryptbuffer(const char* in_strmasterhexbuffer, char* out_decmasterst
     char *decryptedstring = calloc(1, blocks * 16);
     hgt_strmaster(in_strhexdecrypted, decryptedstring, blocks);
     strncpy(out_decmasterstrbuffer, decryptedstring, blocks * 16);
-    printf("\n\nDecrypted String: \n\n%s\n", out_decmasterstrbuffer);
+    DEBUGMODE == 1 ? printf("\n\nDecrypted String: \n\n%s\n", out_decmasterstrbuffer): 0;
 }
 
 void sgt_aeshexbuffer(const char* in_strbuffer, uint8_t out_aeshexbuffer[][16]){
