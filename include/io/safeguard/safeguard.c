@@ -33,8 +33,8 @@ void hgt_aesstrbuffer(const uint8_t in_hexbuffer[][16], char* out_aesstrbuffer, 
 void sgt_strhexbuffer(const char* in_strhexbuffer, uint8_t out_hexbuffer[][16]);
 void hgt_strmaster(const uint8_t in_strhexbuffer[][16], char out_strbuffer[], size_t blocks);
 
-void        enc_AES_encryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferEncryptableBlocks[][16], uint8_t ctx_BufferEncryptedBlocks[][16], size_t ctx_inBufferBlocks);
-void        enc_AES_decryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferDecryptableBlocks[][16], uint8_t ctx_BufferDecryptedBlocks[][16], size_t ctx_inBufferBlocks);
+void enc_AES_encryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferEncryptableBlocks[][16], uint8_t ctx_BufferEncryptedBlocks[][16], size_t ctx_inBufferBlocks);
+void enc_AES_decryptBufferBlocks(struct AES_ctx ctx, uint8_t ctx_BufferDecryptableBlocks[][16], uint8_t ctx_BufferDecryptedBlocks[][16], size_t ctx_inBufferBlocks);
 //#endregion
 
 

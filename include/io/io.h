@@ -14,8 +14,6 @@
 
 // Scripts
 void script_fileopsTesting();
-void fetchData(FILE*, char* [], char* [], int);
-void closeFile(FILE*);
 
 void CRUD_TEST(Sheetctx in_sctxmaster);
 
