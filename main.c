@@ -4,7 +4,7 @@
   ========================================*/
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
+//#include <windows.h>
 #include <stdint.h>
 
 // Models
@@ -29,31 +29,31 @@
 void sandbox_scriptTesting();
 
 //#region CONSOLE WINDOW RESIZE FUNCTION
-HWND WINAPI GetConsoleWindowNT(void)
-{
-    typedef HWND WINAPI(*GetConsoleWindowT)(void);
-    GetConsoleWindowT GetConsoleWindow;
-    HMODULE hk32Lib = GetModuleHandle(TEXT("KERNEL32.DLL"));
-    GetConsoleWindow = (GetConsoleWindowT)GetProcAddress(hk32Lib
-            ,TEXT("GetConsoleWindow"));
-    if(GetConsoleWindow == NULL){
-        return NULL;
-    }
-    return GetConsoleWindow();
-}
+//HWND WINAPI GetConsoleWindowNT(void)
+//{
+//    typedef HWND WINAPI(*GetConsoleWindowT)(void);
+//    GetConsoleWindowT GetConsoleWindow;
+//    HMODULE hk32Lib = GetModuleHandle(TEXT("KERNEL32.DLL"));
+//    GetConsoleWindow = (GetConsoleWindowT)GetProcAddress(hk32Lib
+//            ,TEXT("GetConsoleWindow"));
+//    if(GetConsoleWindow == NULL){
+//        return NULL;
+//    }
+//    return GetConsoleWindow();
+//}
 //#endregion
 
 int main() {
 
     //#region =========== CONSOLE SETUP: WIN32 ===========
-    SetConsoleOutputCP(CP_UTF8);
-    SetConsoleTitle(WINDOWTITLE);
-    HWND hWnd=GetConsoleWindowNT();
-    if (SANDBOX == 1){
-        MoveWindow(hWnd,500,0,1100,1140,TRUE);
-    } else {
-        MoveWindow(hWnd,450,200,1020,650,TRUE);
-    }
+//    SetConsoleOutputCP(CP_UTF8);
+//    SetConsoleTitle(WINDOWTITLE);
+//    HWND hWnd=GetConsoleWindowNT();
+//    if (SANDBOX == 1){
+//        MoveWindow(hWnd,500,0,1100,1140,TRUE);
+//    } else {
+//        MoveWindow(hWnd,450,200,1020,650,TRUE);
+//    }
     //#endregion
 
     // INIT CONTAINERS & CONTEXTS

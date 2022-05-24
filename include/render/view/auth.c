@@ -3,7 +3,7 @@
     Author: Christopher Abadillos Jr
   ========================================*/
 #include <stdio.h>
-#include <conio.h>
+//#include <conio.h>
 
 #include "render.h"
 
@@ -23,7 +23,7 @@ void authFrame(){
     printf("\x1b[33D");
 
     while ((navIndex != EOF) && (navIndex != '\n')){
-        navIndex = _getch();
+        //navIndex = _getch();
 
         maxBackSpace = maxBackSpace < 0 ? 0 : maxBackSpace;
 
