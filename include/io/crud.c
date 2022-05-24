@@ -162,7 +162,7 @@ void save_writesheetctx(Sheetctx in_sctxmaster, const char* out_fileaddress){
         printf("\nConstructed StrMaster:\n\n%s\n\n", out_strmaster);
         printf("\nEncrypted StrMaster:\n\n%s\n\n", out_encstrmaster);
     }
-    system("pause");
+    //system("pause");
 }
 
 // UTILS
