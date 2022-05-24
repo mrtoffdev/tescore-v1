@@ -13,7 +13,7 @@
 #define DEBUGMODE 0
 
 // CLEAR SCREEN DEFS
-#define WINCLR "cls"
+//#define WINCLR "cls"
 #define GNUCLR "clr"
 #define REGEXCLR1 "\e[1;1H\e[2J"
 #define REGEXCLR2 "\x1b[2J\x1b[H"
@@ -187,7 +187,7 @@ void refreshFrame(Renderctx* in_rctx, Sheetctx* in_sctx, char commandLog[10][509
 // Utils
 void clearScreen(){
     // Clear screen function is isolated for non-win32 clrscr adaptations
-    system(WINCLR);
+    system("clear");
 }
 void indentCursor(short spaces){
     for (int i = 0; i < spaces; ++i) {

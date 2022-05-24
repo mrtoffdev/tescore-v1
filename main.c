@@ -80,7 +80,7 @@ int main() {
 
 
     puts("PROGRAM INTERRUPTED");
-    system("pause");
+    //system("pause");
     return EXIT_SUCCESS;
 }
 
