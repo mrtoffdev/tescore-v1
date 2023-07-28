@@ -5,7 +5,7 @@ A terminal-centric tabulator with a fully functional responsive TUI chart & hotk
 ![Preview](https://raw.githubusercontent.com/mrtoffdev/tescore-v1/main/readme/long_preview.png)
 
 ---
-### 📢 Warning: This repository is currently going through VCS platform migration. For the most stable release available, refer to the project hosted in [GitLab](https://gitlab.com/christopherjr.abadillos/tescore) 📢  
+### 📢 Warning: This repository is currently going through VCS platform migration, and possibly a partial / large rewrite of the internals in the future. For the first stable release available, refer to the project hosted in [GitLab](https://gitlab.com/christopherjr.abadillos/tescore) 📢  
 ---  
 ## ⚀ Dependencies:
 
