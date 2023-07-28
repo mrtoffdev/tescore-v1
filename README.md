@@ -28,7 +28,12 @@ A terminal-centric tabulator with a fully functional responsive TUI chart & hotk
 - **[Q]** : Exit Editing Mode / Cancel "Delete Entry" / Quit & Save
 - **[R]** : Delete Entry
 
+## ⚀ Purpose of Development:
+> This project was initially developed as a proof of concept for developing reactive User Interfaces for the terminal from scratch, with the goal of demonstrating a responsive nested component layout similar to other high-level GUI toolkits / frameworks instead of a traditional vertical, top to bottom layout commonly used by terminal emulators / shells
+
 ## ⚀ FAQ:
+- **Why are the navigation hotkeys bound to [WASD] instead of vim hotkeys [HJKL]?
+- > windows users man...
 - **"Does this work with Windows Powershell / CMD?"**:
 - > yeah
 - **"Shouldn't this project be a notepad instead?"**:
