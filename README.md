@@ -27,3 +27,13 @@ A terminal-centric tabulator with a fully functional responsive TUI chart & hotk
 - **[E]** : Edit Selected Entry
 - **[Q]** : Exit Editing Mode / Cancel "Delete Entry" / Quit & Save
 - **[R]** : Delete Entry
+
+## ⚀ FAQ:
+- **"Does this work with Windows Powershell / CMD?"**:
+- > yeah
+- **"Shouldn't this project be a notepad instead?"**:
+- > yeah
+- **"Was the AES128 integration necessary?"**:
+- > yeah
+- **"Why did you code this in C?"**:
+- > yeah
