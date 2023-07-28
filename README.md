@@ -13,7 +13,7 @@ A terminal-centric tabulator with a fully functional responsive TUI chart & hotk
 * A Terminal with UTF8 & Ligatures support. Preferrably a [Nerd Font Family](https://www.nerdfonts.com/)
 
 ## ⚀ Features:
-- **Lightweight:** Uses **0.8MB** of RAM and **82KB** of storage
+- **Lightweight:** Uses **0.8MB** of RAM and **82KB** of storage [Windows]
 - **On Point:** Ordered Entries in Descending Value for on the spot **ranking**
 - **Visual:** Responsive **TUI bar chart** for data visualization (no Ncurses required)
 - **Secure:** Uses an in-house, portable file format (**.dib**) with military grade encryption (AES128)
