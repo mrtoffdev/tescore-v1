@@ -29,7 +29,7 @@ A terminal-centric tabulator with a fully functional responsive TUI chart & hotk
 - **[R]** : Delete Entry
 
 ## ⚀ Purpose of Development:
-> This project was initially developed as a proof of concept for developing reactive User Interfaces for the terminal from scratch, with the goal of demonstrating a responsive nested component layout similar to other high-level GUI toolkits / frameworks instead of a traditional vertical, top to bottom layout commonly used by terminal emulators / shells
+> This project was initially developed as a proof of concept for developing reactive User Interfaces for the terminal in C from scratch, with the goal of demonstrating a responsive nested component layout similar to other high-level GUI toolkits / frameworks instead of a traditional vertical, top to bottom layout commonly used by terminal emulators / shells. Also acted as a small-sized starter project during the time I was learning the fundamentals of C
 
 ## ⚀ FAQ:
 - **Why are the navigation hotkeys bound to [WASD] instead of vim hotkeys [HJKL]?
