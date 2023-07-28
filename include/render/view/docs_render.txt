@@ -1,0 +1,48 @@
+REFRESH FRAME SEQUENCE
+    + Start Benchmark Clock
+    + Clear Screen Buffer
+    + Render UI Elements
+        - Separator
+        - Header (Number of Students)
+        - Separator
+        - Upper Rows
+            - x10 formatted lines
+        - Separator
+        - Sub Header
+        - Separator
+            - x10 formatted lines
+    + Display Command Log
+        - Format: <TimeLog><Message
+
+NOTE:
+    INDEX COUNT INCREMENTS FROM B TO T > SIDE OF GRAPH
+        ARR[] INCREMENTS FROM END TO START
+    INDEX VALUE INCREMENTS FROM R TO L > BOTTOM OF GRAPH
+
+
+/* RENDERING SYSTEM
+
+    FUNCTION CALLS
+        - refreshFrame()    : Renders the main interactive GUI for the first time
+        - terminatePrompt() : Renders the program termination prompt
+
+    BAR GRAPH - 2D Char Matrix System
+        - Divide the number of students into 10
+            - If divisible by 10, set all notches with $Quotient increments
+            - If not divisible by 10, divide by 9, set all notches with $Quotient increments, and set the last / highest notch to remainder
+                - e.g. 81 =
+
+    REFRESHING FRAMES
+        - Refresh call will re-render all three panels
+        - refreshFrame() will also be the primary call when rendering the panels for the first time
+
+
+ENABLING UTF8 SUPPORT FOR MICROSOFT WINDOWS CONSOLES
+
+    #include <windows.h>
+    SetConsoleOutputCP(CP_UTF8);
+
+    ANSI REFERENCES
+
+        BLOCK CHARACTER     : █
+        VERTICAL SEPARATOR  : │
